@@ -1,124 +1,15 @@
 //
-//  HelpMenu.swift
+//  TutorialRulerView.swift
 //  Slide Rule
 //
-//  Created by Rowan on 11/22/23.
+//  Created by Rowan on 5/4/24.
 //
 
 import SwiftUI
 
-import Foundation
 import LaTeXSwiftUI
-//import SwiftMath
 
-struct HelpMenuView: View {
-    var body: some View {
-        ZStack{
-            Color.theme.background.ignoresSafeArea(.all)
-            VStack{
-                    
-                
-                HStack{
-                    NavigationLink(destination: HelpBodyView(instruction: Instruction(title:"Controls", 
-                        body: "$\\begin{array}{ll}\\text{To Slide:} & \\text{Drag the Slide, Frame, or Cursor.} \\\\ \\text{To Flip:} & \\text{Swipe up or down on the Frame, or press the Flip Icon.} \\\\ \\text{To Summon:} & \\text{Hold down on the Frame where you want the Cursor, then release.} \\\\ \\text{To Zoom:} & \\text{Press the Magnifying Glass icon to toggle the zoom bubble} \\\\ \\end{array}$"
-                        )), label:{
-                        HelpButtonView(string:"Controls")
-                    })
-                    .navigationTitle("Guides")
-                    Spacer()
-                }.padding(.top,20)
-                Spacer()
-            }
-            HelpListView()
-        }
-        
-    }
-}
 
-struct HelpListView: View {
-    private var instructionColumns: [InstructionColumn] = InstructionColumn.allColumns
-    
-    var body: some View {
-        VStack(){
-            HStack(spacing:50){
-                ForEach(instructionColumns, id:\.header){instructionCol in
-                    VStack{
-                        ForEach(instructionCol.instructions, id:\.title){ instruction in
-                            NavigationLink(
-                                destination: HelpBodyView(instruction: instruction),
-                                label:{
-                                HelpButtonView(string: instruction.title)
-                                }
-                            )
-                            .navigationTitle("Guides")
-                        }
-                        Spacer()
-                    }
-                }
-            }
-            .padding(.top,20)
-            Spacer()
-        }
-    }
-}
-
-struct HelpBodyView: View {
-    var instruction: Instruction
-    
-    var body: some View {
-        ZStack{
-            Color.backgroundGreen.ignoresSafeArea(.all)
-            VStack{
-                ScrollView{
-                    HStack{
-                        LaTeX(instruction.body)
-                            .lineSpacing(10.0)
-                            //.foregroundColor(.white)
-                            //.imageRenderingMode(.original)
-                            .padding(.top,50)
-                        Spacer()
-                    }
-                    
-                }
-                Spacer()
-                if !instruction.animation.isEmpty {
-                    NavigationLink(destination: ZStack{Color.backgroundGreen.ignoresSafeArea(.all); TutorialRulerView(keyframes: instruction.animation)}, label:{
-                        Text("Step-by-Step")
-                            .frame(width:200,height:30)
-                            .background(Color.theme.text)
-                            .foregroundColor(.theme.background)
-                            .fontWeight(.heavy)
-                            .cornerRadius(10)
-                    })
-                }
-            }
-        }
-        .toolbar{
-            ToolbarItem(placement: .principal){
-                HStack{
-                    LaTeX("Guide: \(instruction.title)")
-                }
-            }
-        }
-    }
-}
-
-struct HelpButtonView: View {
-    var string: String
-    
-    var body: some View {
-        LaTeX(string)
-            .font(.system(size:18, weight:.bold))
-            .frame(width:100,height:30)
-            .background(Color.theme.text)
-            .foregroundColor(.theme.background)
-            .cornerRadius(10)
-    }
-}
-
-enum GestureHint{
-    case none, flip, left, right
-}
 
 extension View {
     @inlinable
@@ -192,9 +83,6 @@ struct TutorialRulerView: View{
     @State var label: String = "_"
     @State var action: String = ""
     @State var gestureHint: GestureHint = .none
-    @State var isGestureMoving: Bool = false
-    @State var isGestureVisible: Bool = true
-    @State var isGestureAnimating: Bool = false
     
     @State var needsNextInput: Bool = false
     
@@ -203,7 +91,7 @@ struct TutorialRulerView: View{
             VStack(alignment:.center){
                 ZStack{
                     RulerView(posDat: $posDat, angle: $angle)
-                    if(gestureHint != .flip){
+                    if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
                         if (action == "cursor" || action == "indexR" || action == "indexL" || action == "read") && selectionNum >= 0{
                             Rectangle()
                                 .stroke(.red)
@@ -227,6 +115,7 @@ struct TutorialRulerView: View{
                                 Rectangle()
                                     .frame(width:1,height:190)
                                     .reverseMask{
+                                        //crop out selected box
                                         Rectangle()
                                             .frame(width:6,height:12)
                                             .offset(y:calcSelectionHeight(slideNum: selectionNum)-3.9-202/2)
@@ -237,6 +126,7 @@ struct TutorialRulerView: View{
                                 Rectangle()
                                     .frame(width:1,height:190)
                                     .reverseMask{
+                                        //crop out selected box
                                         Rectangle()
                                             .frame(width:6,height:12)
                                             .offset(y:calcSelectionHeight(slideNum: selectionNum2)-3.9-202/2)
@@ -252,25 +142,9 @@ struct TutorialRulerView: View{
                                 .offset(x: posDat.framePos + posDat.slidePos + (action == "indexL" ? 124.25 : 1600-124.25))
                             //.zIndex(/*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
                         }
-                    }else if(isGestureVisible){
-                        //needs to flip.
-                        Image(systemName:"hand.point.up.left")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width:50, height:50)
-                            .foregroundStyle(.black)
-                            .offset(y:isGestureMoving ? -75 : 75)
-                            .zIndex(1.0)
                     }
-                    
-                    if((gestureHint == .left || gestureHint == .right) && isGestureVisible){
-                        Image(systemName:"hand.point.up.left")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width:50, height:50)
-                            .foregroundStyle(.black)
-                            .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:110)
-                            .zIndex(1.0)
+                    if(gestureHint != .none){
+                        TutorialGestureView(gestureHint: gestureHint)
                     }
                 }
                 .frame(maxWidth:geometry.size.width-0)
@@ -288,6 +162,7 @@ struct TutorialRulerView: View{
                     }
                     Spacer()
                     Text("Step \(instructionNum+1)/\(keyframes.count)")
+                        .foregroundColor(.white)
                     Spacer()
                     Button{
                         incInstructionNum(shouldMove: true)
@@ -314,6 +189,7 @@ struct TutorialRulerView: View{
                         LaTeX("\(label)")
                             .lineLimit(1)
                             .minimumScaleFactor(0.4)
+                            .foregroundColor(.white)
                     }
                 }
             }
@@ -372,31 +248,15 @@ struct TutorialRulerView: View{
             updateGestureHintState()
         }
         .onChange(of:action){
-            needsNextInput = action == "read"
+            checkIfNeedsNextInput()
+        }
+        .onChange(of:instructionNum){
+            checkIfNeedsNextInput()
         }
     }
     
-    func cycleGestureMoving(){
-        if(gestureHint != .none){
-            if(!isGestureAnimating){
-                isGestureAnimating = true
-                isGestureMoving = false
-                isGestureVisible = true
-                withAnimation(.easeInOut(duration:0.5)){
-                    isGestureMoving = true
-                    //isGestureVisible = false
-                }
-                withAnimation(.easeInOut(duration:0.5).delay(0.5)){
-                    isGestureVisible = false
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now()+1.5){
-                    isGestureAnimating = false
-                    cycleGestureMoving()
-                }
-            }
-        }else{
-            isGestureAnimating = false
-        }
+    func checkIfNeedsNextInput(){
+        needsNextInput = action == "read" && instructionNum < keyframes.count - 1
     }
     
     func updateGestureHintState(){
@@ -407,12 +267,11 @@ struct TutorialRulerView: View{
             if(-posDat.framePos - selectionX > 300){
                 newGesture = .right
             }else if(selectionX - -posDat.framePos > 300){
-                newGesture = .left	
+                newGesture = .left
             }
         }
         
         gestureHint = newGesture
-        cycleGestureMoving()
     }
     
     func incInstructionNum(shouldMove: Bool = false){

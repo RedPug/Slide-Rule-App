@@ -147,7 +147,7 @@
                 "title":"$\\pi \\times a$",
                 "body":"Use the C and CF scales.",
                 "animation":[
-                    {"selectionX":2, "selectionNum":7, "action":"cursor", "label":"Calculate $pi*2$: Place the cursor at $2$ on the C scale"},
+                    {"selectionX":2, "selectionNum":7, "action":"cursor", "label":"Calculate $\\pi*2$: Place the cursor at $2$ on the C scale"},
                     {"selectionX":6.2832, "selectionNum":3, "action":"read", "label":"Read 6.28 on the CF scale."},
                 ]
             },
