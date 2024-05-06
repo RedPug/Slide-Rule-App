@@ -279,7 +279,7 @@ struct Slide: View {
         Image(posDat.isFlippedTemp ? "slideFlippedHD" : "slideHD")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width:1600, height:88)
+            .frame(width:1600, height:202)
             .offset(x:posDat.slidePos+800+floor(posDat.framePos),y:0)
             .gesture(
                 DragGesture()
