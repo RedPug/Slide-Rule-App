@@ -93,7 +93,7 @@ struct TutorialRulerView: View{
                     RulerView(posDat: $posDat, angle: $angle)
                     if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
                         if (action == "cursor" || action == "indexR" || action == "indexL" || action == "read") && selectionNum >= 0{
-                            Rectangle()
+                            Capsule()
                                 .stroke(.red)
                                 .frame(width:6,height:12)
                                 .offset(x:selectionX + posDat.framePos, y:calcSelectionHeight(slideNum: selectionNum)-3.9-202/2)
@@ -102,17 +102,17 @@ struct TutorialRulerView: View{
                         
                         if selectionNum2 >= 0 && action == "slideToSlide"{
                             //ZStack{
-                                Rectangle()
+                            Capsule()
                                     .stroke(.red)
                                     .frame(width:6,height:12)
                                     .offset(x:selectionX + posDat.framePos, y:calcSelectionHeight(slideNum: selectionNum)-3.9-202/2)
                                 
-                                Rectangle()
+                            Capsule()
                                     .stroke(.red)
                                     .frame(width:6,height:12)
                                     .offset(x:selectionX2 + posDat.framePos, y:calcSelectionHeight(slideNum: selectionNum2)-3.9-202/2)
                                 
-                                Rectangle()
+                            Capsule()
                                     .frame(width:1,height:190)
                                     .reverseMask{
                                         //crop out selected box
@@ -123,7 +123,7 @@ struct TutorialRulerView: View{
                                     .offset(x:selectionX + posDat.framePos)
                                     .foregroundStyle(.red)
                                 
-                                Rectangle()
+                            Capsule()
                                     .frame(width:1,height:190)
                                     .reverseMask{
                                         //crop out selected box
@@ -136,7 +136,7 @@ struct TutorialRulerView: View{
                             //}
                         }
                         if action == "indexR" || action == "indexL" {
-                            Rectangle()
+                            Capsule()
                                 .fill(.red)
                                 .frame(width:0.6,height:190)
                                 .offset(x: posDat.framePos + posDat.slidePos + (action == "indexL" ? 124.25 : 1600-124.25))

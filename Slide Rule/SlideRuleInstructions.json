@@ -152,7 +152,7 @@
                 ]
             },
             {
-                "title":"min & sec",
+                "title":"Min & Sec",
                 "body":"Use the ST and D scales.\n\nNote:\n    The tick marks on the ST scale are used to convert minutes (') and seconds ('') into radians.",
                 "animation":[
                     {"selectionX":4.2, "selectionNum":19, "action":"cursor", "label":"Convert 42 minutes to radians: Place the cursor at $42$ on the D scale"},

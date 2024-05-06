@@ -21,6 +21,7 @@
 		589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8732B0F12FE0065B527 /* HelpMenuView.swift */; };
 		589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8772B0F150A0065B527 /* JSON Manager.swift */; };
 		589BC87B2B0F180D0065B527 /* SlideRuleInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = 589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */; };
+		58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */; };
 		58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		589BC8732B0F12FE0065B527 /* HelpMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpMenuView.swift; sourceTree = "<group>"; };
 		589BC8772B0F150A0065B527 /* JSON Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSON Manager.swift"; sourceTree = "<group>"; };
 		589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SlideRuleInstructions.json; sourceTree = "<group>"; };
+		58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerScaleDefinitions.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
 
@@ -120,6 +122,7 @@
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
 				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
 				58C175052B43B5DC008F0097 /* SlideRuleView.swift */,
+				58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */,
 				585906172B0DB9020051F3FC /* Assets.xcassets */,
 				585906192B0DB9020051F3FC /* Preview Content */,
 				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
@@ -306,6 +309,7 @@
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
 				585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */,
 				589BC8722B0F0A3F0065B527 /* Color.swift in Sources */,
+				58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */,
 				589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

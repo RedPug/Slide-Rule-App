@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LaTeXSwiftUI
 
 struct posData {
     var framePos: CGFloat = -200.0
@@ -17,10 +18,11 @@ struct posData {
     var isFlipped: Bool = false
     var isFlippedTemp: Bool = false
     var shouldFlip: Bool = false
+    var isLocked: Bool = false
     var timesPlaced: Int = 0;
 }
 
-struct MagnificationEffect<Content: View>: View{
+struct MagnifyingGlass<Content: View>: View{
     var scale: CGFloat
     var size: CGFloat
     var isVisible: Bool
@@ -42,43 +44,54 @@ struct MagnificationEffect<Content: View>: View{
                 if(isVisible){
                     GeometryReader{geometry in
                         let bounds = geometry.size
+                        let r = size*0.3
+                        let shape = RoundedRectangle(cornerRadius: r)
                         ZStack{
-                            Circle()
-                                .fill(Color.theme.background)
-                                .frame(width: size, height: size)
-                                .offset(offset)
-                            content
-                                .offset(x: -offset.width, y:-offset.height)
-                                .frame(width: size, height: size)
-                                .scaleEffect(scale)
-                                .clipShape(Circle())
-                                .contentShape(.interaction, Circle())
-                                .offset(offset)
+                            Group{
+                                shape
+                                    .fill(Color.theme.background)
+                                    .frame(width: size, height: size)
+                                    .offset(offset)
+                                
+                                content
+                                    .offset(x: -offset.width, y:-offset.height)
+                                    .frame(width: size, height: size)
+                                    .scaleEffect(scale)
+                                    .clipShape(shape)
+                                    .contentShape(.interaction, shape)
+                                    .offset(offset)
+                                
+                                shape
+                                    .stroke(.black, lineWidth: 5)
+                                    .frame(width: size, height: size)
+                                    .contentShape(.interaction, shape)
+                                    .offset(offset)
+                                    .gesture(
+                                        DragGesture()
+                                            .onChanged(){value in
+                                                offset = CGSize(
+                                                    width: pastOffset.width + value.translation.width,
+                                                    height: pastOffset.height + value.translation.height
+                                                )
+                                                offset.width = min(max(offset.width,-UIScreen.main.bounds.width/2+size/2),UIScreen.main.bounds.width/2-size/2)
+                                                offset.height = min(max(offset.height,-bounds.height/2),bounds.height/2)
+                                            }
+                                            .onEnded(){value in
+                                                pastOffset = offset
+                                            }
+                                    )
+                            }.offset(x:size/scale/2+size/2)
                             
-                            Circle()
+                            RoundedRectangle(cornerRadius: r/scale)
                                 .stroke(.black, lineWidth: 5)
-                                .frame(width: size, height: size)
-                                .contentShape(.interaction, Circle())
+                                .frame(width: size/scale, height: size/scale)
                                 .offset(offset)
-                                .gesture(
-                                    DragGesture()
-                                        .onChanged(){value in
-                                            offset = CGSize(
-                                                width: pastOffset.width + value.translation.width,
-                                                height: pastOffset.height + value.translation.height
-                                            )
-                                            offset.width = min(max(offset.width,-UIScreen.main.bounds.width/2+size/2),UIScreen.main.bounds.width/2-size/2)
-                                            offset.height = min(max(offset.height,-bounds.height/2),bounds.height/2)
-                                        }
-                                        .onEnded(){value in
-                                            pastOffset = offset
-                                        }
-                                )
-                            
-                            
                         }
-                            .frame(width: bounds.width, height: bounds.height)
+                        .frame(width: bounds.width, height: bounds.height)
                     }
+                }
+                else{
+                    EmptyView()
                 }
             }
     }
@@ -92,17 +105,45 @@ struct SlideRuleView: View {
     @State var isMagnifyerVisible: Bool = false
     @State var magnifyLevel: CGFloat = 1.0
     @State var angle: CGFloat = 0.0
+    @State var zoomLevel: CGFloat = 1.0
+    @State var lastZoomLevel: CGFloat = 1.0
+    @State var zoomAnchor: CGPoint = .zero
     
     var body: some View {
         NavigationView{
             ZStack(){
                 //Color(Color.theme.background).edgesIgnoringSafeArea(.all)
-                VStack(){
-                    Spacer()
-                    MagnificationEffect(scale: 1+pow(magnifyLevel/5, 2)*3, size: 100, isVisible: isMagnifyerVisible){
-                        RulerView(posDat: $posDat, angle: $angle)
-                    }
-                    Spacer()
+                MagnifyingGlass(scale: 1+pow(magnifyLevel/5, 2)*3, size: 150, isVisible: isMagnifyerVisible){
+                    RulerView(posDat: $posDat, angle: $angle)
+                        .offset(x:-zoomAnchor.x, y:-zoomAnchor.y)
+                        .scaleEffect(zoomLevel, anchor: .leading)
+                        .offset(x:zoomAnchor.x, y:zoomAnchor.y)
+                        .defersSystemGestures(on: .all)
+                        .simultaneousGesture(
+                            MagnifyGesture()
+                                .onChanged { value in
+                                    posDat.isLocked = true
+                                    
+                                    let val = value.magnification
+                                    let delta = val / self.lastZoomLevel
+                                    self.lastZoomLevel = val
+                                    var newScale = zoomLevel * delta
+                                    
+                                    newScale = min(3,max(1,newScale))
+                                    
+                                    //print(value.startLocation)
+                                    let start = value.startLocation
+                                    zoomAnchor = CGPoint(x:start.x, y:(start.y-101)*1.5)
+                                    
+                                    zoomLevel = newScale
+                                }.onEnded { value in
+                                    posDat.isLocked = false
+                                    self.lastZoomLevel = 1.0
+                                }
+                        )
+                }
+                
+                VStack{
                     HStack{
                         Button{
                             posDat.shouldFlip = true
@@ -113,6 +154,7 @@ struct SlideRuleView: View {
                                 .foregroundColor(.theme.text)
                                 .frame(width:30,height:30)
                         }
+                        .padding(.leading, 30)
                         Spacer()
                             .frame(width:30)
                         
@@ -157,14 +199,20 @@ struct SlideRuleView: View {
                                 .foregroundColor(.theme.text)
                                 .frame(width:30,height:30)
                         })
+                        .padding(.trailing, 30)
+                        
                     }
+                    .ignoresSafeArea(.all)
+                    .frame(width:UIScreen.main.bounds.size.width)
+                    .padding(.all,5)
+                    .background(.gray.opacity(1))
                     
+                    Spacer()
                 }
-                .navigationTitle("Slide Rule")
-                .toolbar(.hidden, for:.navigationBar)
-                .background(Color.theme.background)
-                
             }
+            .navigationTitle("Slide Rule")
+            .toolbar(.hidden, for:.navigationBar)
+            .background(Color.theme.background)
             
         }
         .onAppear{
@@ -180,8 +228,6 @@ struct SlideRuleView: View {
 }
 
 struct RulerView: View {
-    var isLocked: Bool = false
-    
     
     @Binding var posDat: posData
     @Binding var angle: CGFloat
@@ -191,24 +237,23 @@ struct RulerView: View {
     let flipTime = 0.7
     
     var body: some View {
-        Frame(isLocked: isLocked, angle:angle, posDat: $posDat)
-                .rotation3DEffect(Angle(degrees:angle), axis: (x:1,y:0,z:0))
-                .frame(height:250, alignment: .center)
-                .contentShape(.interaction, Rectangle())
-                .simultaneousGesture(
-                    DragGesture()
-                        .onEnded({value in
-                            if abs(value.translation.height) > 30 && abs(value.velocity.height) > 100 && abs(value.velocity.height) > abs(value.velocity.width) {
-                                flip(dir: value.translation.height < 0)
-                            }
-                        })
-                )
-                .onChange(of: posDat.shouldFlip){ oldState, newState in
-                    if oldState == false && newState{
-                        flip(dir: true);
-                    }
+        Frame(angle:angle, posDat: $posDat)
+            .rotation3DEffect(Angle(degrees:angle), axis: (x:1,y:0,z:0))
+            .frame(height:250, alignment: .center)
+            .contentShape(.interaction, Rectangle())
+            .simultaneousGesture(
+                DragGesture()
+                    .onEnded({value in
+                        if abs(value.translation.height) > 30 && abs(value.velocity.height) > 100 && abs(value.velocity.height) > abs(value.velocity.width) {
+                            flip(dir: value.translation.height < 0)
+                        }
+                    })
+            )
+            .onChange(of: posDat.shouldFlip){ oldState, newState in
+                if oldState == false && newState{
+                    flip(dir: true);
                 }
-                //.clipped()
+            }
     }
     
     func flip(dir: Bool) -> Void {
@@ -231,8 +276,6 @@ struct RulerView: View {
 }
 
 struct Cursor: View {
-    var isLocked: Bool = false
-    
     @Binding var posDat: posData
     
     @State var isDragging = false
@@ -245,13 +288,13 @@ struct Cursor: View {
             .gesture(
                 DragGesture()
                     .onChanged({value in
-                        if isLocked {return}
+                        if posDat.isLocked {return}
                         if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                         isDragging = true
                         posDat.cursorPos = posDat.cursorPos0+value.translation.width
                     })
                     .onEnded({value in
-                        if isLocked {return}
+                        if posDat.isLocked {return}
                         isDragging = false
                         posDat.cursorPos0 = posDat.cursorPos
                         posDat.timesPlaced += 1
@@ -269,28 +312,159 @@ struct Cursor: View {
     }
 }
 
+struct SlideMarkingView: View{
+    
+    var width : CGFloat
+    var height : CGFloat
+    
+    let scales : [RulerScale]
+    
+    var body: some View {
+        ZStack(alignment: .center){
+            //tick marks
+            Path {path in
+                scales.enumerated().forEach{scaleIndex, scale in
+                    let eq = scale.data.equation
+                    let y0 = getScaleHeight(scaleIndex)
+                    let direction = getScaleDirection(scaleIndex) == .up ? -1.0 : 1.0
+                    scale.data.markingIntervals.forEach{interval in
+                        let range = Int(floor((interval.max-interval.min)/interval.spacing + 0.01))
+                        if(range < 0){
+                            print("Bad range of \(range), with min of \(interval.min), max of \(interval.max), and spacing of \(interval.spacing)")
+                        }
+                        for i in 0...range{
+                            if(interval.skipping > 0 && (i)%interval.skipping == 0){continue}
+                            
+                            let x = interval.min + CGFloat(i)*interval.spacing
+                            let f = eq(x)
+                            path.move(to: CGPoint(x: f*width, y: y0))
+                            path.addLine(to: CGPoint(x: f*width, y: y0 + interval.size.rawValue * direction))
+                        }
+                    }
+                }
+            }
+            .stroke(.black, lineWidth: 0.5)
+            .frame(width:width, height:height)
+            //	.border(.red)
+            //.overlay{
+            let textOffsetX = -width*0.5
+            let textOffsetY = -height*0.5
+            
+            //text
+            //iterate by each scale, text inerval, and finally through the interval to draw the text
+            ForEach(Array(scales.enumerated()), id: \.offset){
+                scaleIndex, scale in
+                
+                let eq = scale.data.equation
+                let y0 = getScaleHeight(scaleIndex)
+                let direction = getScaleDirection(scaleIndex) == .up ? -1.0 : 1.0
+                let maxMag = 3.0
+                
+                //Group{
+                Text(scale.name)
+                    .font(.system(size: 9*maxMag, weight:.bold))
+                    .foregroundStyle(.black)
+                    .frame(width:150.0,height:50.0, alignment: .leading)
+                    .scaleEffect(1.0/maxMag)
+                    .offset(x: -29 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+                
+                LaTeX(scale.leftLabel)
+                    .font(.system(size: 8*maxMag, weight:.bold))
+                    .foregroundStyle(.black)
+                    .frame(width:150.0,height:50.0, alignment: .leading)
+                    .scaleEffect(1.0/maxMag)
+                    .offset(x: textOffsetX + 0, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+                
+                
+                ForEach(Array(scale.data.labelingIntervals.enumerated()), id: \.offset){
+                    intervalIndex, _ in
+                    let interval : LabelingInterval = scale.data.labelingIntervals[intervalIndex]
+                    let diff: CGFloat = interval.max-interval.min
+                    let dist: CGFloat = diff/interval.spacing
+                    let range: Int = Int(floor(dist + 0.01))
+                    
+                    ForEach((0...range).filter{i in return interval.skipping <= 0 || (i)%interval.skipping != 0}, id: \.self){
+                        i in
+                        let x = interval.min + CGFloat(i)*interval.spacing
+                        let f = eq(x)
+                        
+                        //uses a scale effect in order to keep sharpness when zoomed in via magnifying glass
+                        //max magnification = 3x, so the text is rendered at 3x scale to ensure detail
+                        let isTall: Bool = interval.textHeight == .tall
+                        let fontSize : CGFloat = isTall ? 8.0 : 6.0
+                        Text(interval.textGen(x))
+                            .font(.system(size: fontSize*maxMag, weight:.bold))
+                            .foregroundStyle(.black)
+                            .scaleEffect(1.0/maxMag)
+                            .frame(width:50.0,height:50.0, alignment: .center)
+                            .offset(x: f*width + textOffsetX, y: y0+interval.textHeight.rawValue*direction + textOffsetY)
+                    }
+                }
+                
+            }
+            //end scale iterations
+        }
+    }
+    
+    func getScaleLabelHeight(_ index: Int) -> CGFloat{
+        let spacing = 18.0
+        return spacing*0.5 + spacing*CGFloat(index)
+    }
+    
+    func getScaleHeight(_ index: Int) -> CGFloat{
+        switch(index){
+        case 0:
+            return 0.0
+        case 1:
+            return 18.0
+        case 2:
+            return 52.0
+        case 3:
+            return 70
+        case 4:
+            return 88
+        default:
+            return 0
+        }
+    }
+    
+    func getScaleDirection(_ index: Int) -> TickDirection{
+        if(index < 2){
+            return .down
+        }
+        return .up
+    }
+}
+
+
+
 struct Slide: View {
-    var isLocked: Bool = false
     @Binding var posDat: posData
     
     @State var isDragging = false
     
     var body: some View {
-        Image(posDat.isFlippedTemp ? "slideFlippedHD" : "slideHD")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
+        //Image(posDat.isFlippedTemp ? "slideFlippedHD" : "slideHD")
+        Rectangle()
+            .fill(Color.theme.rulerBase)
+            .overlay{
+                SlideMarkingView(width:1350, height:88, scales: posDat.isFlippedTemp ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront)
+                //.offset(x:124.5/2)
+            }
+        //            .resizable()
+        //            .aspectRatio(contentMode: .fit)
             .frame(width:1600, height:88)
             .offset(x:posDat.slidePos+800+floor(posDat.framePos),y:0)
             .gesture(
-                DragGesture()
+                DragGesture(minimumDistance:50)
                     .onChanged({value in
-                        if isLocked {return}
+                        if posDat.isLocked {return}
                         if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                         isDragging = true
                         posDat.slidePos = posDat.slidePos0+value.translation.width
                     })
                     .onEnded({value in
-                        if isLocked {return}
+                        if posDat.isLocked {return}
                         isDragging = false
                         posDat.slidePos0 = posDat.slidePos
                         posDat.timesPlaced += 1
@@ -308,17 +482,16 @@ struct Slide: View {
 }
 
 struct Frame: View {
-    var isLocked: Bool
     var angle: Double
     
     @State var isDragging = false
     
     @Binding var posDat: posData
-
+    
     
     var body: some View {
         ZStack(){
-            Slide(isLocked:isLocked, posDat: $posDat)
+            Slide(posDat: $posDat)
             //.offset(x:position,y:0)
             Image(posDat.isFlippedTemp ? "frameFlippedHD" : "frameHD")
                 .resizable()
@@ -326,15 +499,15 @@ struct Frame: View {
                 .frame(width:1600,height:202)
                 .offset(x:floor(posDat.framePos)+800,y:0)
                 .gesture(
-                    DragGesture()
+                    DragGesture(minimumDistance:50)
                         .onChanged({value in
-                            if isLocked {return}
+                            if posDat.isLocked {return}
                             if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                             isDragging = true
                             posDat.framePos = posDat.framePos0+value.translation.width
                         })
                         .onEnded({value in
-                            if isLocked {return}
+                            if posDat.isLocked {return}
                             isDragging = false
                             posDat.framePos0 = posDat.framePos
                         })
@@ -342,7 +515,7 @@ struct Frame: View {
                 .gesture(
                     LongPressGesture(minimumDuration: 0.3).sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .local))
                         .onEnded{ value in
-                            if isLocked {return}
+                            if posDat.isLocked {return}
                             switch value {
                             case .second(true, let drag):
                                 let longPressLocation = drag?.startLocation ?? .zero
@@ -371,11 +544,11 @@ struct Frame: View {
                 )
             
             
-            Cursor(isLocked:isLocked, posDat: $posDat)
+            Cursor(posDat: $posDat)
         }
-            .onChange(of: posDat.framePos) {
-                clampPosition()
-            }
+        .onChange(of: posDat.framePos) {
+            clampPosition()
+        }
     }
     
     func clampPosition() -> Void{

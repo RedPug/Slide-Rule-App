@@ -29,24 +29,21 @@ struct TutorialGestureView: View {
     @State var isGestureAnimating: Bool = false
     
     var body: some View {
-        ZStack{
-            if(isGestureVisible){
-                //needs to flip.
-                if(gestureHint == .flip){
-                    GestureHandView()
-                        .offset(y:isGestureMoving ? -75 : 75)
-                }
-                
-                if(gestureHint == .left || gestureHint == .right){
-                    GestureHandView()
-                        .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:110)
-                }
+        Group{
+            if(gestureHint == .flip){
+                GestureHandView()
+                    .offset(y:isGestureMoving ? -75 : 75)
+            }else{
+                GestureHandView()
+                    .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:110)
             }
+            
+            EmptyView()
         }
-            .onAppear(){
+        .opacity(isGestureVisible ? 1 : 0)
+        .onAppear(){
                 cycleGestureMoving()
             }
-        
     }
     
     func cycleGestureMoving(){

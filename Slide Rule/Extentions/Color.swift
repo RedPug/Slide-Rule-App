@@ -13,6 +13,7 @@ extension Color {
 }
 
 struct ColorTheme {
-    let text = Color("DarkBlue")
-    let background = Color("BackgroundGreen")
+    let text = Color("Text")
+    let background = Color("Background")
+    let rulerBase = Color("RulerBackground")
 }
