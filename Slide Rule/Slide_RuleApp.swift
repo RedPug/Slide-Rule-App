@@ -12,6 +12,12 @@ struct Slide_RuleApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+                }
+                .onDisappear {
+                    UIDevice.current.endGeneratingDeviceOrientationNotifications()
+                }
         }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581797502C12552F0077491B /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5817974F2C12552F0077491B /* OrientationManager.swift */; };
+		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
 		585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */; };
 		585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906152B0DB8FF0051F3FC /* ContentView.swift */; };
 		585906182B0DB9020051F3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 585906172B0DB9020051F3FC /* Assets.xcassets */; };
@@ -14,6 +16,7 @@
 		585906252B0DB9030051F3FC /* Slide_RuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906242B0DB9030051F3FC /* Slide_RuleTests.swift */; };
 		5859062F2B0DB9030051F3FC /* Slide_RuleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5859062E2B0DB9030051F3FC /* Slide_RuleUITests.swift */; };
 		585906312B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906302B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift */; };
+		588DFE8F2C16694600576254 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588DFE8E2C16694600576254 /* View.swift */; };
 		589431AA2BA401B9004F813B /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = 589431A92BA401B9004F813B /* SwiftMath */; };
 		589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742302BE7527E00ADC916 /* TutorialRulerView.swift */; };
 		589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742322BE7543E00ADC916 /* TutorialGestureView.swift */; };
@@ -44,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5817974F2C12552F0077491B /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
+		581CFBB72C11714900CE1540 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		585906102B0DB8FF0051F3FC /* Slide Rule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slide Rule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleApp.swift; sourceTree = "<group>"; };
 		585906152B0DB8FF0051F3FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 		5859062A2B0DB9030051F3FC /* Slide RuleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Slide RuleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5859062E2B0DB9030051F3FC /* Slide_RuleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleUITests.swift; sourceTree = "<group>"; };
 		585906302B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		588DFE8E2C16694600576254 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		589742302BE7527E00ADC916 /* TutorialRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialRulerView.swift; sourceTree = "<group>"; };
 		589742322BE7543E00ADC916 /* TutorialGestureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialGestureView.swift; sourceTree = "<group>"; };
 		589BC8712B0F0A3F0065B527 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -117,7 +123,9 @@
 				589BC8702B0F0A200065B527 /* Extentions */,
 				585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */,
 				589BC8772B0F150A0065B527 /* JSON Manager.swift */,
+				5817974F2C12552F0077491B /* OrientationManager.swift */,
 				585906152B0DB8FF0051F3FC /* ContentView.swift */,
+				581CFBB72C11714900CE1540 /* SettingsView.swift */,
 				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
 				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
@@ -159,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				589BC8712B0F0A3F0065B527 /* Color.swift */,
+				588DFE8E2C16694600576254 /* View.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -307,9 +316,12 @@
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
+				581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */,
 				585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */,
 				589BC8722B0F0A3F0065B527 /* Color.swift in Sources */,
+				588DFE8F2C16694600576254 /* View.swift in Sources */,
 				58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */,
+				581797502C12552F0077491B /* OrientationManager.swift in Sources */,
 				589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

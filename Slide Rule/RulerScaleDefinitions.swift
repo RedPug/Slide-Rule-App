@@ -64,19 +64,35 @@ struct RulerScale{
 
 enum ScaleLists{
     static let slideScalesFront : [RulerScale] = [
+        RulerScale(data:RulerScales.C, name:"LL02"),
+        RulerScale(data:RulerScales.C, name:"LL03"),
+        RulerScale(data:RulerScales.CF, name:"DF"),
+        
         RulerScale(data:RulerScales.CF, name:"CF"),
         RulerScale(data:RulerScales.CF.reversed(), name:"CIF"),
         RulerScale(data:RulerScales.L, name:"L"),
         RulerScale(data:RulerScales.C.reversed(), name:"CI"),
         RulerScale(data:RulerScales.C, name:"C"),
+        
+        RulerScale(data:RulerScales.C, name:"D"),
+        RulerScale(data:RulerScales.C, name:"LL3"),
+        RulerScale(data:RulerScales.C, name:"LL2"),
     ]
     //"$ \\left[ \\tiny \\begin{array}{l}0 1x \\\\0 1x \\end{array} \\right. $"
     static let slideScalesBack : [RulerScale] = [
-        RulerScale(data:RulerScales.CF, name:"B"),
+        RulerScale(data:RulerScales.C, name:"LL01"),
+        RulerScale(data:RulerScales.K, name:"K"),
+        RulerScale(data:RulerScales.A, name:"A"),
+        
+        RulerScale(data:RulerScales.A, name:"B"),
         RulerScale(data:RulerScales.CF.reversed(), name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0 1x} \\\\[-5px] \\textbf{0 1x} \\end{array} \\right. $", rightLabel:""),
         RulerScale(data:RulerScales.CF, name:"T >45°", leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $", rightLabel:""),
         RulerScale(data:RulerScales.CF, name:"ST", leftLabel:"$ \\left[ \\textbf{0.01x} \\right. $", rightLabel:""),
         RulerScale(data:RulerScales.CF, name:"S", leftLabel:"$ \\left[ \\textbf{0.1x} \\right. $", rightLabel:""),
+        
+        RulerScale(data:RulerScales.C, name:"D"),
+        RulerScale(data:RulerScales.C.reversed(), name:"DI"),
+        RulerScale(data:RulerScales.C, name:"LL1"),
     ]
 }
 
@@ -159,6 +175,66 @@ enum RulerScales{
             LabelingInterval(min: 10, max: 31, spacing: 10){x in return "\(Int(x))".first!.description},
             
             LabelingInterval(min: 11, max: 19, spacing: 1, textHeight:.short){x in return "\(Int(x))"}
+        ]
+    )
+    
+    static let A = RulerScaleData(
+        equation: { x in
+            return log10(x)/2
+        },
+        markingIntervals: [
+            MarkingInterval(min: 1.5, max: 5, spacing: 1, size:.xlarge),
+            MarkingInterval(min: 1, max: 10, spacing: 1, size:.xlarge),
+            MarkingInterval(min: 5.5, max: 10, spacing: 1, size:.medium),
+            MarkingInterval(min: 1, max: 5, spacing: 0.1, skipping:5, size:.medium),
+            MarkingInterval(min: 1, max: 2, spacing: 0.02, skipping: 5, size:.small),
+            MarkingInterval(min: 2.05, max: 5, spacing: 0.1, size:.small),
+            MarkingInterval(min: 5, max: 10, spacing: 0.1, skipping:5, size:.small),
+            
+            MarkingInterval(min: 15, max: 50, spacing: 10, size:.xlarge),
+            MarkingInterval(min: 10, max: 100, spacing: 10, size:.xlarge),
+            MarkingInterval(min: 55, max: 100, spacing: 10, size:.medium),
+            MarkingInterval(min: 10, max: 50, spacing: 1, skipping:5, size:.medium),
+            MarkingInterval(min: 10, max: 20, spacing: 0.2, skipping: 5, size:.small),
+            MarkingInterval(min: 20.5, max: 50, spacing: 1, size:.small),
+            MarkingInterval(min: 50, max: 100, spacing: 1, skipping:5, size:.small),
+        ],
+        labelingIntervals: [
+            LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))".first!.description},
+            LabelingInterval(min: 10, max: 100, spacing: 10){x in return "\(Int(x)/10)".first!.description},
+        ]
+    )
+    
+    static let K = RulerScaleData(
+        equation: { x in
+            return log10(x)/3
+        },
+        markingIntervals: [
+            MarkingInterval(min: 1.5, max: 4, spacing: 1, size:.xlarge),
+            MarkingInterval(min: 1, max: 10, spacing: 1, size:.xlarge),
+            MarkingInterval(min: 4.5, max: 10, spacing: 1, size:.medium),
+            MarkingInterval(min: 1, max: 4, spacing: 0.1, skipping:5, size:.medium),
+            MarkingInterval(min: 1.05, max: 4, spacing: 0.1, size:.small),
+            MarkingInterval(min: 4, max: 10, spacing: 0.1, skipping:5, size:.small),
+            
+            MarkingInterval(min: 15, max: 40, spacing: 10, size:.xlarge),
+            MarkingInterval(min: 10, max: 100, spacing: 10, size:.xlarge),
+            MarkingInterval(min: 45, max: 100, spacing: 10, size:.medium),
+            MarkingInterval(min: 10, max: 40, spacing: 1, skipping:5, size:.medium),
+            MarkingInterval(min: 10.5, max: 40, spacing: 1, size:.small),
+            MarkingInterval(min: 40, max: 100, spacing: 1, skipping:5, size:.small),
+            
+            MarkingInterval(min: 150, max: 400, spacing: 100, size:.xlarge),
+            MarkingInterval(min: 100, max: 1000, spacing: 100, size:.xlarge),
+            MarkingInterval(min: 450, max: 1000, spacing: 100, size:.medium),
+            MarkingInterval(min: 100, max: 400, spacing: 10, skipping:5, size:.medium),
+            MarkingInterval(min: 105, max: 400, spacing: 10, size:.small),
+            MarkingInterval(min: 400, max: 1000, spacing: 10, skipping:5, size:.small),
+        ],
+        labelingIntervals: [
+            LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))".first!.description},
+            LabelingInterval(min: 10, max: 100, spacing: 10){x in return "\(Int(x)/10)".first!.description},
+            LabelingInterval(min: 100, max: 1000, spacing: 100){x in return "\(Int(x)/100)".first!.description},
         ]
     )
 }

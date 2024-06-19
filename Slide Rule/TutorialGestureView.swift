@@ -37,13 +37,11 @@ struct TutorialGestureView: View {
                 GestureHandView()
                     .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:110)
             }
-            
-            EmptyView()
         }
         .opacity(isGestureVisible ? 1 : 0)
         .onAppear(){
-                cycleGestureMoving()
-            }
+            cycleGestureMoving()
+        }
     }
     
     func cycleGestureMoving(){

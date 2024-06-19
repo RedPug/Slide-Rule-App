@@ -11,23 +11,12 @@ import LaTeXSwiftUI
 
 
 
-extension View {
-    @inlinable
-    public func reverseMask<Mask: View>(alignment: Alignment = .center, @ViewBuilder _ mask: () -> Mask) -> some View {
-        self.mask {
-            Rectangle()
-                .overlay(alignment: alignment) {
-                    mask()
-                        .blendMode(.destinationOut)
-                }
-        }
-    }
-}
+
 
 struct PulsingCircleView: View{
-    var beginWidth: CGFloat = 0
-    var endWidth: CGFloat = 0
-    var color: Color = .red
+    var beginWidth: CGFloat
+    var endWidth: CGFloat
+    var color: Color
     var thickness: CGFloat = 5
     
     @State var enabled: Bool = true
@@ -66,10 +55,9 @@ struct PulsingCircleView: View{
 
 struct TutorialRulerView: View{
     var keyframes: [Keyframe]
-    @State var states: [posData] = []
+    @State var states: [PosDat] = []
     
-    @State var posDat: posData = posData()
-    @State var angle: CGFloat = 0.0
+    @State var posDat: PosDat = PosDat()
     
     @State var selectionX: CGFloat = 0.0
     @State var selectionX0: CGFloat = 0.0
@@ -90,7 +78,7 @@ struct TutorialRulerView: View{
         GeometryReader{ geometry in
             VStack(alignment:.center){
                 ZStack{
-                    RulerView(posDat: $posDat, angle: $angle)
+                    RulerView(posDat: $posDat)
                     if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
                         if (action == "cursor" || action == "indexR" || action == "indexL" || action == "read") && selectionNum >= 0{
                             Capsule()
@@ -195,7 +183,7 @@ struct TutorialRulerView: View{
             }
         }
         .onAppear(){
-            states = [posData](repeating: posData(), count: keyframes.count)
+            states = [PosDat](repeating: PosDat(), count: keyframes.count)
             
             if instructionNum < 0 || instructionNum >= keyframes.count {return}
             let key = keyframes[instructionNum]
@@ -306,7 +294,7 @@ struct TutorialRulerView: View{
         setInstructionNum0(num: num)
     }
     
-    func copyPosDat(dat: posData){
+    func copyPosDat(dat: PosDat){
         posDat.framePos = dat.framePos
         posDat.framePos0 = dat.framePos0
         
