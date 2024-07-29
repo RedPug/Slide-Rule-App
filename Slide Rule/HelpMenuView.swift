@@ -27,7 +27,7 @@ struct HelpMenuView: View {
                         
                         NavigationLink(destination: HelpBodyView(instruction: Instruction(title:"General",
                           body: """
-    The Slide Rule (also referred to as the Slapstick) is an analogue calculator popular in the 1950s and 60s. These devices have lost popularity due to digital calculaters coming along and ruining the fun.
+    The Slide Rule (also referred to as the Slapstick) is an analogue calculator popular in the 1950s and 60s. These devices have lost popularity due to digital calculaters coming along and ruining the fun with "speed" and "accuracy", but you don't want that. Instead, you can brag about having a Slide Rule to all of your friends.
 
     A general thing to know is that decimal places have to be kept in your head.
     For example, the C and D scales only range between 1 and 10, so any multiplication is limited to numbers between 1 and 10.
@@ -54,7 +54,9 @@ struct HelpMenuView: View {
                 }.padding(.top,20)
                 Spacer()
             }
+            .padding(.leading, 10)
             HelpListView()
+                
         }
         
     }
@@ -101,6 +103,7 @@ struct HelpBodyView: View {
                             .foregroundColor(.white)
                             //.imageRenderingMode(.original)
                             .padding(.top,50)
+                            .padding(.leading,10)
                         Spacer()
                     }
                     

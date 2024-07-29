@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		581797502C12552F0077491B /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5817974F2C12552F0077491B /* OrientationManager.swift */; };
 		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
+		584CC5632C561F8F0058AF7F /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5622C561F8F0058AF7F /* SVGKit */; };
+		584CC5652C561F8F0058AF7F /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5642C561F8F0058AF7F /* SVGKitSwift */; };
 		585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */; };
 		585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906152B0DB8FF0051F3FC /* ContentView.swift */; };
 		585906182B0DB9020051F3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 585906172B0DB9020051F3FC /* Assets.xcassets */; };
@@ -75,6 +77,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				584CC5652C561F8F0058AF7F /* SVGKitSwift in Frameworks */,
+				584CC5632C561F8F0058AF7F /* SVGKit in Frameworks */,
 				589431AA2BA401B9004F813B /* SwiftMath in Frameworks */,
 				58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */,
 			);
@@ -191,6 +195,8 @@
 			packageProductDependencies = (
 				58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */,
 				589431A92BA401B9004F813B /* SwiftMath */,
+				584CC5622C561F8F0058AF7F /* SVGKit */,
+				584CC5642C561F8F0058AF7F /* SVGKitSwift */,
 			);
 			productName = "Slide Rule";
 			productReference = 585906102B0DB8FF0051F3FC /* Slide Rule.app */;
@@ -267,6 +273,7 @@
 			packageReferences = (
 				58A7426C2B9FE9EF00A9DA3F /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
 				589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */,
+				584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			productRefGroup = 585906112B0DB8FF0051F3FC /* Products */;
 			projectDirPath = "";
@@ -660,6 +667,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mgriebling/SwiftMath.git";
@@ -679,6 +694,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		584CC5622C561F8F0058AF7F /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+		584CC5642C561F8F0058AF7F /* SVGKitSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKitSwift;
+		};
 		589431A92BA401B9004F813B /* SwiftMath */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */;

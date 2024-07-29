@@ -28,81 +28,6 @@ struct PosDat {
     var physicsEnabled: Bool = true
 }
 
-struct MagnifyingGlass<Content: View>: View{
-    var scale: CGFloat
-    var size: CGFloat
-    var isVisible: Bool
-    var content: Content
-    
-    init(scale: CGFloat, size:CGFloat, isVisible: Bool, @ViewBuilder content: @escaping ()->Content){
-        self.scale = scale
-        self.size = size
-        self.isVisible = isVisible
-        self.content = content()
-    }
-    
-    @State var offset: CGSize = CGSize.zero
-    @State var pastOffset: CGSize = CGSize.zero
-    
-    var body: some View{
-        content
-            .overlay{
-                if(isVisible){
-                    GeometryReader{geometry in
-                        let bounds = geometry.size
-                        let r = size*0.3
-                        let shape = RoundedRectangle(cornerRadius: r)
-                        ZStack{
-                            Group{
-                                shape
-                                    .fill(Color.theme.background)
-                                    .frame(width: size, height: size)
-                                    .offset(offset)
-                                
-                                content
-                                    .offset(x: -offset.width, y:-offset.height)
-                                    .frame(width: size, height: size)
-                                    .scaleEffect(scale)
-                                    .clipShape(shape)
-                                    .contentShape(.interaction, shape)
-                                    .offset(offset)
-                                
-                                shape
-                                    .stroke(.black, lineWidth: 5)
-                                    .frame(width: size, height: size)
-                                    .contentShape(.interaction, shape)
-                                    .offset(offset)
-                                    .gesture(
-                                        DragGesture()
-                                            .onChanged(){value in
-                                                offset = CGSize(
-                                                    width: pastOffset.width + value.translation.width,
-                                                    height: pastOffset.height + value.translation.height
-                                                )
-                                                offset.width = min(max(offset.width,-UIScreen.main.bounds.width/2+size/2),UIScreen.main.bounds.width/2-size/2)
-                                                offset.height = min(max(offset.height,-bounds.height/2),bounds.height/2)
-                                            }
-                                            .onEnded(){value in
-                                                pastOffset = offset
-                                            }
-                                    )
-                            }.offset(x:size/scale/2+size/2)
-                            
-                            RoundedRectangle(cornerRadius: r/scale)
-                                .stroke(.black, lineWidth: 5)
-                                .frame(width: size/scale, height: size/scale)
-                                .offset(offset)
-                        }
-                        .frame(width: bounds.width, height: bounds.height)
-                    }
-                }
-                else{
-                    EmptyView()
-                }
-            }
-    }
-}
-
 
 struct SlideRuleView: View {
     @State var isFlipped: Bool = false
@@ -164,12 +89,21 @@ struct SlideRuleView: View {
                     .frame(width:100,height:100) //avoid making whole screen wonky
                 
                 HStack{
-                    Color(.gray.opacity(1))
-                        .ignoresSafeArea()
-                        .frame(width:50)
+//                    LeftSlideLabelView(scales: posDat.isFlippedTemp ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront, minIndex: 0, maxIndex: 10)
+//                        .border(.red)
+//                        .frame(width: 80, height:240)
+//                        .border(.blue)
+//                        .offset(x:0, y:-zoomAnchor.y)
+//                        .scaleEffect(zoomLevel, anchor: .topLeading)
+//                        .offset(x:0, y:zoomAnchor.y)
+//                        .offset(y:-(zoomAnchor.y-202/2)*(zoomLevel-1)/3)
+//                        .background(.gray)
+//                        //.offset(x:0, y:-(zoomAnchor.y-202/2)*(zoomLevel-1)/3)
+//                        .scaleEffect(1.4, anchor: .leading)
+//                        .border(.green)
                     Spacer()
                     Color(.gray.opacity(1))
-                        .ignoresSafeArea()
+                        //.ignoresSafeArea()
                         .frame(width:50)
                         .overlay{
                             VStack{
@@ -184,6 +118,20 @@ struct SlideRuleView: View {
                                 }
                                 .frame(width:30)
                                 .padding(.top, 10)
+                                
+                                Spacer()
+                                Button{
+                                    withAnimation(.snappy(duration: 0.3)){
+                                        posDat.cursorPos = -posDat.framePos
+                                        posDat.cursorPos0 = posDat.cursorPos
+                                    }
+                                }label:{
+                                    Image("CursorButton")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.theme.text)
+                                        .frame(width:30,height:30)
+                                }
                                 
                                 Spacer()
                                 
@@ -213,7 +161,7 @@ struct SlideRuleView: View {
         }
         .navigationTitle("Slide Rule")
         .toolbar(.hidden, for:.navigationBar)
-        .ignoresSafeArea()
+        //.ignoresSafeArea(edges: .vertical)
         .onAppear{
             let appearance = UINavigationBarAppearance()
             appearance.backgroundColor = UIColor(Color.gray)
@@ -402,7 +350,7 @@ struct RulerView: View {
     }
 }
 
-struct Cursor: View {
+struct CursorView: View {
     @Binding var posDat: PosDat
     
     @State var isDragging = false
@@ -437,6 +385,51 @@ struct Cursor: View {
         //from 1600-100-64+10 to 64-10
         posDat.cursorPos = Double(min(1496.0,max(104.0,posDat.cursorPos)))
         posDat.cursorPos0 = Double(min(1496.0,max(104.0,posDat.cursorPos0)))
+    }
+}
+
+struct LeftSlideLabelView: View{
+    
+    let scales: [RulerScale]
+    
+    let minIndex: Int
+    let maxIndex: Int
+    
+    let textOffsetX: CGFloat = 0
+    let textOffsetY: CGFloat = -101
+    
+    var body: some View {
+        ZStack(alignment:.leading){
+            ForEach(minIndex...maxIndex, id: \.self){
+                //scaleIndex, scale in
+                scaleIndex in
+                let scale = scales[scaleIndex]
+                let maxMag = 3.0
+                
+                //Group{
+                    Text(scale.name)
+                        .font(.system(size: 9*maxMag, weight:.bold))
+                        .foregroundStyle(Color.theme.text)
+                        //.frame(maxWidth:100,maxHeight:50.0, alignment: .leading)
+                        .scaleEffect(1.0/maxMag, anchor:.leading)
+                        //.frame(width:40)
+                        .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+                    
+                    LaTeX(scale.leftLabel)
+                        .font(.system(size: 8*maxMag, weight:.bold))
+                        .foregroundStyle(Color.theme.text)
+                        //.frame(maxWidth:100.0,maxHeight:50.0, alignment: .leading)
+                        .scaleEffect(1.0/maxMag, anchor:.leading)
+                        .offset(x: 29 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+                //}
+            }
+        }
+        
+    }
+    
+    func getScaleLabelHeight(_ index: Int) -> CGFloat{
+        let spacing = 18.0
+        return spacing*0.5 + spacing*CGFloat(index)
     }
 }
 
@@ -593,6 +586,9 @@ struct Slide: View {
     
     @State var isDragging = false
     
+    let maxSlide = 1500.0
+    let minSlide = -1500.0
+    
     var body: some View {
         //Image(posDat.isFlippedTemp ? "slideFlippedHD" : "slideHD")
         ZStack{
@@ -620,7 +616,7 @@ struct Slide: View {
                     
                     if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                     isDragging = true
-                    posDat.slidePos = posDat.slidePos0+value.translation.width
+                    posDat.slidePos = max(minSlide, min(maxSlide,posDat.slidePos0+value.translation.width))
                 })
                 .onEnded({value in
                     if posDat.isLocked {return}
@@ -636,19 +632,19 @@ struct Slide: View {
     }
     
     func clampPosition(){
-        if(posDat.slidePos > 1500){
-            posDat.slidePos = 1500
+        if(posDat.slidePos > maxSlide){
+            posDat.slidePos = maxSlide
             posDat.velocity = 0
-        }else if(posDat.slidePos < -1500){
-            posDat.slidePos = -1500
+        }else if(posDat.slidePos < minSlide){
+            posDat.slidePos = minSlide
             posDat.velocity = 0
         }
         
-        if(posDat.slidePos0 > 1500){
-            posDat.slidePos0 = 1500
+        if(posDat.slidePos0 > maxSlide){
+            posDat.slidePos0 = maxSlide
             posDat.velocity = 0
-        }else if(posDat.slidePos0 < -1500){
-            posDat.slidePos0 = -1500
+        }else if(posDat.slidePos0 < minSlide){
+            posDat.slidePos0 = minSlide
             posDat.velocity = 0
         }
     }
@@ -798,7 +794,7 @@ struct Frame: View {
 //            )
             
             
-            Cursor(posDat: $posDat)
+            CursorView(posDat: $posDat)
         }
         .onChange(of: posDat.framePos) {
             clampPosition()

@@ -19,22 +19,18 @@ struct ContentView: View {
     @AppStorage("HAS_PHYSICS") var hasPhysics: Bool = true
 
     var body: some View {
-                ZStack{
-                    SlideRuleView()
-                        .zIndex(1.0)
-                    
-                    if(!isActive){
-                        Group{
-                            Image("SlideRuleLogo")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width:200, height:200)
-                                .clipShape(RoundedRectangle(cornerRadius: 25))
-                            Color(Color.black)
-                                .ignoresSafeArea(.all)
-        
-                        }.zIndex(2.0)
+                Group{
+                    if !isActive{
+                        Image("SlideRuleLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width:200, height:200)
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                    }else{
+                        SlideRuleView()
+                            .padding(.horizontal, 1)
                     }
+                    
                 }
                 .environmentObject(settings)
                 .environmentObject(orientationInfo)
