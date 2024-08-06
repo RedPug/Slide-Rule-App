@@ -137,10 +137,9 @@ struct HelpButtonView: View {
     
     var body: some View {
         LaTeX(string)
-            .font(.system(size:18, weight:.bold))
+            .latexStyle(PlainLaTeXStyle(fontSize: 18, color: Color.theme.background, weight: Font.Weight.bold))
             .frame(width:100,height:30)
             .background(Color.theme.text)
-            .foregroundColor(.theme.background)
             .cornerRadius(10)
     }
 }

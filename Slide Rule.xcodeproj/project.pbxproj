@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		581797502C12552F0077491B /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5817974F2C12552F0077491B /* OrientationManager.swift */; };
 		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
+		58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */; };
 		584CC5632C561F8F0058AF7F /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5622C561F8F0058AF7F /* SVGKit */; };
 		584CC5652C561F8F0058AF7F /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5642C561F8F0058AF7F /* SVGKitSwift */; };
 		585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */; };
@@ -51,6 +52,7 @@
 /* Begin PBXFileReference section */
 		5817974F2C12552F0077491B /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 		581CFBB72C11714900CE1540 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainLaTeXStyle.swift; sourceTree = "<group>"; };
 		585906102B0DB8FF0051F3FC /* Slide Rule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slide Rule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleApp.swift; sourceTree = "<group>"; };
 		585906152B0DB8FF0051F3FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				589BC8712B0F0A3F0065B527 /* Color.swift */,
+				58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */,
 				588DFE8E2C16694600576254 /* View.swift */,
 			);
 			path = Extentions;
@@ -322,6 +325,7 @@
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
+				58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */,
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
 				581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */,
 				585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */,

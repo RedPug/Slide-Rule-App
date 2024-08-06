@@ -119,7 +119,6 @@ struct SlideRuleView: View {
                                 .frame(width:30)
                                 .padding(.top, 10)
                                 
-                                Spacer()
                                 Button{
                                     withAnimation(.snappy(duration: 0.3)){
                                         posDat.cursorPos = -posDat.framePos
@@ -132,8 +131,18 @@ struct SlideRuleView: View {
                                         .foregroundColor(.theme.text)
                                         .frame(width:30,height:30)
                                 }
+                                .padding(.top, 10)
                                 
                                 Spacer()
+                                
+                                NavigationLink(destination: HelpMenuView(), label:{
+                                    Image(systemName:"book.closed.circle")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .foregroundColor(.theme.text)
+                                        .frame(width:30,height:30)
+                                })
+                                .padding(.bottom, 10)
                                 
                                 NavigationLink(destination: SettingsView(), label:{
                                     Image(systemName:"gearshape.circle")
@@ -144,14 +153,6 @@ struct SlideRuleView: View {
                                 })
                                 .padding(.bottom, 10)
                                 
-                                NavigationLink(destination: HelpMenuView(), label:{
-                                    Image(systemName:"questionmark.square")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundColor(.theme.text)
-                                        .frame(width:30,height:30)
-                                })
-                                .padding(.bottom, 10)
                             }
                         }
                 }
@@ -454,22 +455,15 @@ struct SlideMarkingView: View{
                     let y0 = getScaleHeight(scaleIndex)
                     let direction = getScaleDirection(scaleIndex) == .up ? -1.0 : 1.0
                     scale.data.markingIntervals.forEach{interval in
-                        let range = Int(floor((interval.max-interval.min)/interval.spacing + 0.01))
-                        if(range < 0){
-                            print("Bad range of \(range), with min of \(interval.min), max of \(interval.max), and spacing of \(interval.spacing)")
-                        }
-                        for i in 0...range{
-                            if(interval.skipping > 0 && (i)%interval.skipping == 0){continue}
-                            
-                            let x = interval.min + CGFloat(i)*interval.spacing
-                            let f = eq(x)
+                        for tick in interval.ticks{
+                            let f = eq(tick.x)
                             path.move(to: CGPoint(x: f*width, y: y0))
-                            path.addLine(to: CGPoint(x: f*width, y: y0 + interval.size.rawValue * direction))
+                            path.addLine(to: CGPoint(x: f*width, y: y0 + tick.size.rawValue * direction))
                         }
                     }
                 }
             }
-            .stroke(.black, lineWidth: 0.5)
+            .stroke(.black, lineWidth: 0.6)
             .frame(width:width, height:height)
             //	.border(.red)
             //.overlay{
@@ -503,32 +497,21 @@ struct SlideMarkingView: View{
                     .scaleEffect(1.0/maxMag)
                     .offset(x: textOffsetX + 0, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
                 
-                
-                ForEach(Array(scale.data.labelingIntervals.enumerated()), id: \.offset){
-                    intervalIndex, _ in
-                    let interval : LabelingInterval = scale.data.labelingIntervals[intervalIndex]
-                    let diff: CGFloat = interval.max-interval.min
-                    let dist: CGFloat = diff/interval.spacing
-                    let range: Int = Int(floor(dist + 0.01))
+                ForEach(Array(scale.data.labels.enumerated()), id: \.offset){
+                    i, label in
+                    let isTall: Bool = label.height == .tall
+                    let fontSize: CGFloat = isTall ? 8.0 : 6.0
+                    let f = eq(label.x)
+                    //uses a scale effect in order to keep sharpness when zoomed in via magnifying glass
+                    //max magnification = 3x, so the text is rendered at 3x scale to ensure detail
+                    Text(label.text)
+                        .font(.system(size:fontSize*maxMag, weight:Font.Weight.bold))
+                        .foregroundStyle(.black)
+                        .scaleEffect(1.0/maxMag)
+                        .frame(width:150.0,height:150.0, alignment: .center)
+                        .offset(x: f*width + textOffsetX, y: y0+label.height.rawValue*direction + textOffsetY)
                     
-                    ForEach((0...range).filter{i in return interval.skipping <= 0 || (i)%interval.skipping != 0}, id: \.self){
-                        i in
-                        let x = interval.min + CGFloat(i)*interval.spacing
-                        let f = eq(x)
-                        
-                        //uses a scale effect in order to keep sharpness when zoomed in via magnifying glass
-                        //max magnification = 3x, so the text is rendered at 3x scale to ensure detail
-                        let isTall: Bool = interval.textHeight == .tall
-                        let fontSize : CGFloat = isTall ? 8.0 : 6.0
-                        Text(interval.textGen(x))
-                            .font(.system(size: fontSize*maxMag, weight:.bold))
-                            .foregroundStyle(.black)
-                            .scaleEffect(1.0/maxMag)
-                            .frame(width:50.0,height:50.0, alignment: .center)
-                            .offset(x: f*width + textOffsetX, y: y0+interval.textHeight.rawValue*direction + textOffsetY)
-                    }
                 }
-                
             }
             //end scale iterations
         }
