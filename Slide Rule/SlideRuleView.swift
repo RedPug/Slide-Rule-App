@@ -144,14 +144,14 @@ struct SlideRuleView: View {
                                 })
                                 .padding(.bottom, 10)
                                 
-                                NavigationLink(destination: SettingsView(), label:{
-                                    Image(systemName:"gearshape.circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundColor(.theme.text)
-                                        .frame(width:30,height:30)
-                                })
-                                .padding(.bottom, 10)
+//                                NavigationLink(destination: SettingsView(), label:{
+//                                    Image(systemName:"gearshape.circle")
+//                                        .resizable()
+//                                        .aspectRatio(contentMode: .fit)
+//                                        .foregroundColor(.theme.text)
+//                                        .frame(width:30,height:30)
+//                                })
+//                                .padding(.bottom, 10)
                                 
                             }
                         }
@@ -258,6 +258,7 @@ struct RulerView: View {
                     }
                 }
         }.onAppear{
+            return;
             motionManager.startAccelerometerUpdates()
             let dt: CGFloat = 0.01
             Timer.scheduledTimer(withTimeInterval: dt, repeats: true){_ in
@@ -351,14 +352,63 @@ struct RulerView: View {
     }
 }
 
+struct ScrewHead: View {
+    @State var rotation: CGFloat
+    
+    var body: some View {
+        Circle()
+            .fill(Color(red:0.6, green:0.6, blue:0.6))
+            .stroke(Color(red:0.4, green:0.4, blue:0.4), lineWidth:0.5)
+            .frame(width:7, height:7)
+            .overlay{
+                Rectangle()
+                    .fill(Color(red:0.4, green:0.4, blue:0.4))
+                    .frame(width:0.5,height:7)
+            }
+            .rotationEffect(.degrees(rotation))
+    }
+}
+
 struct CursorView: View {
     @Binding var posDat: PosDat
     
     @State var isDragging = false
     
     var body: some View {
-        Image("Cursor")
-            .resizable()
+        ZStack{
+            RoundedRectangle(cornerRadius:3)
+                .fill(Color.theme.cursorBase)
+                //.stroke(.gray, lineWidth:1)
+                .frame(width:100, height:18)
+                .offset(y:-110)
+            RoundedRectangle(cornerRadius:3)
+                .fill(Color.theme.cursorBase)
+                //.stroke(.gray, lineWidth:1)
+                .frame(width:100, height:18)
+                .offset(y:110)
+            
+            ScrewHead(rotation:16)
+                .offset(x:42,y:111)
+            ScrewHead(rotation:72)
+                .offset(x:-42,y:111)
+            ScrewHead(rotation:48)
+                .offset(x:42,y:-111)
+            ScrewHead(rotation:116)
+                .offset(x:-42,y:-111)
+            
+            Rectangle()
+                .fill(.red.opacity(0.7))
+                .frame(width:0.5, height:210)
+            
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color.gray.opacity(0.1))
+                .stroke(.gray, lineWidth: 0.5)
+                .frame(width:82, height:210)
+     
+            
+            
+        }
+//            .resizable()
             .frame(width:100,height:240)
             .preciseOffset(x:posDat.cursorPos+posDat.framePos)
             .defersSystemGestures(on: .all)

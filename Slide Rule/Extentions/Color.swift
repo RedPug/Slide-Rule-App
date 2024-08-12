@@ -17,4 +17,5 @@ struct ColorTheme {
     let background = Color("Background")
     let rulerBase = Color("RulerBackground")
     let rulerSlide = Color("SlideBackground")
+    let cursorBase = Color("CursorBase")
 }

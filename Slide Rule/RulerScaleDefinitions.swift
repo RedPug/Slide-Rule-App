@@ -194,12 +194,12 @@ enum ScaleLists{
         RulerScale(data:RulerScales.A, name:"A", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
         
         RulerScale(data:RulerScales.A, name:"B", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
-        RulerScale(data:RulerScales.TL, name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0 1x} \\\\[-5px] \\textbf{0 1x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c  o  t} \\end{array}$"),
-        RulerScale(data:RulerScales.TG, name:"T >45°", leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{10.0x} \\\\[-5px] \\textbf{10.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c  o  t} \\end{array}$"),
+        RulerScale(data:RulerScales.TL, name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0 1x} \\\\[-5px] \\textbf{0 1x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
+        RulerScale(data:RulerScales.TG, name:"T >45°", leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{10.0x} \\\\[-5px] \\textbf{10.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
         RulerScale(data:RulerScales.ST, name:"ST", leftLabel:"$ \\left[ \\textbf{0.01x} \\right. $",
                    rightLabel:"$\\small\\begin{array}{l} \\textbf{0.1x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textbf{TAN}\\end{array}$"),
         RulerScale(data:RulerScales.S, name:"S", leftLabel:"$ \\left[ \\textbf{0.1x} \\right. $",
-                   rightLabel:"$\\small\\begin{array}{l} \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textit{c  o  s}\\end{array}$"),
+                   rightLabel:"$\\small\\begin{array}{l} \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textit{c \\;o \\;s}\\end{array}$"),
         
         RulerScale(data:RulerScales.C, name:"D", rightLabel: "$\\textbf{x}$"),
         RulerScale(data:RulerScales.C.reversed(), name:"DI", rightLabel: "$\\frac{\\textbf{1}}{\\textbf{x}}$"),
