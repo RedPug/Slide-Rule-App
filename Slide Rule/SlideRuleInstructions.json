@@ -17,7 +17,8 @@
                 "title":"$a / b$",
                 "body":"Use the C and D scales.",
                 "animation":[
-                    {"selectionX":1.8, "selectionNum":8, "selectionX2":1.4, "selectionNum2":7, "action":"slideToSlide", "label":"Calculate $1.8 / 14$: Place the cursor at $1.8$ on the D scale"},
+                    {"selectionX":1.8, "selectionNum":8, "selectionX2":1.4, "selectionNum2":7, "action":"slideToSlide", "label":"Calculate $1.8 / 14$: Align $1.8$ on the D scale with $1.4$ on the C scale"},
+                    {"selectionX":1, "selectionNum":7, "action":"cursor", "label":"Move the cursor to the left index of the C scale (1)"},
                     {"selectionX":1.2857, "selectionNum":8, "action":"read", "label":"Read 1.286 on the D scale at the index of the C scale"},
                     {"selectionX":1.2857, "selectionNum":8, "action":"read", "label":"Shift the decimal to get 0.1286 as the answer."},
                 ]
@@ -54,7 +55,7 @@
         [
             {
                 "title":"$e^{a}$",
-                "body":"Use the D scale and LL scales.\n$\\begin{array}{lcccc} \\text{Scale:} & LL3 & LL2 & LL1 & LL0 \\\\ \\text{Range:} & [1,10] & [0.1,1] & [0.001,0.01] & [0.0001,0.001] \\\\ & & & & \\\\ \\text{Scale:} & LL03 & LL02 & LL01 & LL00 \\\\ \\text{Range:} & [-10,-1] & [-1,-0.1] & [-0.01,-0.001] & [-0.001,-0.0001] \\\\ \\end{array}$",
+                "body":"Use the D scale and LL scales.\n$\\begin{array}{lcccc} \\text{Scale:} & LL3 & LL2 & LL1\\\\ \\text{Range:} & [1,10] & [0.1,1] & [0.01,0.1]\\\\ & & & & \\\\ \\text{Scale:} & LL03 & LL02 & LL01 \\\\ \\text{Range:} & [-10,-1] & [-1,-0.1] & [-0.1,-0.01] \\\\ \\end{array}$",
                 "animation":[
                     {"selectionX":2, "selectionNum":8, "action":"cursor", "label":"Calculate $e^{-0.20}$: Place the cursor at $2.0$ on the D scale"},
                     {"selectionX":0.81873, "selectionNum":0, "action":"read", "label":"Read the answer $0.819$ on the LL02 scale (with a range from $-0.1x$ to $-1.0x$)"},

@@ -11,7 +11,7 @@ import CoreMotion
 import SceneKit
 
 
-struct PosDat {
+struct PosDat: Equatable {
     var framePos: CGFloat = -200.0
     var framePos0: CGFloat = -200.0
     var slidePos: CGFloat = 0.0

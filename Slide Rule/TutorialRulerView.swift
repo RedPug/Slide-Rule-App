@@ -77,6 +77,8 @@ struct TutorialRulerView: View{
     var body: some View {
         GeometryReader{ geometry in
             VStack(alignment:.center){
+                Spacer()
+                    .frame(minHeight:0)
                 ZStack{
                     RulerView(posDat: $posDat)
                     if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
@@ -132,11 +134,13 @@ struct TutorialRulerView: View{
                         }
                     }
                     if(gestureHint != .none){
-                        TutorialGestureView(gestureHint: gestureHint)
+                        TutorialGestureView(gestureHint: $gestureHint)
                     }
                 }
-                .frame(maxWidth:geometry.size.width-0)
-                .clipShape(Rectangle().size(width:UIScreen.main.bounds.width, height:300).offset(x:-geometry.safeAreaInsets.leading))
+            
+                .scaleEffect(1.2)
+                //.frame(maxWidth, maxHeight:200)
+                //.clipShape(Rectangle().size(width:UIScreen.main.bounds.width, height:300).offset(x:-geometry.safeAreaInsets.leading))
                 
                 HStack{
                     Button{
@@ -166,11 +170,14 @@ struct TutorialRulerView: View{
                                 }
                             }
                     }
-                }.padding()
+                    
+                    //Spacer()
+                }.padding(.bottom, 5)
+                    .padding(.horizontal, 10)
             }
-            
-            
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(width: geometry.size.width, height: geometry.size.height+geometry.safeAreaInsets.bottom)
+            //.frame(maxWidth:.infinity, maxHeight:.infinity)
+            .clipped()
             .toolbar{
                 ToolbarItem(placement: .principal){
                     HStack{
@@ -229,10 +236,7 @@ struct TutorialRulerView: View{
         .onChange(of:selectionNum2){
             updateGestureHintState()
         }
-        .onChange(of:posDat.framePos){
-            updateGestureHintState()
-        }
-        .onChange(of:posDat.isFlipped){
+        .onChange(of:posDat){
             updateGestureHintState()
         }
         .onChange(of:action){
@@ -244,12 +248,13 @@ struct TutorialRulerView: View{
     }
     
     func checkIfNeedsNextInput(){
-        needsNextInput = action == "read" && instructionNum < keyframes.count - 1
+        needsNextInput = (action == "read" || action == "none") && instructionNum < keyframes.count - 1
     }
     
     func updateGestureHintState(){
+        //print("updating gesture hint! \(posDat.isFlipped), \(posDat.framePos), \(selectionNum)")
         var newGesture = GestureHint.none
-        if(posDat.isFlipped && selectionNum <= 10 && selectionNum >= 0 || !posDat.isFlipped && selectionNum > 10){
+        if(posDat.isFlipped && selectionNum <= 10 || !posDat.isFlipped && selectionNum > 10){
             newGesture = .flip
         }else{
             if(-posDat.framePos - selectionX > 300){
@@ -258,7 +263,7 @@ struct TutorialRulerView: View{
                 newGesture = .left
             }
         }
-        
+        //print(newGesture)
         gestureHint = newGesture
     }
     
@@ -377,45 +382,51 @@ struct TutorialRulerView: View{
     }
     
     func calcXValue(x : CGFloat, slideNum : Int) -> CGFloat {
-        let x0 = 124.25
+        let x0 = 125.0
         let w = 1350.0
-        switch slideNum {
-        case 11: //LL01
-            return x0 + w * (log10(log(x) * -1.0) + 2.0)
-        case 0: //LL02
-            return x0 + w * (log10(log(x) * -1.0) + 1.0)
-        case 1: //LL03
-            return x0 + w * (log10(log(x) * -1.0) + 0.0)
-        case 9: //LL3
-            return x0 + w * (log10(log(x)) + 0.0)
-        case 10: //LL2
-            return x0 + w * (log10(log(x)) + 1.0)
-        case 21: //LL1
-            return x0 + w * (log10(log(x)) + 2.0)
-        case 2, 3: //DF CF
-            return x0 + w * (log10(x) - log10(CGFloat.pi))
-        case 4: //CIF
-            return x0 + w * (1 - (log10(x) - log10(CGFloat.pi)))
-        case 5: //L
-            return x0 + w * x
-        case 6, 20: //CI DI
-            return x0 + w * (1-log10(x))
-        case 7, 8, 19: //C D
-            return x0 + w * log10(CGFloat(x))
-        case 12: //K
-            return x0 + w * log10(CGFloat(x))/3
-        case 13, 14: //A B
-            return x0 + w * log10(CGFloat(x))/2
-        case 15: //T<45
-            return x0 + w * (log10(tan(x*Double.pi/180)) + 1)
-        case 16: //T>45
-            return x0 + w * log10(tan(x*Double.pi/180))
-        case 17: //ST
-            return x0 + w * (log10(sin(x*Double.pi/180)) + 2)
-        case 18: //S
-            return x0 + w * (log10(sin(x*Double.pi/180)) + 1)
-        default: return 0
-        }
+        
+        let scales = slideNum >= 11 ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront
+        
+        let f: (CGFloat)->(CGFloat) = scales[slideNum%11].data.equation
+        
+        return x0 + w * f(x)
+//        switch slideNum {
+//        case 11: //LL01
+//            return x0 + w * (log10(log(x) * -1.0) + 2.0)
+//        case 0: //LL02
+//            return x0 + w * (log10(log(x) * -1.0) + 1.0)
+//        case 1: //LL03
+//            return x0 + w * (log10(log(x) * -1.0) + 0.0)
+//        case 9: //LL3
+//            return x0 + w * (log10(log(x)) + 0.0)
+//        case 10: //LL2
+//            return x0 + w * (log10(log(x)) + 1.0)
+//        case 21: //LL1
+//            return x0 + w * (log10(log(x)) + 2.0)
+//        case 2, 3: //DF CF
+//            return x0 + w * (log10(x) - log10(CGFloat.pi))
+//        case 4: //CIF
+//            return x0 + w * (1 - (log10(x) - log10(CGFloat.pi)))
+//        case 5: //L
+//            return x0 + w * x
+//        case 6, 20: //CI DI
+//            return x0 + w * (1-log10(x))
+//        case 7, 8, 19: //C D
+//            return x0 + w * log10(CGFloat(x))
+//        case 12: //K
+//            return x0 + w * log10(CGFloat(x))/3
+//        case 13, 14: //A B
+//            return x0 + w * log10(CGFloat(x))/2
+//        case 15: //T<45
+//            return x0 + w * (log10(tan(x*Double.pi/180)) + 1)
+//        case 16: //T>45
+//            return x0 + w * log10(tan(x*Double.pi/180))
+//        case 17: //ST
+//            return x0 + w * (log10(sin(x*Double.pi/180)) + 2)
+//        case 18: //S
+//            return x0 + w * (log10(sin(x*Double.pi/180)) + 1)
+//        default: return 0
+//        }
     }
     
     func calcSelectionHeight(slideNum: Int) -> CGFloat{

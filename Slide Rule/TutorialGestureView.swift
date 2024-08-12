@@ -23,7 +23,7 @@ struct GestureHandView: View {
 }
 
 struct TutorialGestureView: View {
-    @State  var gestureHint: GestureHint
+    @Binding var gestureHint: GestureHint
     @State var isGestureMoving: Bool = false
     @State var isGestureVisible: Bool = true
     @State var isGestureAnimating: Bool = false
