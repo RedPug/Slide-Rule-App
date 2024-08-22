@@ -24,10 +24,10 @@ struct GuidesTip: Tip {
             //event.donations.count == 0
             event.donations.count == 0
         }
-        #Rule(Self.openedApp){event in
-            //print("count = \(event.donations.count)")
-            event.donations.count > 2
-        }
+//        #Rule(Self.openedApp){event in
+//            //print("count = \(event.donations.count)")
+//            event.donations.count > 2
+//        }
     }
     
     var options: [any Option]{
