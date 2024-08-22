@@ -11,8 +11,6 @@
 		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
 		58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */; };
 		58230FC42C62EB56005BB934 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58230FC32C62EB56005BB934 /* String.swift */; };
-		584CC5632C561F8F0058AF7F /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5622C561F8F0058AF7F /* SVGKit */; };
-		584CC5652C561F8F0058AF7F /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 584CC5642C561F8F0058AF7F /* SVGKitSwift */; };
 		585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */; };
 		585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906152B0DB8FF0051F3FC /* ContentView.swift */; };
 		585906182B0DB9020051F3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 585906172B0DB9020051F3FC /* Assets.xcassets */; };
@@ -29,6 +27,13 @@
 		589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8772B0F150A0065B527 /* JSON Manager.swift */; };
 		589BC87B2B0F180D0065B527 /* SlideRuleInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = 589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */; };
 		58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */; };
+		58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680152C768EFD00A0E055 /* SlideMarkingView.swift */; };
+		58A680182C768FA300A0E055 /* RulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680172C768FA300A0E055 /* RulerView.swift */; };
+		58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680192C7690DC00A0E055 /* CursorView.swift */; };
+		58A6801C2C7691BB00A0E055 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A6801B2C7691BB00A0E055 /* SlideView.swift */; };
+		58A6801E2C7691F500A0E055 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A6801D2C7691F500A0E055 /* Frame.swift */; };
+		58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A680232C76954000A0E055 /* Launch Screen.storyboard */; };
+		58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680252C769D8F00A0E055 /* GuidesTipView.swift */; };
 		58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +78,13 @@
 		589BC8772B0F150A0065B527 /* JSON Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSON Manager.swift"; sourceTree = "<group>"; };
 		589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = SlideRuleInstructions.json; sourceTree = "<group>"; };
 		58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerScaleDefinitions.swift; sourceTree = "<group>"; };
+		58A680152C768EFD00A0E055 /* SlideMarkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideMarkingView.swift; sourceTree = "<group>"; };
+		58A680172C768FA300A0E055 /* RulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerView.swift; sourceTree = "<group>"; };
+		58A680192C7690DC00A0E055 /* CursorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorView.swift; sourceTree = "<group>"; };
+		58A6801B2C7691BB00A0E055 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
+		58A6801D2C7691F500A0E055 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
+		58A680232C76954000A0E055 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		58A680252C769D8F00A0E055 /* GuidesTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesTipView.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
 
@@ -81,8 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				584CC5652C561F8F0058AF7F /* SVGKitSwift in Frameworks */,
-				584CC5632C561F8F0058AF7F /* SVGKit in Frameworks */,
 				589431AA2BA401B9004F813B /* SwiftMath in Frameworks */,
 				58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */,
 			);
@@ -134,14 +144,12 @@
 				5817974F2C12552F0077491B /* OrientationManager.swift */,
 				585906152B0DB8FF0051F3FC /* ContentView.swift */,
 				581CFBB72C11714900CE1540 /* SettingsView.swift */,
-				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
-				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
-				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
 				58C175052B43B5DC008F0097 /* SlideRuleView.swift */,
-				58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */,
+				58A6801F2C76926300A0E055 /* Tutorial */,
+				58A680142C768ED900A0E055 /* Ruler */,
 				585906172B0DB9020051F3FC /* Assets.xcassets */,
+				58A680232C76954000A0E055 /* Launch Screen.storyboard */,
 				585906192B0DB9020051F3FC /* Preview Content */,
-				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
 			);
 			path = "Slide Rule";
 			sourceTree = "<group>";
@@ -182,6 +190,31 @@
 			path = Extentions;
 			sourceTree = "<group>";
 		};
+		58A680142C768ED900A0E055 /* Ruler */ = {
+			isa = PBXGroup;
+			children = (
+				58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */,
+				58A680152C768EFD00A0E055 /* SlideMarkingView.swift */,
+				58A680172C768FA300A0E055 /* RulerView.swift */,
+				58A680192C7690DC00A0E055 /* CursorView.swift */,
+				58A6801B2C7691BB00A0E055 /* SlideView.swift */,
+				58A6801D2C7691F500A0E055 /* Frame.swift */,
+			);
+			path = Ruler;
+			sourceTree = "<group>";
+		};
+		58A6801F2C76926300A0E055 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
+				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
+				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
+				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
+				58A680252C769D8F00A0E055 /* GuidesTipView.swift */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -201,8 +234,6 @@
 			packageProductDependencies = (
 				58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */,
 				589431A92BA401B9004F813B /* SwiftMath */,
-				584CC5622C561F8F0058AF7F /* SVGKit */,
-				584CC5642C561F8F0058AF7F /* SVGKitSwift */,
 			);
 			productName = "Slide Rule";
 			productReference = 585906102B0DB8FF0051F3FC /* Slide Rule.app */;
@@ -299,6 +330,7 @@
 			files = (
 				589BC87B2B0F180D0065B527 /* SlideRuleInstructions.json in Resources */,
 				5859061B2B0DB9020051F3FC /* Preview Assets.xcassets in Resources */,
+				58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */,
 				585906182B0DB9020051F3FC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,11 +356,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58A6801E2C7691F500A0E055 /* Frame.swift in Sources */,
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
+				58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */,
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
 				58230FC42C62EB56005BB934 /* String.swift in Sources */,
+				58A6801C2C7691BB00A0E055 /* SlideView.swift in Sources */,
 				58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */,
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
 				581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */,
@@ -338,6 +373,9 @@
 				58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */,
 				581797502C12552F0077491B /* OrientationManager.swift in Sources */,
 				589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */,
+				58A680182C768FA300A0E055 /* RulerView.swift in Sources */,
+				58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */,
+				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,10 +542,11 @@
 				DEVELOPMENT_TEAM = 98W89M76W8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Slide-Rule-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Slide Rule";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -538,10 +577,11 @@
 				DEVELOPMENT_TEAM = 98W89M76W8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Slide-Rule-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Slide Rule";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -702,16 +742,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		584CC5622C561F8F0058AF7F /* SVGKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */;
-			productName = SVGKit;
-		};
-		584CC5642C561F8F0058AF7F /* SVGKitSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */;
-			productName = SVGKitSwift;
-		};
 		589431A92BA401B9004F813B /* SwiftMath */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */;

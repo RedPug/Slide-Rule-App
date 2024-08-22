@@ -32,7 +32,7 @@ To zoom:  Pinch to zoom in anywhere.
                         
                         NavigationLink(destination: HelpBodyView(instruction: Instruction(title:"General",
                           body: """
-    The Slide Rule (also referred to as the Slapstick) is an analogue calculator popular in the 1950s and 60s. These devices have lost popularity due to digital calculaters coming along and ruining the fun with "speed" and "accuracy", but you don't want that. Instead, you can brag about having a Slide Rule to all of your friends.
+    The Slide Rule (also referred to as the Slipstick) is an analog calculator popular in the 1950s and 60s. These devices have lost popularity due to digital calculaters coming along and ruining the fun with "speed" and "accuracy", but you don't want that. Instead, you can brag about having a Slide Rule to all of your friends.
 
     A general rule to know is that decimal places have to be kept in your head.
     For example, the C and D scales only range between 1 and 10, so any multiplication is limited to numbers between 1 and 10.
@@ -63,7 +63,11 @@ To zoom:  Pinch to zoom in anywhere.
             HelpListView()
                 
         }
-        
+        .onAppear(){
+            print("opened guides! Count = \(GuidesTip.openedGuides.donations.count), opens = \(GuidesTip.openedApp.donations.count)")
+            Task{await GuidesTip.openedGuides.donate()}
+            
+        }
     }
 }
 
@@ -115,23 +119,30 @@ struct HelpBodyView: View {
                 }
                 Spacer()
                 if !instruction.animation.isEmpty {
-                    NavigationLink(destination: ZStack{Color.background.ignoresSafeArea(.all); TutorialRulerView(keyframes: instruction.animation)}, label:{
-                        Text("Step-by-Step")
-                            .frame(width:200,height:30)
-                            .background(Color.theme.text)
-                            .foregroundColor(.theme.background)
-                            .fontWeight(.heavy)
-                            .cornerRadius(10)
-                    })
+                    NavigationLink(destination:
+                        ZStack{
+                            Color.background.ignoresSafeArea(.all)
+                            TutorialRulerView(keyframes: instruction.animation)
+                        }, label:{
+                            Text("Step-by-Step")
+                                .frame(width:200,height:30)
+                                .background(Color.theme.text)
+                                .foregroundColor(.theme.background)
+                                .fontWeight(.heavy)
+                                .cornerRadius(10)
+                        }
+                    )
                 }
             }
         }
+        //.toolbarBackground(.hidden, for: .navigationBar)
         .toolbar{
             ToolbarItem(placement: .principal){
                 HStack{
                     LaTeX("Guide: \(instruction.title)")
                         .foregroundColor(.white)
                 }
+                //.background(.gray)
             }
         }
     }

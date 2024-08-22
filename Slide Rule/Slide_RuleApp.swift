@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 @main
 struct Slide_RuleApp: App {
@@ -17,6 +18,13 @@ struct Slide_RuleApp: App {
                 }
                 .onDisappear {
                     UIDevice.current.endGeneratingDeviceOrientationNotifications()
+                }
+                .task{
+                    //try? Tips.resetDatastore()
+                    try? Tips.configure([
+                        .displayFrequency(.immediate),
+                        .datastoreLocation(.applicationDefault)
+                    ])
                 }
         }
     }
