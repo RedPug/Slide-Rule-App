@@ -56,6 +56,7 @@ struct SlideRuleView: View {
                     .offset(x:zoomAnchor.x, y:zoomAnchor.y)
                     .defersSystemGestures(on: .all)
                     .simultaneousGesture(rulerMagnificationGesture)
+                    .simultaneousGesture(rulerMagTapGesture)
                     .offset(x:-(zoomAnchor.x-1600/2)*(zoomLevel-1)/3, y:-(zoomAnchor.y-202/2)*(zoomLevel-1)/3)
                     .scaleEffect(1.4, anchor:.center) //make bigger
                     .frame(width:100,height:100) //avoid making whole screen wonky
@@ -151,6 +152,31 @@ struct SlideRuleView: View {
 
 
 extension SlideRuleView{
+    private var rulerMagTapGesture: some Gesture {
+        SpatialTapGesture(count: 2)
+            .onEnded{value in
+                let val = 2.0
+                
+                let shouldZoomIn = zoomLevel <= 1.1
+                
+                var newScale = shouldZoomIn ? val : 1.0
+                
+                newScale = min(3,max(1,newScale))
+                
+                let start = value.location
+                
+                let x = start.x
+                let y = start.y
+                
+                if shouldZoomIn{
+                    zoomAnchor = CGPoint(x:x, y:y)
+                }
+                withAnimation(.smooth){
+                    zoomLevel = newScale
+                }
+            }
+    }
+    
     private var rulerMagnificationGesture: some Gesture {
         MagnifyGesture()
             .onChanged { value in
