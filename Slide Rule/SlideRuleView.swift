@@ -35,17 +35,9 @@ struct SlideRuleView: View {
                     .frame(width:45*(1+0.5*(zoomLevel-1))+10)
                     .overlay(alignment:.leading){
                         LeftSlideLabelView(scales: posDat.isFlippedTemp ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront, minIndex: 0, maxIndex: 10, zoom:zoomLevel, zoomAnchor:zoomAnchor)
-                        //.border(.red)
                             .frame(width:70, height:240, alignment:.leading)
-                        //.border(.blue)
-//                            .offset(y:-zoomAnchor.y)
-//                            .scaleEffect(zoomLevel, anchor: .topLeading)
-//                            .offset(y:zoomAnchor.y)
-//                            .offset(y:-(zoomAnchor.y-202/2)*(zoomLevel-1)/3)
-                        
                             .scaleEffect(1.4, anchor: .leading)
                             .padding(5)
-                        //.border(.green)
                     }
                     .zIndex(2)
                     .opacity(min(1,max(0, (-250.0-min(posDat.framePos,posDat.slidePos))/50.0)))
@@ -62,70 +54,7 @@ struct SlideRuleView: View {
                     .frame(width:100,height:100) //avoid making whole screen wonky
                     .frame(maxWidth:.infinity,maxHeight:.infinity) //takes up visible screen area
                 
-                Color(.gray)
-                //.ignoresSafeArea()
-                    .frame(width:50)
-                    .overlay{
-                        VStack{
-                            Button{
-                                posDat.shouldFlip = true
-                            } label:{
-                                Image("FlipButton")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.theme.text)
-                                    .frame(width:30,height:30)
-                            }
-                            .frame(width:30)
-                            .padding(.top, 10)
-                            
-                            Button{
-                                withAnimation(.snappy(duration: 0.3)){
-                                    posDat.cursorPos = -posDat.framePos
-                                    posDat.cursorPos0 = posDat.cursorPos
-                                }
-                            }label:{
-                                Image("CursorButton")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.theme.text)
-                                    .frame(width:30,height:30)
-                            }
-                            .padding(.top, 10)
-                            
-                            Spacer()
-                            
-                            NavigationLink(destination: HelpMenuView(), label:{
-                                Image(systemName:"book.closed.circle")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.theme.text)
-                                    .frame(width:30,height:30)
-                            })
-                            .padding(.bottom, 10)
-                            .popoverTip(guideTip)
-                            
-                            NavigationLink(destination: SettingsView(), label:{
-                                Image(systemName:"gear.circle")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .foregroundColor(.theme.text)
-                                    .frame(width:30,height:30)
-                            })
-                            .padding(.bottom, 10)
-                            
-                            //                                NavigationLink(destination: SettingsView(), label:{
-                            //                                    Image(systemName:"gearshape.circle")
-                            //                                        .resizable()
-                            //                                        .aspectRatio(contentMode: .fit)
-                            //                                        .foregroundColor(.theme.text)
-                            //                                        .frame(width:30,height:30)
-                            //                                })
-                            //                                .padding(.bottom, 10)
-                            
-                            
-                        }
-                    }
+                ButtonBarView
             }
             .background(Color.theme.background)
             .ignoresSafeArea(edges: .bottom)
@@ -208,6 +137,66 @@ extension SlideRuleView{
                 isZooming = false
                 posDat.isLocked = false
                 self.lastZoomLevel = 1.0
+            }
+    }
+}
+
+
+extension SlideRuleView{
+    private var ButtonBarView: some View {
+        Color(.gray)
+            .frame(width:50)
+            .overlay{
+                VStack{
+                    Button{
+                        posDat.shouldFlip = true
+                    } label:{
+                        Image("FlipButton")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.theme.text)
+                            .frame(width:30,height:30)
+                    }
+                    .frame(width:30)
+                    .padding(.top, 10)
+                    
+                    Button{
+                        withAnimation(.snappy(duration: 0.3)){
+                            posDat.cursorPos = -posDat.framePos
+                            posDat.cursorPos0 = posDat.cursorPos
+                        }
+                    }label:{
+                        Image("CursorButton")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.theme.text)
+                            .frame(width:30,height:30)
+                    }
+                    .padding(.top, 10)
+                    
+                    Spacer()
+                    
+                    NavigationLink(destination: HelpMenuView(), label:{
+                        Image(systemName:"text.book.closed")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.theme.text)
+                            .frame(width:30,height:30)
+                    })
+                    .padding(.bottom, 10)
+                    .popoverTip(guideTip)
+                    
+                    NavigationLink(destination: SettingsView(), label:{
+                        Image(systemName:"gear")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.theme.text)
+                            .frame(width:30,height:30)
+                    })
+                    .padding(.bottom, 10)
+                    
+                    
+                }
             }
     }
 }
