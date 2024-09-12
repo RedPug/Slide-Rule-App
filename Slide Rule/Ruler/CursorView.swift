@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CursorView: View {
-    @Binding var posDat: PosDat
+    @Binding var posDat: PosData
     
     @State var isDragging = false
     

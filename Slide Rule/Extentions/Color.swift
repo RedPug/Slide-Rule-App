@@ -15,6 +15,7 @@ extension Color {
 struct ColorTheme {
     let text = Color("Text")
     let background = Color("Background")
+    let background_dark = Color("Dark Background")
     let rulerBase = Color("RulerBackground")
     let rulerSlide = Color("SlideBackground")
     let cursorBase = Color("CursorBase")

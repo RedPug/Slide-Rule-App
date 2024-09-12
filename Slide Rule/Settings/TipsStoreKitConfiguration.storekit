@@ -1,0 +1,129 @@
+{
+  "identifier" : "7A8D6819",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "491E939D",
+      "localizations" : [
+        {
+          "description" : "A small but mighty contribution",
+          "displayName" : "Slide Rule Enthusiast",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "RedPug.Slide_Rule.tiny_tip",
+      "referenceName" : "Tiny Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "4197F07A",
+      "localizations" : [
+        {
+          "description" : "Keeping the scales sharp and running smooth",
+          "displayName" : "Slide Rule Supporter",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "RedPug.Slide_Rule.small_tip",
+      "referenceName" : "Small Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "DE6EA49B",
+      "localizations" : [
+        {
+          "description" : "For the devoted users who love slide rules.",
+          "displayName" : "Slide Rule Advocate",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "RedPug.Slide_Rule.large_tip",
+      "referenceName" : "Large Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "34AC6C5D",
+      "localizations" : [
+        {
+          "description" : "Your contributions drive major features!",
+          "displayName" : "Slide Rule Connoisseur",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "RedPug.Slide_Rule.giant_tip",
+      "referenceName" : "Giant Tip",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

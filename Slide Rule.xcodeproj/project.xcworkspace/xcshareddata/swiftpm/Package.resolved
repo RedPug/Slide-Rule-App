@@ -1,22 +1,12 @@
 {
-  "originHash" : "41b5b6be4878cf527d4d25b62374a254759208ae65f62ebde3fdb20785eb936f",
   "pins" : [
-    {
-      "identity" : "cocoalumberjack",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CocoaLumberjack/CocoaLumberjack.git",
-      "state" : {
-        "revision" : "4b8714a7fb84d42393314ce897127b3939885ec3",
-        "version" : "3.8.5"
-      }
-    },
     {
       "identity" : "latexswiftui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/colinc86/LaTeXSwiftUI",
       "state" : {
         "branch" : "main",
-        "revision" : "1e5181a5cadd44964b6e1164e4614e44aa3cb184"
+        "revision" : "766be13e75a901cd0097122be189bac88b5b1963"
       }
     },
     {
@@ -26,15 +16,6 @@
       "state" : {
         "revision" : "e23d6eab941da699ac4a60fb0e60f3ba5c937459",
         "version" : "3.4.0"
-      }
-    },
-    {
-      "identity" : "svgkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SVGKit/SVGKit.git",
-      "state" : {
-        "revision" : "58152b9f7c85eab239160b36ffdfd364aa43d666",
-        "version" : "3.0.0"
       }
     },
     {
@@ -54,25 +35,7 @@
         "revision" : "d8ca73197f59ce260c71bd6d7f6eb8bbdccf508b",
         "version" : "4.0.1"
       }
-    },
-    {
-      "identity" : "swift-log",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log",
-      "state" : {
-        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
-        "version" : "1.6.1"
-      }
-    },
-    {
-      "identity" : "swiftmath",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mgriebling/SwiftMath.git",
-      "state" : {
-        "revision" : "3964a0c4b13abcb5b58c8ebb8041ce67f393c414",
-        "version" : "1.4.0"
-      }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

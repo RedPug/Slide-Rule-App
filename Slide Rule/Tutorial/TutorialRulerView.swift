@@ -55,9 +55,9 @@ struct PulsingCircleView: View{
 
 struct TutorialRulerView: View{
     var keyframes: [Keyframe]
-    @State var states: [PosDat] = []
+    @State var states: [PosData] = []
     
-    @State var posDat: PosDat = PosDat()
+    @State var posDat: PosData = PosData()
     
     @State var selectionX: CGFloat = 0.0
     @State var selectionX0: CGFloat = 0.0
@@ -190,7 +190,7 @@ struct TutorialRulerView: View{
             }
         }
         .onAppear(){
-            states = [PosDat](repeating: PosDat(), count: keyframes.count)
+            states = [PosData](repeating: PosData(), count: keyframes.count)
             
             if instructionNum < 0 || instructionNum >= keyframes.count {return}
             let key = keyframes[instructionNum]
@@ -299,7 +299,7 @@ struct TutorialRulerView: View{
         setInstructionNum0(num: num)
     }
     
-    func copyPosDat(dat: PosDat){
+    func copyPosDat(dat: PosData){
         posDat.framePos = dat.framePos
         posDat.framePos0 = dat.framePos0
         

@@ -64,7 +64,7 @@ To zoom:  Pinch to zoom in anywhere.
                 
         }
         .onAppear(){
-            print("opened guides! Count = \(GuidesTip.openedGuides.donations.count), opens = \(GuidesTip.openedApp.donations.count)")
+            //print("opened guides! Count = \(GuidesTip.openedGuides.donations.count), opens = \(GuidesTip.openedApp.donations.count)")
             Task{await GuidesTip.openedGuides.donate()}
             
         }

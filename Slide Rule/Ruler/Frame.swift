@@ -14,7 +14,7 @@ struct Frame: View {
     @State var isSummoning: Bool = false
     @State var summonLocation: CGPoint = .zero
     
-    @Binding var posDat: PosDat
+    @Binding var posDat: PosData
     
     let radius = 15.0
     

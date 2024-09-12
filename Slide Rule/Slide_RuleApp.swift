@@ -10,6 +10,10 @@ import TipKit
 
 @main
 struct Slide_RuleApp: App {
+    @StateObject var settings = SettingsManager()
+    @StateObject var orientationInfo = OrientationInfo()
+    @StateObject var store: TipStore = TipStore()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -26,6 +30,9 @@ struct Slide_RuleApp: App {
                         .datastoreLocation(.applicationDefault)
                     ])
                 }
+                .environmentObject(settings)
+                .environmentObject(orientationInfo)
+                .environmentObject(store)
         }
     }
 }

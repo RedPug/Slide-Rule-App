@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581206622C77CF3C00ACA6F1 /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 581206612C77CF3C00ACA6F1 /* LaTeXSwiftUI */; };
+		581206642C9000BB00ACA6F1 /* TipMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581206632C9000BB00ACA6F1 /* TipMenuView.swift */; };
+		581206672C900AA200ACA6F1 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581206662C900AA200ACA6F1 /* StoreKit.framework */; };
+		5812066B2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 5812066A2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit */; };
+		5812066D2C900EED00ACA6F1 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812066C2C900EED00ACA6F1 /* TipStore.swift */; };
+		5812066F2C900FA800ACA6F1 /* tipProductIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */; };
+		581206712C9011F500ACA6F1 /* TipItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581206702C9011F500ACA6F1 /* TipItemView.swift */; };
+		581206732C92524500ACA6F1 /* PosData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581206722C92524500ACA6F1 /* PosData.swift */; };
 		581797502C12552F0077491B /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5817974F2C12552F0077491B /* OrientationManager.swift */; };
 		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
 		58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */; };
@@ -19,7 +27,6 @@
 		5859062F2B0DB9030051F3FC /* Slide_RuleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5859062E2B0DB9030051F3FC /* Slide_RuleUITests.swift */; };
 		585906312B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906302B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift */; };
 		588DFE8F2C16694600576254 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588DFE8E2C16694600576254 /* View.swift */; };
-		589431AA2BA401B9004F813B /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = 589431A92BA401B9004F813B /* SwiftMath */; };
 		589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742302BE7527E00ADC916 /* TutorialRulerView.swift */; };
 		589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742322BE7543E00ADC916 /* TutorialGestureView.swift */; };
 		589BC8722B0F0A3F0065B527 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8712B0F0A3F0065B527 /* Color.swift */; };
@@ -34,7 +41,6 @@
 		58A6801E2C7691F500A0E055 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A6801D2C7691F500A0E055 /* Frame.swift */; };
 		58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A680232C76954000A0E055 /* Launch Screen.storyboard */; };
 		58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680252C769D8F00A0E055 /* GuidesTipView.swift */; };
-		58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +62,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		581206632C9000BB00ACA6F1 /* TipMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipMenuView.swift; sourceTree = "<group>"; };
+		581206662C900AA200ACA6F1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		5812066A2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = TipsStoreKitConfiguration.storekit; sourceTree = "<group>"; };
+		5812066C2C900EED00ACA6F1 /* TipStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
+		5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tipProductIdentifiers.swift; sourceTree = "<group>"; };
+		581206702C9011F500ACA6F1 /* TipItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipItemView.swift; sourceTree = "<group>"; };
+		581206722C92524500ACA6F1 /* PosData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosData.swift; sourceTree = "<group>"; };
 		5817974F2C12552F0077491B /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 		581CFBB72C11714900CE1540 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainLaTeXStyle.swift; sourceTree = "<group>"; };
@@ -93,8 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				589431AA2BA401B9004F813B /* SwiftMath in Frameworks */,
-				58A7426E2B9FE9EF00A9DA3F /* LaTeXSwiftUI in Frameworks */,
+				581206622C77CF3C00ACA6F1 /* LaTeXSwiftUI in Frameworks */,
+				581206672C900AA200ACA6F1 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +128,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		581206652C900AA200ACA6F1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				581206662C900AA200ACA6F1 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		581206682C900AE600ACA6F1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				581CFBB72C11714900CE1540 /* SettingsView.swift */,
+				581206632C9000BB00ACA6F1 /* TipMenuView.swift */,
+				581206702C9011F500ACA6F1 /* TipItemView.swift */,
+				5812066C2C900EED00ACA6F1 /* TipStore.swift */,
+				5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */,
+				5812066A2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		581206692C900AFF00ACA6F1 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				5817974F2C12552F0077491B /* OrientationManager.swift */,
+				589BC8772B0F150A0065B527 /* JSON Manager.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		585906072B0DB8FF0051F3FC = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +165,7 @@
 				585906232B0DB9030051F3FC /* Slide RuleTests */,
 				5859062D2B0DB9030051F3FC /* Slide RuleUITests */,
 				585906112B0DB8FF0051F3FC /* Products */,
+				581206652C900AA200ACA6F1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,12 +183,11 @@
 			isa = PBXGroup;
 			children = (
 				589BC8702B0F0A200065B527 /* Extentions */,
+				581206692C900AFF00ACA6F1 /* Utility */,
 				585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */,
-				589BC8772B0F150A0065B527 /* JSON Manager.swift */,
-				5817974F2C12552F0077491B /* OrientationManager.swift */,
 				585906152B0DB8FF0051F3FC /* ContentView.swift */,
-				581CFBB72C11714900CE1540 /* SettingsView.swift */,
 				58C175052B43B5DC008F0097 /* SlideRuleView.swift */,
+				581206682C900AE600ACA6F1 /* Settings */,
 				58A6801F2C76926300A0E055 /* Tutorial */,
 				58A680142C768ED900A0E055 /* Ruler */,
 				585906172B0DB9020051F3FC /* Assets.xcassets */,
@@ -199,6 +242,7 @@
 				58A680192C7690DC00A0E055 /* CursorView.swift */,
 				58A6801B2C7691BB00A0E055 /* SlideView.swift */,
 				58A6801D2C7691F500A0E055 /* Frame.swift */,
+				581206722C92524500ACA6F1 /* PosData.swift */,
 			);
 			path = Ruler;
 			sourceTree = "<group>";
@@ -232,8 +276,7 @@
 			);
 			name = "Slide Rule";
 			packageProductDependencies = (
-				58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */,
-				589431A92BA401B9004F813B /* SwiftMath */,
+				581206612C77CF3C00ACA6F1 /* LaTeXSwiftUI */,
 			);
 			productName = "Slide Rule";
 			productReference = 585906102B0DB8FF0051F3FC /* Slide Rule.app */;
@@ -308,9 +351,7 @@
 			);
 			mainGroup = 585906072B0DB8FF0051F3FC;
 			packageReferences = (
-				58A7426C2B9FE9EF00A9DA3F /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
-				589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */,
-				584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */,
+				581206602C77CF3C00ACA6F1 /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
 			);
 			productRefGroup = 585906112B0DB8FF0051F3FC /* Products */;
 			projectDirPath = "";
@@ -330,6 +371,7 @@
 			files = (
 				589BC87B2B0F180D0065B527 /* SlideRuleInstructions.json in Resources */,
 				5859061B2B0DB9020051F3FC /* Preview Assets.xcassets in Resources */,
+				5812066B2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit in Resources */,
 				58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */,
 				585906182B0DB9020051F3FC /* Assets.xcassets in Resources */,
 			);
@@ -359,6 +401,7 @@
 				58A6801E2C7691F500A0E055 /* Frame.swift in Sources */,
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
+				581206732C92524500ACA6F1 /* PosData.swift in Sources */,
 				58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */,
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
@@ -366,16 +409,20 @@
 				58A6801C2C7691BB00A0E055 /* SlideView.swift in Sources */,
 				58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */,
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
+				5812066F2C900FA800ACA6F1 /* tipProductIdentifiers.swift in Sources */,
 				581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */,
 				585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */,
 				589BC8722B0F0A3F0065B527 /* Color.swift in Sources */,
 				588DFE8F2C16694600576254 /* View.swift in Sources */,
 				58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */,
+				581206642C9000BB00ACA6F1 /* TipMenuView.swift in Sources */,
 				581797502C12552F0077491B /* OrientationManager.swift in Sources */,
 				589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */,
+				581206712C9011F500ACA6F1 /* TipItemView.swift in Sources */,
 				58A680182C768FA300A0E055 /* RulerView.swift in Sources */,
 				58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */,
 				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,
+				5812066D2C900EED00ACA6F1 /* TipStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,23 +762,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		584CC5612C561F8F0058AF7F /* XCRemoteSwiftPackageReference "SVGKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SVGKit/SVGKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
-		589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mgriebling/SwiftMath.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
-		58A7426C2B9FE9EF00A9DA3F /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
+		581206602C77CF3C00ACA6F1 /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/colinc86/LaTeXSwiftUI";
 			requirement = {
@@ -742,14 +773,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		589431A92BA401B9004F813B /* SwiftMath */ = {
+		581206612C77CF3C00ACA6F1 /* LaTeXSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 589431A82BA401B9004F813B /* XCRemoteSwiftPackageReference "SwiftMath" */;
-			productName = SwiftMath;
-		};
-		58A7426D2B9FE9EF00A9DA3F /* LaTeXSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58A7426C2B9FE9EF00A9DA3F /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */;
+			package = 581206602C77CF3C00ACA6F1 /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */;
 			productName = LaTeXSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */

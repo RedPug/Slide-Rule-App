@@ -65,14 +65,14 @@ struct SlideMarkingView: View{
                         .offset(x: -29 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
                     
                     LaTeX(scale.leftLabel)
-                        //.font(.system(size: 8*maxMag, weight:.bold))
+                    //.font(.system(size: 8*maxMag, weight:.bold))
                         .foregroundStyle(.black)
                         .frame(width:150.0,height:50.0, alignment: .leading)
                         .scaleEffect(0.35)
                         .offset(x: textOffsetX + 0, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
                     
                     LaTeX(scale.rightLabel)
-                        //.font(.system(size: 12*maxMag, weight:.bold))
+                    //.font(.system(size: 12*maxMag, weight:.bold))
                         .foregroundStyle(.black)
                         .frame(width:150.0,height:50.0, alignment: .trailing)
                         .scaleEffect(1.0/maxMag)
@@ -164,40 +164,35 @@ struct LeftSlideLabelView: View{
     let minIndex: Int
     let maxIndex: Int
     
+    let zoom:CGFloat
+    let zoomAnchor:CGPoint
+    
     let textOffsetX: CGFloat = 0
-    let textOffsetY: CGFloat = -101
+    let textOffsetY: CGFloat = -120
     
     var body: some View {
-        ZStack(alignment:.leading){
+        ZStack(alignment: .trailing){
             ForEach(minIndex...maxIndex, id: \.self){
                 //scaleIndex, scale in
                 scaleIndex in
                 let scale = scales[scaleIndex]
-                let maxMag = 3.0
+                let maxZoom = 3.0
+                let fac = 1+0.5*(zoom-1)
                 
-                //Group{
-                    Text(scale.name)
-                        .font(.system(size: 9*maxMag, weight:.bold))
-                        .foregroundStyle(Color.theme.text)
-                        //.frame(maxWidth:100,maxHeight:50.0, alignment: .leading)
-                        .scaleEffect(1.0/maxMag, anchor:.leading)
-                        //.frame(width:40)
-                        .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
-                    
-                    LaTeX(scale.leftLabel)
-                        .font(.system(size: 8*maxMag, weight:.bold))
-                        .foregroundStyle(Color.theme.text)
-                        //.frame(maxWidth:100.0,maxHeight:50.0, alignment: .leading)
-                        .scaleEffect(1.0/maxMag, anchor:.leading)
-                        .offset(x: 29 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
-                //}
+                Text(scale.name)
+                    .font(.system(size: 9*fac*maxZoom, weight:.bold))
+                    .foregroundStyle(Color.theme.text)
+                    .fixedSize()
+                    .scaleEffect(1/maxZoom, anchor:.trailing)
+                    .frame(width:30*fac, alignment:.trailing)
+                .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
             }
         }
-        
     }
     
     func getScaleLabelHeight(_ index: Int) -> CGFloat{
         let spacing = 18.0
-        return spacing*0.5 + spacing*CGFloat(index)
+        let y = spacing*0.5 + spacing*CGFloat(index) + 19
+        return (y-zoomAnchor.y)*zoom + zoomAnchor.y - (zoomAnchor.y-202/2)*(zoom-1)/3
     }
 }
