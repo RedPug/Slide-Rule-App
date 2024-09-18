@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.mathquill.com/mathquill.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.mathquill.com/mathquill.min.js"></script>
+</head>
+<body>
+    <div id="math-field"></div>
+    <script>
+        var MQ = MathQuill.getInterface(2);
+        var mathField = MQ.MathField(document.getElementById('math-field'));
+        mathField.latex('\(expression)');
+    </script>
+</body>
+</html>
