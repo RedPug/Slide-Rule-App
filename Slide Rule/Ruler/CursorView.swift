@@ -25,13 +25,13 @@ struct CursorView: View {
                 .frame(width:100, height:18)
                 .offset(y:110)
             
-            ScrewHead(rotation:16)
+            screwHead(rotation:16)
                 .offset(x:42,y:111)
-            ScrewHead(rotation:72)
+            screwHead(rotation:72)
                 .offset(x:-42,y:111)
-            ScrewHead(rotation:48)
+            screwHead(rotation:48)
                 .offset(x:42,y:-111)
-            ScrewHead(rotation:116)
+            screwHead(rotation:116)
                 .offset(x:-42,y:-111)
             
             Rectangle()
@@ -75,12 +75,8 @@ struct CursorView: View {
         posDat.cursorPos = Double(min(1496.0,max(104.0,posDat.cursorPos)))
         posDat.cursorPos0 = Double(min(1496.0,max(104.0,posDat.cursorPos0)))
     }
-}
-
-struct ScrewHead: View {
-    @State var rotation: CGFloat
     
-    var body: some View {
+    func screwHead(rotation:CGFloat) -> some View {
         Circle()
             .fill(Color(red:0.6, green:0.6, blue:0.6))
             .stroke(Color(red:0.4, green:0.4, blue:0.4), lineWidth:0.5)

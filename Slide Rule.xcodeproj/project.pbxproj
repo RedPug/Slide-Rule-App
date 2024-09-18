@@ -15,6 +15,21 @@
 		5812066F2C900FA800ACA6F1 /* tipProductIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */; };
 		581206712C9011F500ACA6F1 /* TipItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581206702C9011F500ACA6F1 /* TipItemView.swift */; };
 		581206732C92524500ACA6F1 /* PosData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581206722C92524500ACA6F1 /* PosData.swift */; };
+		581249772C93A931005C4F15 /* MathNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581249762C93A931005C4F15 /* MathNotesView.swift */; };
+		581249792C93AB7B005C4F15 /* notes.html in Resources */ = {isa = PBXBuildFile; fileRef = 581249782C93AB7B005C4F15 /* notes.html */; };
+		5812497C2C95394B005C4F15 /* mathquill.css in Resources */ = {isa = PBXBuildFile; fileRef = 5812497B2C95394B005C4F15 /* mathquill.css */; };
+		5812498A2C953969005C4F15 /* Symbola.svg in Resources */ = {isa = PBXBuildFile; fileRef = 581249802C953969005C4F15 /* Symbola.svg */; };
+		5812498B2C953969005C4F15 /* Symbola-basic.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 581249812C953969005C4F15 /* Symbola-basic.woff2 */; };
+		5812498C2C953969005C4F15 /* Symbola.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = 581249822C953969005C4F15 /* Symbola.woff2 */; };
+		5812498D2C953969005C4F15 /* Symbola-basic.eot in Resources */ = {isa = PBXBuildFile; fileRef = 581249832C953969005C4F15 /* Symbola-basic.eot */; };
+		5812498E2C953969005C4F15 /* Symbola.woff in Resources */ = {isa = PBXBuildFile; fileRef = 581249842C953969005C4F15 /* Symbola.woff */; };
+		5812498F2C953969005C4F15 /* Symbola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 581249852C953969005C4F15 /* Symbola.ttf */; };
+		581249902C953969005C4F15 /* Symbola-basic.woff in Resources */ = {isa = PBXBuildFile; fileRef = 581249862C953969005C4F15 /* Symbola-basic.woff */; };
+		581249912C953969005C4F15 /* Symbola.otf in Resources */ = {isa = PBXBuildFile; fileRef = 581249872C953969005C4F15 /* Symbola.otf */; };
+		581249922C953969005C4F15 /* Symbola-basic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 581249882C953969005C4F15 /* Symbola-basic.ttf */; };
+		581249932C953969005C4F15 /* Symbola.eot in Resources */ = {isa = PBXBuildFile; fileRef = 581249892C953969005C4F15 /* Symbola.eot */; };
+		581249952C954127005C4F15 /* mathquill.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 581249942C954127005C4F15 /* mathquill.min.js */; };
+		581249972C955099005C4F15 /* jquery.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 581249962C955099005C4F15 /* jquery.min.js */; };
 		581797502C12552F0077491B /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5817974F2C12552F0077491B /* OrientationManager.swift */; };
 		581CFBB82C11714900CE1540 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581CFBB72C11714900CE1540 /* SettingsView.swift */; };
 		58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */; };
@@ -26,6 +41,7 @@
 		585906252B0DB9030051F3FC /* Slide_RuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906242B0DB9030051F3FC /* Slide_RuleTests.swift */; };
 		5859062F2B0DB9030051F3FC /* Slide_RuleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5859062E2B0DB9030051F3FC /* Slide_RuleUITests.swift */; };
 		585906312B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585906302B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift */; };
+		5876FF9B2C980BF500C88190 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5876FF9A2C980BF500C88190 /* WebView.swift */; };
 		588DFE8F2C16694600576254 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588DFE8E2C16694600576254 /* View.swift */; };
 		589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742302BE7527E00ADC916 /* TutorialRulerView.swift */; };
 		589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742322BE7543E00ADC916 /* TutorialGestureView.swift */; };
@@ -61,6 +77,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5876FFAC2C98148400C88190 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		581206632C9000BB00ACA6F1 /* TipMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipMenuView.swift; sourceTree = "<group>"; };
 		581206662C900AA200ACA6F1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -69,6 +98,21 @@
 		5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tipProductIdentifiers.swift; sourceTree = "<group>"; };
 		581206702C9011F500ACA6F1 /* TipItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipItemView.swift; sourceTree = "<group>"; };
 		581206722C92524500ACA6F1 /* PosData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosData.swift; sourceTree = "<group>"; };
+		581249762C93A931005C4F15 /* MathNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathNotesView.swift; sourceTree = "<group>"; };
+		581249782C93AB7B005C4F15 /* notes.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = notes.html; path = "Slide Rule/Notes/notes.html"; sourceTree = SOURCE_ROOT; };
+		5812497B2C95394B005C4F15 /* mathquill.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = mathquill.css; path = MathQuill/mathquill.css; sourceTree = SOURCE_ROOT; };
+		581249802C953969005C4F15 /* Symbola.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Symbola.svg; sourceTree = "<group>"; };
+		581249812C953969005C4F15 /* Symbola-basic.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Symbola-basic.woff2"; sourceTree = "<group>"; };
+		581249822C953969005C4F15 /* Symbola.woff2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Symbola.woff2; sourceTree = "<group>"; };
+		581249832C953969005C4F15 /* Symbola-basic.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Symbola-basic.eot"; sourceTree = "<group>"; };
+		581249842C953969005C4F15 /* Symbola.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = Symbola.woff; sourceTree = "<group>"; };
+		581249852C953969005C4F15 /* Symbola.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Symbola.ttf; sourceTree = "<group>"; };
+		581249862C953969005C4F15 /* Symbola-basic.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Symbola-basic.woff"; sourceTree = "<group>"; };
+		581249872C953969005C4F15 /* Symbola.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Symbola.otf; sourceTree = "<group>"; };
+		581249882C953969005C4F15 /* Symbola-basic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Symbola-basic.ttf"; sourceTree = "<group>"; };
+		581249892C953969005C4F15 /* Symbola.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = Symbola.eot; sourceTree = "<group>"; };
+		581249942C954127005C4F15 /* mathquill.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = mathquill.min.js; sourceTree = "<group>"; };
+		581249962C955099005C4F15 /* jquery.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jquery.min.js; sourceTree = "<group>"; };
 		5817974F2C12552F0077491B /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 		581CFBB72C11714900CE1540 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		58230FC12C61F60D005BB934 /* PlainLaTeXStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainLaTeXStyle.swift; sourceTree = "<group>"; };
@@ -83,6 +127,7 @@
 		5859062A2B0DB9030051F3FC /* Slide RuleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Slide RuleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5859062E2B0DB9030051F3FC /* Slide_RuleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleUITests.swift; sourceTree = "<group>"; };
 		585906302B0DB9030051F3FC /* Slide_RuleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide_RuleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5876FF9A2C980BF500C88190 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		588DFE8E2C16694600576254 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		589742302BE7527E00ADC916 /* TutorialRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialRulerView.swift; sourceTree = "<group>"; };
 		589742322BE7543E00ADC916 /* TutorialGestureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialGestureView.swift; sourceTree = "<group>"; };
@@ -158,9 +203,48 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		581249752C93A91D005C4F15 /* Notes */ = {
+			isa = PBXGroup;
+			children = (
+				581249762C93A931005C4F15 /* MathNotesView.swift */,
+				5876FF9A2C980BF500C88190 /* WebView.swift */,
+				581249782C93AB7B005C4F15 /* notes.html */,
+			);
+			path = Notes;
+			sourceTree = "<group>";
+		};
+		5812497A2C95388D005C4F15 /* MathQuill */ = {
+			isa = PBXGroup;
+			children = (
+				5812497F2C953969005C4F15 /* font */,
+				5812497B2C95394B005C4F15 /* mathquill.css */,
+				581249942C954127005C4F15 /* mathquill.min.js */,
+				581249962C955099005C4F15 /* jquery.min.js */,
+			);
+			path = MathQuill;
+			sourceTree = "<group>";
+		};
+		5812497F2C953969005C4F15 /* font */ = {
+			isa = PBXGroup;
+			children = (
+				581249802C953969005C4F15 /* Symbola.svg */,
+				581249812C953969005C4F15 /* Symbola-basic.woff2 */,
+				581249822C953969005C4F15 /* Symbola.woff2 */,
+				581249832C953969005C4F15 /* Symbola-basic.eot */,
+				581249842C953969005C4F15 /* Symbola.woff */,
+				581249852C953969005C4F15 /* Symbola.ttf */,
+				581249862C953969005C4F15 /* Symbola-basic.woff */,
+				581249872C953969005C4F15 /* Symbola.otf */,
+				581249882C953969005C4F15 /* Symbola-basic.ttf */,
+				581249892C953969005C4F15 /* Symbola.eot */,
+			);
+			path = font;
+			sourceTree = "<group>";
+		};
 		585906072B0DB8FF0051F3FC = {
 			isa = PBXGroup;
 			children = (
+				5812497A2C95388D005C4F15 /* MathQuill */,
 				585906122B0DB8FF0051F3FC /* Slide Rule */,
 				585906232B0DB9030051F3FC /* Slide RuleTests */,
 				5859062D2B0DB9030051F3FC /* Slide RuleUITests */,
@@ -187,6 +271,7 @@
 				585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */,
 				585906152B0DB8FF0051F3FC /* ContentView.swift */,
 				58C175052B43B5DC008F0097 /* SlideRuleView.swift */,
+				581249752C93A91D005C4F15 /* Notes */,
 				581206682C900AE600ACA6F1 /* Settings */,
 				58A6801F2C76926300A0E055 /* Tutorial */,
 				58A680142C768ED900A0E055 /* Ruler */,
@@ -269,6 +354,7 @@
 				5859060C2B0DB8FF0051F3FC /* Sources */,
 				5859060D2B0DB8FF0051F3FC /* Frameworks */,
 				5859060E2B0DB8FF0051F3FC /* Resources */,
+				5876FFAC2C98148400C88190 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
@@ -369,11 +455,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				581249952C954127005C4F15 /* mathquill.min.js in Resources */,
+				5812498D2C953969005C4F15 /* Symbola-basic.eot in Resources */,
+				581249932C953969005C4F15 /* Symbola.eot in Resources */,
+				5812498F2C953969005C4F15 /* Symbola.ttf in Resources */,
 				589BC87B2B0F180D0065B527 /* SlideRuleInstructions.json in Resources */,
+				5812498A2C953969005C4F15 /* Symbola.svg in Resources */,
+				581249792C93AB7B005C4F15 /* notes.html in Resources */,
 				5859061B2B0DB9020051F3FC /* Preview Assets.xcassets in Resources */,
+				5812498E2C953969005C4F15 /* Symbola.woff in Resources */,
+				5812498B2C953969005C4F15 /* Symbola-basic.woff2 in Resources */,
+				581249912C953969005C4F15 /* Symbola.otf in Resources */,
+				581249972C955099005C4F15 /* jquery.min.js in Resources */,
+				5812498C2C953969005C4F15 /* Symbola.woff2 in Resources */,
+				5812497C2C95394B005C4F15 /* mathquill.css in Resources */,
+				581249902C953969005C4F15 /* Symbola-basic.woff in Resources */,
 				5812066B2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit in Resources */,
 				58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */,
 				585906182B0DB9020051F3FC /* Assets.xcassets in Resources */,
+				581249922C953969005C4F15 /* Symbola-basic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +500,7 @@
 			files = (
 				58A6801E2C7691F500A0E055 /* Frame.swift in Sources */,
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
+				581249772C93A931005C4F15 /* MathNotesView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
 				581206732C92524500ACA6F1 /* PosData.swift in Sources */,
 				58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */,
@@ -421,6 +522,7 @@
 				581206712C9011F500ACA6F1 /* TipItemView.swift in Sources */,
 				58A680182C768FA300A0E055 /* RulerView.swift in Sources */,
 				58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */,
+				5876FF9B2C980BF500C88190 /* WebView.swift in Sources */,
 				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,
 				5812066D2C900EED00ACA6F1 /* TipStore.swift in Sources */,
 			);
@@ -581,8 +683,10 @@
 		585906352B0DB9030051F3FC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Slide Rule/Preview Content\"";
@@ -604,6 +708,7 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "RedPug.Slide-Rule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -616,8 +721,10 @@
 		585906362B0DB9030051F3FC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Slide Rule/Preview Content\"";
@@ -639,6 +746,7 @@
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "RedPug.Slide-Rule";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
