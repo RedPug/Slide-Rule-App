@@ -7,9 +7,6 @@
 
 import SwiftUI
 import LaTeXSwiftUI
-//import TipKit
-//import CoreMotion
-//import SceneKit
 
 
 
@@ -24,6 +21,7 @@ struct SlideRuleView: View {
     
     @State var startX: CGFloat = 0
     @State var startY: CGFloat = 0
+
     
     let guideTip = GuidesTip()
     
@@ -62,7 +60,6 @@ struct SlideRuleView: View {
         .navigationTitle("Slide Rule")
         .toolbar(.hidden, for:.navigationBar)
         //.ignoresSafeArea(edges: .vertical)
-        
         .onAppear{
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -143,6 +140,7 @@ extension SlideRuleView{
 
 
 extension SlideRuleView{
+    
     private var ButtonBarView: some View {
         Color(.gray)
             .frame(width:50)
@@ -175,6 +173,15 @@ extension SlideRuleView{
                     .padding(.top, 10)
                     
                     Spacer()
+                    
+                    NavigationLink(destination: MathNotesView(), label:{
+                        Image(systemName:"note.text")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundColor(.theme.text)
+                            .frame(width:30,height:30)
+                    })
+                    .padding(.bottom, 10)
                     
                     NavigationLink(destination: HelpMenuView(), label:{
                         Image(systemName:"text.book.closed")

@@ -14,14 +14,21 @@ struct Slide_RuleApp: App {
     @StateObject var orientationInfo = OrientationInfo()
     @StateObject var store: TipStore = TipStore()
     
+    init(){
+        
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .onAppear {
                     UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+                    WebView.preload()
                 }
+                
                 .onDisappear {
                     UIDevice.current.endGeneratingDeviceOrientationNotifications()
+                    WebView.unload()
                 }
                 .task{
                     //try? Tips.resetDatastore()
@@ -35,4 +42,6 @@ struct Slide_RuleApp: App {
                 .environmentObject(store)
         }
     }
+    
+    
 }
