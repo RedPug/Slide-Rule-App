@@ -76,7 +76,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Slide Rule/Settings/TipsStoreKitConfiguration.storekit">
+         identifier = "../../Slide Rule/Tips/TipsStoreKitConfiguration.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
