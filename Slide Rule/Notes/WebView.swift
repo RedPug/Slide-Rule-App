@@ -38,15 +38,15 @@ struct WebView: UIViewRepresentable{
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!){
             self.wkWebView = webView
             parent.hasLoaded = true
-            print("WebView finished loading")
+            //print("WebView finished loading")
         }
         
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            print("WebView started loading")
+            //print("WebView started loading")
         }
         
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            print("WebView failed to load with error: \(error.localizedDescription)")
+            //print("WebView failed to load with error: \(error.localizedDescription)")
         }
         
         func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -55,11 +55,11 @@ struct WebView: UIViewRepresentable{
                 if let messageBody = message.body as? String {
                     //if the web data is different from the stored data and we aren't trying to give data to the web
                     if parent.json != messageBody && !parent.shouldRefresh{
-                        print("Set parent json")
+                        //print("Set parent json")
                         parent.json = messageBody
                         //print("Set json to '\(messageBody)'")
                     }else{
-                        print("Failed to set parent json. json: \(messageBody), shouldRefresh: \(parent.shouldRefresh), hasLoaded: \(parent.hasLoaded)")
+                        //print("Failed to set parent json. json: \(messageBody), shouldRefresh: \(parent.shouldRefresh), hasLoaded: \(parent.hasLoaded)")
                     }
                     //print("Recieved but did not set json to '\(messageBody)'")
                 }
@@ -71,12 +71,12 @@ struct WebView: UIViewRepresentable{
     }
     
     func makeCoordinator() -> Coordinator {
-        print("makeCoordinator")
+        //print("makeCoordinator")
         return Coordinator(parent: self)
     }
     
     func makeUIView(context: Context) -> WKWebView {
-        print("makeUIView")
+        //print("makeUIView")
         
         let webView = WebView.wkWebView!
         
@@ -84,25 +84,25 @@ struct WebView: UIViewRepresentable{
         webView.configuration.userContentController.removeScriptMessageHandler(forName: "textHandler")
         webView.configuration.userContentController.add(context.coordinator, name: "textHandler")
         
-        let t0 = Date().timeIntervalSince1970
+        //let t0 = Date().timeIntervalSince1970
         if let filePath = Bundle.main.path(forResource: "notes", ofType: "html") {
             let fileURL = URL(fileURLWithPath: filePath)
             
             webView.loadFileURL(fileURL, allowingReadAccessTo: fileURL)
         }
-        let t1 = Date().timeIntervalSince1970
-        print("It took \(t1-t0) seconds to load the page.")
+        //let t1 = Date().timeIntervalSince1970
+        //print("It took \(t1-t0) seconds to load the page.")
         return webView
     }
     
     func updateUIView(_ webView: WKWebView, context: Context) {
-        print("updateUIView")
+        //print("updateUIView")
         
         if shouldRefresh && hasLoaded {
             let js = "loadFields(String.raw`\(json)`)"
             webView.evaluateJavaScript(js){result, error in
                 self.shouldRefresh = false
-                print("refreshed json!")
+                //print("refreshed json!")
                 if let result = result {
                     print("Result: \(result)")
                 }
@@ -145,7 +145,7 @@ struct WebView: UIViewRepresentable{
     }
     
     static func unload(){
-        print("unload)")
+        //print("unload)")
         WebView.wkWebView!.configuration.userContentController.removeAllScriptMessageHandlers()
         WebView.wkWebView!.navigationDelegate = nil
         WebView.wkWebView = nil
@@ -153,14 +153,14 @@ struct WebView: UIViewRepresentable{
     }
     
     static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
-        print("dismantleUIView")
+        //print("dismantleUIView")
     }
     
     static func preload() {
         if WebView.wkWebView == nil {
-            print("initiated preload webview")
+            //print("initiated preload webview")
             let webView = WKWebView()
-            print("preloading the web page")
+            //print("preloading the web page")
             
             webView.isOpaque = false
             webView.backgroundColor = .white
@@ -168,7 +168,7 @@ struct WebView: UIViewRepresentable{
             webView.isInspectable = true
             
             WebView.wkWebView = webView
-            print("Sucessfully preloaded webView")
+            //print("Sucessfully preloaded webView")
             WebView.isReady = true
         }
     }

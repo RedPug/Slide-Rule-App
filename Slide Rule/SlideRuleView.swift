@@ -175,7 +175,7 @@ extension SlideRuleView{
                     Spacer()
                     
                     NavigationLink(destination: MathNotesView(), label:{
-                        Image(systemName:"note.text")
+                        Image(systemName:"pencil.and.list.clipboard")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.theme.text)
@@ -183,12 +183,20 @@ extension SlideRuleView{
                     })
                     .padding(.bottom, 10)
                     
+                    Spacer()
+                    
                     NavigationLink(destination: HelpMenuView(), label:{
-                        Image(systemName:"text.book.closed")
+                        Image(systemName:"book.closed")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(.theme.text)
                             .frame(width:30,height:30)
+                            .overlay{
+                                Text("?")
+                                    .font(.system(size: 18))
+                                    .foregroundColor(.theme.text)
+                                    .offset(x:1,y:-3)
+                            }
                     })
                     .padding(.bottom, 10)
                     .popoverTip(guideTip)
