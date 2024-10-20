@@ -8,7 +8,7 @@
 //
 //  Ultimate Slide Rule is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by the
-//  Free Software Foundation, either version 3 of the License, or 
+//  Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  Ultimate Slide Rule is distributed in the hope that it will be useful,
@@ -37,33 +37,14 @@ struct SlideMarkingView: View{
     
     var body: some View {
         ZStack(alignment: .center){
-            //tick marks
-            Path {path in
-                //scales.enumerated().forEach{scaleIndex, scale in
-                (minIndex...maxIndex).forEach{scaleIndex in
-                    let scale = scales[scaleIndex]
-                    let eq = scale.data.equation
-                    let y0 = getScaleHeight(scaleIndex)
-                    let direction = getScaleDirection(scaleIndex) == .up ? -1.0 : 1.0
-                    scale.data.markingIntervals.forEach{interval in
-                        for tick in interval.ticks{
-                            let f = eq(tick.x)
-                            path.move(to: CGPoint(x: f*width, y: y0))
-                            path.addLine(to: CGPoint(x: f*width, y: y0 + tick.size.rawValue * direction))
-                        }
-                    }
-                }
-            }
-            .stroke(.black, lineWidth: 0.6)
-            .frame(width:width, height:height)
-            //    .border(.red)
-            //.overlay{
+            tickMarkView
+                .frame(width:width, height:height)
+
             let textOffsetX = -width*0.5
             let textOffsetY = -height*0.5
             
             //text
             //iterate by each scale, text inerval, and finally through the interval to draw the text
-            //ForEach(Array(scales.enumerated()), id: \.offset){
             ForEach(minIndex...maxIndex, id: \.self){
                 //scaleIndex, scale in
                 scaleIndex in
@@ -174,6 +155,28 @@ struct SlideMarkingView: View{
     }
 }
 
+extension SlideMarkingView{
+    var tickMarkView: some View {
+        Path {path in
+            //scales.enumerated().forEach{scaleIndex, scale in
+            (minIndex...maxIndex).forEach{scaleIndex in
+                let scale = scales[scaleIndex]
+                let eq = scale.data.equation
+                let y0 = getScaleHeight(scaleIndex)
+                let direction = getScaleDirection(scaleIndex) == .up ? -1.0 : 1.0
+                scale.data.markingIntervals.forEach{interval in
+                    for tick in interval.ticks{
+                        let f = eq(tick.x)
+                        path.move(to: CGPoint(x: f*width, y: y0))
+                        path.addLine(to: CGPoint(x: f*width, y: y0 + tick.size.rawValue * direction))
+                    }
+                }
+            }
+        }
+        .stroke(.black, lineWidth: 0.6)
+    }
+}
+
 struct LeftSlideLabelView: View{
     
     let scales: [RulerScale]
@@ -202,7 +205,7 @@ struct LeftSlideLabelView: View{
                     .fixedSize()
                     .scaleEffect(1/maxZoom, anchor:.trailing)
                     .frame(width:30*fac, alignment:.trailing)
-                .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+                    .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
             }
         }
     }

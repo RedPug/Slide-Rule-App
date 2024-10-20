@@ -121,7 +121,7 @@ struct Frame: View {
                         if posDat.isLocked {return}
                         if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                         isDragging = true
-                        posDat.framePos = posDat.framePos0+value.translation.width
+                        posDat.framePos = posDat.framePos0+value.translation.width*posDat.movementSpeed
                     })
                     .onEnded({value in
                         if posDat.isLocked {return}
@@ -129,43 +129,6 @@ struct Frame: View {
                         posDat.framePos0 = posDat.framePos
                     })
             )
-//            .longPressDetector(duration: 0.3){value in
-//                print("onHeld \(value)")
-//                isSummoning = true
-//                summonLocation = value
-//            }onReleased:{value in
-//                //print("onReleased")
-//                withAnimation(.snappy(duration: 0.3)){
-//                    posDat.cursorPos = value.x - posDat.framePos - 800
-//                    posDat.cursorPos0 = posDat.cursorPos
-//                }
-//                isSummoning = false
-//                        }
-//            .onTouch(limitToBounds: true){location in
-//                print("Updated to \(location)")
-//            }
-//            .gesture(
-//                ClickGesture(coordinateSpace: .local)
-//                    .onEnded(){location in
-//                        print(location)
-//                    }
-//            )
-//
-//            if(isSummoning){
-//                PulsingCircleView(beginWidth:30, endWidth:50, color: .theme.text)
-//                    .offset(x: 800-summonLocation.x, y: summonLocation.y-101)
-//
-//            }
-
-//            .contentShape(.interaction,
-//                Rectangle()
-//                .size(width: 1600, height: 57)
-//                .offset(x:0,y:145)
-//                .union(
-//                    Rectangle()
-//                        .size(width: 1600, height: 57)
-//                )
-//            )
             
             
             CursorView(posDat: $posDat)
@@ -176,8 +139,6 @@ struct Frame: View {
     }
     
     func clampPosition() -> Void{
-        //posDat.framePos = min(200, max(-1600-200+UIScreen.main.bounds.width,posDat.framePos))
-        //posDat.framePos0 = min(200, max(-1600-200+UIScreen.main.bounds.width,posDat.framePos0))
         posDat.framePos = min(0, max(-1600,posDat.framePos))
         posDat.framePos0 = min(0, max(-1600,posDat.framePos0))
     }

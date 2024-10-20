@@ -59,7 +59,7 @@ struct SlideView: View {
                     
                     if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                     isDragging = true
-                    posDat.slidePos = max(minSlide, min(maxSlide,posDat.slidePos0+value.translation.width))
+                    posDat.slidePos = max(minSlide, min(maxSlide,posDat.slidePos0+value.translation.width*posDat.movementSpeed))
                 })
                 .onEnded({value in
                     if posDat.isLocked {return}

@@ -28,6 +28,8 @@ import LaTeXSwiftUI
 
 
 struct SlideRuleView: View {
+    @EnvironmentObject var settings: SettingsManager
+    
     @State var isFlipped: Bool = false
     
     @State var posDat: PosData = PosData()
@@ -90,6 +92,21 @@ struct SlideRuleView: View {
             //self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
         .accentColor(.white)
+        .onChange(of:zoomLevel){
+            updateMovementSpeed()
+        }
+        .onChange(of: settings.slowZoom){
+            updateMovementSpeed()
+        }
+    }
+    
+    func updateMovementSpeed() -> Void{
+        if settings.slowZoom {
+            let factor = (zoomLevel-1)*1/2 + 1
+            posDat.movementSpeed = 1.0/factor
+        }else{
+            posDat.movementSpeed = 1.0
+        }
     }
 }
 

@@ -31,11 +31,6 @@ enum TickSize : CGFloat{
     case xlarge = 10
 }
 
-//enum TextHeight : CGFloat{
-//    case tall = 13.0
-//    case short = 11.0
-//}
-
 struct TextFlags: OptionSet{
     let rawValue: Int
     
@@ -93,8 +88,6 @@ struct MarkingInterval {
     ///   - includesStart: If true, there will be one missing tick mark at *min* but will be the same elsewhere.
     init(min:CGFloat, max:CGFloat, xlargeDivs:Int=1, largeDivs:Int=1, mediumDivs:Int=1, smallDivs:Int=1, includesStart:Bool=true, includesEnd:Bool=false){
         var arr: [(CGFloat, TickSize)] = []
-        
-        //xl=1, l=1, m=2, s=5
         
         let totalTicks = xlargeDivs*largeDivs*mediumDivs*smallDivs
         
@@ -238,13 +231,27 @@ enum RulerScales{
             MarkingInterval(min: 1, max: 2, spacing: 0.05, skipping: 2, size:.medium),
             MarkingInterval(min: 1, max: 2, spacing: 0.01, skipping: 5, size:.small),
             
-            MarkingInterval(min: 2, max: 4, spacing: 0.02, skipping: 5, size:.small),
+            MarkingInterval(min: 2, max: 2.7, spacing: 0.02, skipping: 5, size:.small),
+            MarkingInterval(2.71828, .xlarge),
+            MarkingInterval(2.74, .small),
+            MarkingInterval(2.76, .small),
+            MarkingInterval(2.78, .small),
+            MarkingInterval(min: 2.8, max: 3.1, spacing: 0.02, skipping: 5, size:.small),
+            MarkingInterval(3.12, .small),
+            MarkingInterval(3.14159, .xlarge),
+            MarkingInterval(3.16, .small),
+            MarkingInterval(3.18, .small),
+            MarkingInterval(min: 3.2, max: 4, spacing: 0.02, skipping: 5, size:.small),
             
-            MarkingInterval(min: 4.05, max: 10, spacing: 0.1, size:.small)
+            MarkingInterval(min: 4.05, max: 10, spacing: 0.1, size:.small),
+            
+            
         ],
         labelingIntervals: [
             LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))".first!.description},
-            LabelingInterval(min: 1.1, max: 1.9, spacing: 0.1, flags:.short){x in return "\(Int(x*10))"}
+            LabelingInterval(min: 1.1, max: 1.9, spacing: 0.1, flags:.short){x in return String(format:"%.1f", x)},
+            LabelingInterval(x: 2.71828, text: "e"),
+            LabelingInterval(x: 3.14159, text: "π"),
         ]
     )
     
@@ -292,8 +299,6 @@ enum RulerScales{
             MarkingInterval(min: 10, max: 20, spacing: 0.1, skipping: 5, size:.small),
             
             MarkingInterval(min: 20, max: 31.2, spacing: 0.2, skipping: 5, size:.small),
-            
-            //MarkingInterval(min: 40.5, max: 31, spacing: 1, size:.small)
         ],
         labelingIntervals: [
             LabelingInterval(x: Double.pi, text:"π"),

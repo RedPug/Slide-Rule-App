@@ -41,19 +41,25 @@ class SettingsManager: ObservableObject{
             UserDefaults.standard.setValue(hasPhysics, forKey: "HAS_PHYSICS")
         }
     }
+    @Published var slowZoom: Bool = true {
+        didSet{
+            UserDefaults.standard.setValue(slowZoom, forKey: "SLOW_ZOOM")
+        }
+    }
     
     init(){
         let defaultValues = [
             "GRAVITY":1.0,
             "FRICTION":0.4,
-            "HAS_PHYSICS":false
+            "HAS_PHYSICS":false,
+            "SLOW_ZOOM":true,
         ] as [String : Any]
         UserDefaults.standard.register(defaults: defaultValues)
         
         self.gravity = CGFloat(UserDefaults.standard.float(forKey: "GRAVITY"))
         self.friction = CGFloat(UserDefaults.standard.float(forKey: "FRICTION"))
         self.hasPhysics = UserDefaults.standard.bool(forKey: "HAS_PHYSICS")
-        
+        self.slowZoom = UserDefaults.standard.bool(forKey: "SLOW_ZOOM")
         
     }
 }

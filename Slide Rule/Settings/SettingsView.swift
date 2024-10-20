@@ -41,68 +41,69 @@ struct SettingsView: View {
     
     var body: some View {
         Form{
-            Section(header: Text("Interactive Physics")){
-                Toggle("Apply Forces", isOn: $settings.hasPhysics)
-                
-                if(settings.hasPhysics){
-                    VStack{
-                        Text("Gravity Strength")
-                        Slider(value: $settings.gravity, in:0...1){
+            Group{
+                Section(header: Text("Interactive Physics")){
+                    Toggle("Apply Forces", isOn: $settings.hasPhysics)
+                    
+                    if(settings.hasPhysics){
+                        VStack{
                             Text("Gravity Strength")
-                        } minimumValueLabel:{
-                            Text("0")
-                        } maximumValueLabel:{
-                            Text("1g")
+                            Slider(value: $settings.gravity, in:0...1){
+                                Text("Gravity Strength")
+                            } minimumValueLabel:{
+                                Text("0")
+                            } maximumValueLabel:{
+                                Text("1g")
+                            }
+                            .frame(width:200)
                         }
-                        .frame(width:200)
+                        
+                        VStack{
+                            Text("Friction Coefficient (Static)")
+                            Slider(value: $settings.friction, in:0...1){
+                                Text("Friction Coefficient (Static)")
+                            } minimumValueLabel:{
+                                Text("0")
+                            } maximumValueLabel:{
+                                Text("1")
+                            }
+                            .frame(width:200)
+                        }
+                    }
+                }
+                .tint(Color.green)
+                
+                Section(header: Text("Controls")){
+                    Toggle("Slow Movement When Zoomed", isOn: $settings.slowZoom)
+                }
+                .tint(Color.green)
+                
+                
+                Section(header: Text("Support my work")){
+                    Link("Rate this app or leave a review", destination: URL(string: "https://apps.apple.com/us/app/ultimate-slide-rule/id6636523467?action=write-review")!)
+                    
+                    NavigationLink(destination: TipMenuView()){
+                        HStack{
+                            Text("Love the app? Consider giving a tip")
+                            Image(systemName: "dollarsign.circle")
+                                .foregroundStyle(.green)
+                        }
                     }
                     
-                    VStack{
-                        Text("Friction Coefficient (Static)")
-                        Slider(value: $settings.friction, in:0...1){
-                            Text("Friction Coefficient (Static)")
-                        } minimumValueLabel:{
-                            Text("0")
-                        } maximumValueLabel:{
-                            Text("1")
-                        }
-                        .frame(width:200)
-                    }
-                }
-            }
-            .tint(Color.green)
-            .listRowBackground(Color.theme.background_dark)
-            .listRowSeparatorTint(Color.theme.background)
-            
-            Section(header: Text("Support my work")){
-                Link("Rate this app or leave a review", destination: URL(string: "https://apps.apple.com/us/app/ultimate-slide-rule/id6636523467?action=write-review")!)
-                
-                NavigationLink(destination: TipMenuView()){
-                    HStack{
-                        Text("Love the app? Consider giving a tip")
-                        Image(systemName: "dollarsign.circle")
-                            .foregroundStyle(.green)
-                    }
+                    Link("View this app on GitHub", destination: URL(string: "https://github.com/RedPug/Slide-Rule-App")!)
                 }
                 
-                Link("View this app on GitHub", destination: URL(string: "https://github.com/RedPug/Slide-Rule-App")!)
+                Section(header: Text("Contact Me")){
+                    Link("Email me at slideruledesk@gmail.com", destination: URL(string: "mailto:slideruledesk@gmail.com")!)
+                    Link("Visit my Linkedin", destination: URL(string: "https://www.linkedin.com/in/rowan-richards/")!)
+                }
+                
+                Section{
+                    Text("Version: \(appVersion)(\(buildNumber))")
+                }
             }
             .listRowBackground(Color.theme.background_dark)
             .listRowSeparatorTint(Color.theme.background)
-            
-            Section(header: Text("Contact Me")){
-                Link("Email me at slideruledesk@gmail.com", destination: URL(string: "mailto:slideruledesk@gmail.com")!)
-                Link("Visit my Linkedin", destination: URL(string: "https://www.linkedin.com/in/rowan-richards/")!)
-            }
-            .listRowBackground(Color.theme.background_dark)
-            .listRowSeparatorTint(Color.theme.background)
-            
-            Section{
-                Text("Version: \(appVersion)(\(buildNumber))")
-            }
-            .listRowBackground(Color.theme.background_dark)
-            .listRowSeparatorTint(Color.theme.background)
-            
         }
         
         .foregroundStyle(Color.theme.text)

@@ -59,23 +59,27 @@ struct MathNotesView: View {
         VStack{
             HStack {
                 let webVw = WebView(json:$json, keyCommand:$keyCommand, shouldRefresh: $shouldRefresh, hasLoaded:$hasWebviewLoaded)
-                ZStack{
-                    webVw
+                VStack{
+                    ZStack{
+                        webVw
                         //.background(Color.white)
-                    
-                    if !hasWebviewLoaded{
-                        ProgressView("Loading...")
-                            .frame(maxWidth:.infinity, maxHeight:.infinity)
-                            .background(.gray.opacity(0.5))
                         
+                        if !hasWebviewLoaded{
+                            ProgressView("Loading...")
+                                .frame(maxWidth:.infinity, maxHeight:.infinity)
+                                .background(.gray.opacity(0.5))
+                            
+                        }
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .clipped()
+                    .padding(5)
+                    
+                    funcpad
+                        .padding(.bottom,5)
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .clipped()
-                .padding()
-                
                 keypad
-                    .padding()
+                    .padding(.trailing, 5)
             }
             .ignoresSafeArea(edges:.bottom)
         }
@@ -113,50 +117,78 @@ extension MathNotesView{
         }
     }
     
+    func keyButtonView(systemImage: String, action commandText: String = "", type commandType: KeyCommandType) -> some View {
+        keyButtonView(action: commandText, type: commandType){
+            Image(systemName: systemImage)
+                .foregroundStyle(Color.theme.background_dark)
+        }
+    }
+    
     func keyButtonView<Content: View>(action commandText: String, type commandType: KeyCommandType, @ViewBuilder content: () -> Content) -> some View {
         Button{
             keyCommand = KeyCommand(commandText, type: commandType)
         }label:{
             RoundedRectangle(cornerRadius: 5)
+                
+                .fill(Color.theme.text)
                 .frame(width:30,height:30)
-                .background(Color.theme.text)
                 .overlay(content: content)
-                .clipped()
+                //.clipped()
         }
     }
     
     var keypad: some View {
         VStack(spacing:5){
-            Group{
-                
-                Grid{
-                    GridRow{
-                        keyButtonView("7", action:"7", type:.typed)
-                        keyButtonView("8", action:"8", type:.typed)
-                        keyButtonView("9", action:"9", type:.typed)
-                        keyButtonView("$\\div$", action:"/", type:.typed)
-                    }
-                    GridRow{
-                        keyButtonView("4", action:"4", type:.typed)
-                        keyButtonView("5", action:"5", type:.typed)
-                        keyButtonView("6", action:"6", type:.typed)
-                        keyButtonView("$\\times$", action:"*", type:.typed)
-                    }
-                    GridRow{
-                        keyButtonView("1", action:"1", type:.typed)
-                        keyButtonView("2", action:"2", type:.typed)
-                        keyButtonView("3", action:"3", type:.typed)
-                        keyButtonView("$-$", action:"-", type:.typed)
-                    }
-                    GridRow{
-                        keyButtonView("del", action:"Backspace", type:.special)
-                        keyButtonView("0", action:"0", type:.typed)
-                        keyButtonView("$.$", action:".", type:.typed)
-                        keyButtonView("$+$", action:"+", type:.typed)
-                    }
+            VStack{
+                HStack{
+                    keyButtonView("7", action:"7", type:.typed)
+                    keyButtonView("8", action:"8", type:.typed)
+                    keyButtonView("9", action:"9", type:.typed)
+                    keyButtonView("$\\div$", action:"/", type:.typed)
                 }
-                
-                
+                HStack{
+                    keyButtonView("4", action:"4", type:.typed)
+                    keyButtonView("5", action:"5", type:.typed)
+                    keyButtonView("6", action:"6", type:.typed)
+                    keyButtonView("$\\times$", action:"*", type:.typed)
+                }
+                HStack{
+                    keyButtonView("1", action:"1", type:.typed)
+                    keyButtonView("2", action:"2", type:.typed)
+                    keyButtonView("3", action:"3", type:.typed)
+                    keyButtonView("$-$", action:"-", type:.typed)
+                }
+                HStack{
+                    keyButtonView(systemImage:"delete.left", action:"Backspace", type:.special)
+                    keyButtonView("0", action:"0", type:.typed)
+                    keyButtonView("$.$", action:".", type:.typed)
+                    keyButtonView("$+$", action:"+", type:.typed)
+                }
+            }
+            .padding(5)
+            .background(Color.theme.background_dark, in: RoundedRectangle(cornerRadius: 10))
+            
+            VStack{
+                HStack{
+                    keyButtonView("←", action:"Left", type:.special)
+                    
+                    keyButtonView("↑", action:"Up", type:.special)
+                    keyButtonView("→", action:"Right", type:.special)
+                }
+                HStack{
+                    keyButtonView("↵", type:.createLine)
+                    keyButtonView("↓", action:"Down", type:.special)
+                }
+            }
+            .padding(5)
+            .background(Color.theme.background_dark, in: RoundedRectangle(cornerRadius: 10))
+            
+        }
+    }
+    
+    var funcpad: some View {
+        HStack{
+            Group{
                 Grid{
                     GridRow{
                         keyButtonView("$a^2$", action:"^2", type:.typed)
@@ -170,18 +202,6 @@ extension MathNotesView{
                         keyButtonView("$\\pi$", action:"\\pi", type:.command)
                         keyButtonView("(", action:"(", type:.typed)
                         keyButtonView(")", action:")", type:.typed)
-                    }
-                }
-                Grid{
-                    GridRow{
-                        keyButtonView("←", action:"Left", type:.special)
-                        
-                        keyButtonView("↑", action:"Up", type:.special)
-                        keyButtonView("→", action:"Right", type:.special)
-                    }
-                    GridRow{
-                        keyButtonView("↵", type:.createLine)
-                        keyButtonView("↓", action:"Down", type:.special)
                     }
                 }
             }

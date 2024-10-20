@@ -39,4 +39,5 @@ struct PosData: Equatable {
     var timesPlaced: Int = 0
     var velocity: CGFloat = 0
     var physicsEnabled: Bool = true
+    var movementSpeed: CGFloat = 1.0
 }

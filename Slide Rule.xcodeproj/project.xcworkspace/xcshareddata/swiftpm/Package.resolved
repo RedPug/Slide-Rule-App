@@ -1,4 +1,5 @@
 {
+  "originHash" : "b140f3f1d712255eeb37b97690b39c645244dd30e74e60408e907a0e2ee00020",
   "pins" : [
     {
       "identity" : "latexswiftui",
@@ -37,5 +38,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
