@@ -47,7 +47,6 @@ struct SlideRuleView: View {
     var body: some View {
         NavigationView{
             HStack{
-                
                 Color(.gray)
                     .frame(width:45*(1+0.5*(zoomLevel-1))+10)
                     .overlay(alignment:.leading){
@@ -57,7 +56,7 @@ struct SlideRuleView: View {
                             .padding(5)
                     }
                     .zIndex(2)
-                    .opacity(min(1,max(0, (-250.0-min(posDat.framePos,posDat.slidePos))/50.0)))
+                    .opacity(min(1,max(0, (-250.0-min(posDat.framePos,posDat.framePos + posDat.slidePos))/50.0)))
                 
                 RulerView(posDat: $posDat)
                     .offset(x:-zoomAnchor.x, y:-zoomAnchor.y)

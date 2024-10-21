@@ -27,8 +27,6 @@ import SwiftUI
 struct CursorView: View {
     @Binding var posDat: PosData
     
-    @State var isDragging = false
-    
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius:3)
@@ -72,12 +70,12 @@ struct CursorView: View {
                     .onChanged({value in
                         if posDat.isLocked {return}
                         if(abs(value.velocity.height) > abs(value.velocity.width)){return}
-                        isDragging = true
+                        posDat.isDragging = true
                         posDat.cursorPos = posDat.cursorPos0+value.translation.width*posDat.movementSpeed
                     })
                     .onEnded({value in
                         if posDat.isLocked {return}
-                        isDragging = false
+                        posDat.isDragging = false
                         posDat.cursorPos0 = posDat.cursorPos
                         posDat.timesPlaced += 1
                     })

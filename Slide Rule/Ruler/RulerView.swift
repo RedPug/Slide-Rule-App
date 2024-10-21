@@ -115,7 +115,6 @@ struct RulerView: View {
     func startPhysics() -> Void {
         if !isPhysicsActive {
             motionManager.startAccelerometerUpdates()
-            //print("Started accelerometer updates")
             isPhysicsActive = true
             
             if !isSteppingPhysics {
@@ -127,7 +126,6 @@ struct RulerView: View {
     func stopPhysics() -> Void {
         if isPhysicsActive {
             motionManager.stopAccelerometerUpdates()
-            //print("Stopped accelerometer updates")
             isPhysicsActive = false
         }
     }
@@ -139,16 +137,17 @@ struct RulerView: View {
         if(!isPhysicsActive || !settings.hasPhysics){
             posDat.velocity = 0
             isSteppingPhysics = false
-            //print("Stopped physics from step function", isPhysicsActive, settings.hasPhysics)
             return
         }
         
-        if let data = motionManager.accelerometerData {
+        if posDat.isDragging {
+            posDat.velocity = 0
+        }else if let data = motionManager.accelerometerData {
             //manage if screen is landscale left or right
             let direction: CGFloat = orientationInfo.orientation == .landscapeLeft ? 1 : -1
             
             let g = settings.gravity //gravitational acceleration, in g's
-            let coeff = settings.friction //no units, coefficient of friction
+            let coeff = posDat.velocity == 0 ? settings.friction : settings.friction*0.8 //no units, coefficient of friction
             
             var x = data.acceleration.x*direction //top bottom, landscape
             let y = data.acceleration.y*direction //left right, landscape

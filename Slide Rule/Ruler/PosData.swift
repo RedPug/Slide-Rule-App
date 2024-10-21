@@ -36,6 +36,7 @@ struct PosData: Equatable {
     var flipAngle: CGFloat = 0.0
     var shouldFlip: Bool = false
     var isLocked: Bool = false
+    var isDragging: Bool = false
     var timesPlaced: Int = 0
     var velocity: CGFloat = 0
     var physicsEnabled: Bool = true

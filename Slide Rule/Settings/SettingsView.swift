@@ -42,37 +42,6 @@ struct SettingsView: View {
     var body: some View {
         Form{
             Group{
-                Section(header: Text("Interactive Physics")){
-                    Toggle("Apply Forces", isOn: $settings.hasPhysics)
-                    
-                    if(settings.hasPhysics){
-                        VStack{
-                            Text("Gravity Strength")
-                            Slider(value: $settings.gravity, in:0...1){
-                                Text("Gravity Strength")
-                            } minimumValueLabel:{
-                                Text("0")
-                            } maximumValueLabel:{
-                                Text("1g")
-                            }
-                            .frame(width:200)
-                        }
-                        
-                        VStack{
-                            Text("Friction Coefficient (Static)")
-                            Slider(value: $settings.friction, in:0...1){
-                                Text("Friction Coefficient (Static)")
-                            } minimumValueLabel:{
-                                Text("0")
-                            } maximumValueLabel:{
-                                Text("1")
-                            }
-                            .frame(width:200)
-                        }
-                    }
-                }
-                .tint(Color.green)
-                
                 Section(header: Text("Controls")){
                     Toggle("Slow Movement When Zoomed", isOn: $settings.slowZoom)
                 }
@@ -101,6 +70,41 @@ struct SettingsView: View {
                 Section{
                     Text("Version: \(appVersion)(\(buildNumber))")
                 }
+                
+                Section(header: Text("Fun Zone")){
+                    Toggle("Apply External Forces", isOn: $settings.hasPhysics)
+                    
+                    if(settings.hasPhysics){
+                        HStack{
+                            VStack{
+                                Text("Gravity Strength")
+                                Slider(value: $settings.gravity, in:0...1){
+                                    Text("Gravity Strength")
+                                } minimumValueLabel:{
+                                    Text("0")
+                                } maximumValueLabel:{
+                                    Text("1g")
+                                }
+                                .frame(width:200)
+                            }
+                            
+                            Spacer()
+                            
+                            VStack{
+                                Text("Friction Coefficient (Static)")
+                                Slider(value: $settings.friction, in:0...1){
+                                    Text("Friction Coefficient (Static)")
+                                } minimumValueLabel:{
+                                    Text("0")
+                                } maximumValueLabel:{
+                                    Text("1")
+                                }
+                                .frame(width:200)
+                            }
+                        }
+                    }
+                }
+                .tint(Color.green)
             }
             .listRowBackground(Color.theme.background_dark)
             .listRowSeparatorTint(Color.theme.background)

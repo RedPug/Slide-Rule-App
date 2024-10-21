@@ -27,7 +27,7 @@ import SwiftUI
 struct SlideView: View {
     @Binding var posDat: PosData
     
-    @State var isDragging = false
+//    @State var isDragging = false
     
     let maxSlide = 1500.0
     let minSlide = -1500.0
@@ -55,16 +55,15 @@ struct SlideView: View {
             DragGesture(minimumDistance: 5.0)
                 .onChanged({value in
                     if posDat.isLocked {return}
-                    posDat.physicsEnabled = false
                     
                     if(abs(value.velocity.height) > abs(value.velocity.width)){return}
-                    isDragging = true
+                    posDat.isDragging = true
                     posDat.slidePos = max(minSlide, min(maxSlide,posDat.slidePos0+value.translation.width*posDat.movementSpeed))
                 })
                 .onEnded({value in
                     if posDat.isLocked {return}
-                    posDat.physicsEnabled = true
-                    isDragging = false
+                    
+                    posDat.isDragging = false
                     posDat.slidePos0 = posDat.slidePos
                     posDat.timesPlaced += 1
                 })
