@@ -48,7 +48,7 @@ struct RulerView: View {
                     //flip the ruler
                     DragGesture(minimumDistance: 10)
                         .onChanged{value in
-                            if(isFlipping){return}
+                            if(isFlipping || !posDat.canDragToFlip){return}
                             let height = value.translation.height
                             var h = 0.0
                             

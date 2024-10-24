@@ -37,6 +37,8 @@ struct SlideRuleView: View {
     @State var lastZoomLevel: CGFloat = 1.0
     @State var zoomAnchor: CGPoint = .zero
     @State var isZooming: Bool = false
+    @State var isDraggingUp: Bool = false
+    @State var lastZoomAnchor: CGPoint = .zero
     
     @State var startX: CGFloat = 0
     @State var startY: CGFloat = 0
@@ -65,6 +67,7 @@ struct SlideRuleView: View {
                     .defersSystemGestures(on: .all)
                     .simultaneousGesture(rulerMagnificationGesture)
                     .simultaneousGesture(rulerMagTapGesture)
+                    .simultaneousGesture(rulerVerticalMoveGesture)
                     .offset(x:-(zoomAnchor.x-1600/2)*(zoomLevel-1)/3, y:-(zoomAnchor.y-202/2)*(zoomLevel-1)/3)
                     .scaleEffect(1.4, anchor:.center) //make bigger
                     .frame(width:100,height:100) //avoid making whole screen wonky
@@ -159,15 +162,37 @@ extension SlideRuleView{
                 let x = (startX-zoomAnchor.x)*fac+zoomAnchor.x
                 let y = (startY-zoomAnchor.y)*fac+zoomAnchor.y
                 zoomAnchor = CGPoint(x:x, y:y)
+                lastZoomAnchor = zoomAnchor
                 //print(zoomAnchor.x)
                 
                 zoomLevel = newScale
                 isZooming = true
+                
+                posDat.canDragToFlip = zoomLevel <= 1.1
             }.onEnded { value in
                 isZooming = false
                 posDat.isLocked = false
                 self.lastZoomLevel = 1.0
             }
+    }
+    
+    private var rulerVerticalMoveGesture: some Gesture{
+        DragGesture(minimumDistance: 5)
+            .onChanged({value in
+                if(posDat.canDragToFlip || posDat.isDragging){return}
+                if isDraggingUp || abs(value.translation.height) >= 2*abs(value.translation.width) {
+                    isDraggingUp = true
+                    posDat.isLocked = true
+                    
+                    let yprime = lastZoomAnchor.y - value.translation.height*posDat.movementSpeed
+                    zoomAnchor = CGPoint(x:zoomAnchor.x, y: yprime)
+                }
+            })
+            .onEnded({value in
+                isDraggingUp = false
+                posDat.isLocked = false
+                lastZoomAnchor = zoomAnchor
+            })
     }
 }
 
