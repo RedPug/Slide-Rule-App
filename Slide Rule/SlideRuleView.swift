@@ -184,7 +184,7 @@ extension SlideRuleView{
                     isDraggingUp = true
                     posDat.isLocked = true
                     
-                    let yprime = lastZoomAnchor.y - value.translation.height*posDat.movementSpeed
+                    let yprime = lastZoomAnchor.y - value.translation.height*posDat.movementSpeed/2
                     zoomAnchor = CGPoint(x:zoomAnchor.x, y: yprime)
                 }
             })
@@ -232,16 +232,16 @@ extension SlideRuleView{
                     
                     Spacer()
                     
-                    NavigationLink(destination: MathNotesView(), label:{
-                        Image(systemName:"pencil.and.list.clipboard")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.theme.text)
-                            .frame(width:30,height:30)
-                    })
-                    .padding(.bottom, 10)
-                    
-                    Spacer()
+//                    NavigationLink(destination: MathNotesView(), label:{
+//                        Image(systemName:"pencil.and.list.clipboard")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .foregroundColor(.theme.text)
+//                            .frame(width:30,height:30)
+//                    })
+//                    .padding(.bottom, 10)
+//                    
+//                    Spacer()
                     
                     NavigationLink(destination: HelpMenuView(), label:{
                         Image(systemName:"book.closed")
