@@ -41,7 +41,7 @@ struct WebView: UIViewRepresentable{
         self._shouldRefresh = shouldRefresh
         self._hasLoaded = hasLoaded
         
-        WebView.preload()
+//        WebView.preload()
     }
     
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {

@@ -113,18 +113,21 @@ class TipStore: ObservableObject {
         transactionListener?.cancel()
     }
 
-    func purchase(_ item: Product) async {
+    func purchase(_ item: Product) async -> Bool {
         
         do {
             
             let result = try await item.purchase()
             
-            try await handlePurchase(from: result)
+            let success = try await handlePurchase(from: result)
+            return success
             
         } catch {
             action = .failed(.system(error))
             print(error)
         }
+        
+        return false
     }
     
     /// Call to reset the action state within the store
@@ -166,7 +169,7 @@ class TipStore: ObservableObject {
     }
     
     /// Handle the result when purchasing a product
-    func handlePurchase(from result: PurchaseResult) async throws {
+    func handlePurchase(from result: PurchaseResult) async throws -> Bool {
         
         switch result {
             
@@ -177,6 +180,7 @@ class TipStore: ObservableObject {
             action = .successful
             
             await transaction.finish()
+            return true
             
         case .pending:
             print("The user needs to complete some action on their account before they can complete purchase")
@@ -186,8 +190,9 @@ class TipStore: ObservableObject {
             
         default:
             print("Unknown error")
-            
         }
+        
+        return false
     }
     
     /// Check if the user is verified with their purchase

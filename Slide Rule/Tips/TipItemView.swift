@@ -30,6 +30,8 @@ struct TipItemView: View {
     
     var item: Product
     
+    @Binding var isSuccess: Bool
+    
     var body: some View {
         HStack(){
             VStack(spacing:3) {
@@ -46,7 +48,10 @@ struct TipItemView: View {
             
             Button{
                 Task {
-                    await store.purchase(item)
+                    let result = await store.purchase(item)
+                    if result {
+                        isSuccess = true
+                    }
                 }
             }label:{
                 Text(item.displayPrice)

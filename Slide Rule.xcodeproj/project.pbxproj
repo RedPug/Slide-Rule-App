@@ -57,6 +57,7 @@
 		58A6801E2C7691F500A0E055 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A6801D2C7691F500A0E055 /* Frame.swift */; };
 		58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A680232C76954000A0E055 /* Launch Screen.storyboard */; };
 		58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680252C769D8F00A0E055 /* GuidesTipView.swift */; };
+		58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */; };
 		58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B7705F2C9CC410006DA44D /* SettingsManager.swift */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 /* End PBXBuildFile section */
@@ -144,6 +145,7 @@
 		58A6801D2C7691F500A0E055 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		58A680232C76954000A0E055 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		58A680252C769D8F00A0E055 /* GuidesTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesTipView.swift; sourceTree = "<group>"; };
+		58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouView.swift; sourceTree = "<group>"; };
 		58B7705F2C9CC410006DA44D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
@@ -351,6 +353,7 @@
 				5812066C2C900EED00ACA6F1 /* TipStore.swift */,
 				5812066E2C900FA800ACA6F1 /* tipProductIdentifiers.swift */,
 				5812066A2C900B7D00ACA6F1 /* TipsStoreKitConfiguration.storekit */,
+				58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */,
 			);
 			path = Tips;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				581797502C12552F0077491B /* OrientationManager.swift in Sources */,
 				589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */,
 				581206712C9011F500ACA6F1 /* TipItemView.swift in Sources */,
+				58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */,
 				58A680182C768FA300A0E055 /* RulerView.swift in Sources */,
 				58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */,
 				58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */,
