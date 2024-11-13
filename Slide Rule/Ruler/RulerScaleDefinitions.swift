@@ -204,7 +204,7 @@ enum ScaleLists{
         RulerScale(data:RulerScales.A, name:"A", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
         
         RulerScale(data:RulerScales.A, name:"B", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
-        RulerScale(data:RulerScales.TL, name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0 1x} \\\\[-5px] \\textbf{0 1x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
+        RulerScale(data:RulerScales.TL, name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0.1x} \\\\[-5px] \\textbf{0.1x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
         RulerScale(data:RulerScales.TG, name:"T >45°", leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{10.0x} \\\\[-5px] \\textbf{10.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
         RulerScale(data:RulerScales.ST, name:"ST", leftLabel:"$ \\left[ \\textbf{0.01x} \\right. $",
                    rightLabel:"$\\small\\begin{array}{l} \\textbf{0.1x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textbf{TAN}\\end{array}$"),
