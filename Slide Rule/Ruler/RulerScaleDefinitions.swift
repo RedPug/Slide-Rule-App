@@ -174,11 +174,15 @@ struct RulerScaleData{
     }
 }
 
-struct RulerScale{
+struct RulerScale: Equatable{
     let data: RulerScaleData
     let name: String
     var leftLabel: String = ""
     var rightLabel: String = ""
+    
+    static func == (lhs: RulerScale, rhs: RulerScale) -> Bool {
+        return lhs.name == rhs.name
+    }
 }
 
 enum ScaleLists{

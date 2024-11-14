@@ -190,12 +190,23 @@ struct LeftSlideLabelView: View{
     let textOffsetX: CGFloat = 0
     let textOffsetY: CGFloat = -120
     
+    @State var smoothScales: [RulerScale]
+    
+    init(scales: [RulerScale], minIndex:Int, maxIndex:Int, zoom:CGFloat, zoomAnchor:CGPoint){
+        self.scales = scales
+        self.minIndex = minIndex
+        self.maxIndex = maxIndex
+        self.zoom = zoom
+        self.zoomAnchor = zoomAnchor
+        smoothScales = scales
+    }
+    
     var body: some View {
         ZStack(alignment: .trailing){
             ForEach(minIndex...maxIndex, id: \.self){
                 //scaleIndex, scale in
                 scaleIndex in
-                let scale = scales[scaleIndex]
+                let scale = smoothScales[scaleIndex]
                 let maxZoom = 3.0
                 let fac = 1+0.5*(zoom-1)
                 
@@ -206,6 +217,10 @@ struct LeftSlideLabelView: View{
                     .scaleEffect(1/maxZoom, anchor:.trailing)
                     .frame(width:30*fac, alignment:.trailing)
                     .offset(x: 0 + textOffsetX, y: getScaleLabelHeight(scaleIndex) + textOffsetY)
+            }
+        }.onChange(of:scales){
+            withAnimation(.easeInOut(duration: 0.1)){
+                smoothScales = scales
             }
         }
     }

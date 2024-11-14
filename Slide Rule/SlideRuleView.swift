@@ -168,7 +168,7 @@ extension SlideRuleView{
                 zoomLevel = newScale
                 isZooming = true
                 
-                posDat.canDragToFlip = zoomLevel <= 1.1
+                posDat.canDragToFlip = zoomLevel <= 1.25
             }.onEnded { value in
                 isZooming = false
                 posDat.isLocked = false
