@@ -38,6 +38,8 @@ class OrientationInfo: ObservableObject {
                 if newOrientation == .landscapeLeft || newOrientation == .landscapeRight {
                     self?.orientation = newOrientation
                 }
+                
+                
             }
     }
 

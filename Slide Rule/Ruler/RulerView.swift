@@ -25,11 +25,19 @@
 import SwiftUI
 import CoreMotion
 
-struct RulerView: View {
+extension RulerView where Overlay == EmptyView {
+    init(posData: Binding<PosData>){
+        self.init(posData: posData, overlay: {EmptyView()})
+    }
+}
+
+struct RulerView <Overlay: View>: View {
     @EnvironmentObject var settings: SettingsManager
     @EnvironmentObject var orientationInfo: OrientationInfo
     @Binding var posDat: PosData
     @State var isFlipping: Bool = false
+    @State var isReadyToFlip = false
+    
     @State var isPhysicsActive = false
     @State var isSteppingPhysics = false
     
@@ -37,38 +45,25 @@ struct RulerView: View {
     
     let motionManager = CMMotionManager()
     
+    let overlay: Overlay
+    
+    init(posData: Binding<PosData>, @ViewBuilder overlay: () -> Overlay){
+        self._posDat = posData
+        self.overlay = overlay()
+    }
+    
+    
+    
     var body: some View {
-        ZStack{
+        RulerZoomWrapper(posData: $posDat){
             Frame(posDat: $posDat)
-                .zIndex(2)
+                .sensoryFeedback(.impact, trigger: isReadyToFlip)
+                .overlay(overlay)
                 .rotation3DEffect(Angle(degrees:posDat.flipAngle), axis: (x:1,y:0,z:0), anchorZ:0)
                 .frame(height:240, alignment: .center)
                 .contentShape(.interaction, Rectangle())
                 .simultaneousGesture(
-                    //flip the ruler
-                    DragGesture(minimumDistance: 10)
-                        .onChanged{value in
-                            if(isFlipping || !posDat.canDragToFlip){return}
-                            let height = value.translation.height
-                            var h = 0.0
-                            
-                            if(height > 20.0){
-                                h = height - 20.0
-                            }else if(height < -20.0){
-                                h = height + 20.0
-                            }
-                            posDat.flipAngle = min(45.0,max(-h*0.4,-45.0))
-                        }
-                        .onEnded{value in
-                            
-                            if abs(posDat.flipAngle) >= 44.0 {
-                                flip(dir: value.translation.height < 0)
-                            }else{
-                                withAnimation(.spring(dampingFraction: 0.5)){
-                                    posDat.flipAngle = 0
-                                }
-                            }
-                        }
+                    rulerFlipGesture
                 )
                 .onChange(of: posDat.shouldFlip){ oldState, newState in
                     if oldState == false && newState{
@@ -76,7 +71,11 @@ struct RulerView: View {
                     }
                 }
             
-        }.onAppear{
+        }
+        .scaleEffect(1.4, anchor:.center) //make bigger
+        .frame(width:100,height:100) //avoid making whole screen wonky
+        .frame(maxWidth:.infinity,maxHeight:.infinity) //takes up visible screen area
+        .onAppear{
             if settings.hasPhysics{
                 startPhysics()
             }
@@ -85,7 +84,50 @@ struct RulerView: View {
         }
     }
     
-    func flip(dir: Bool) -> Void {
+    
+}
+
+
+
+extension RulerView {
+    private var rulerFlipGesture: some Gesture {
+        DragGesture(minimumDistance: 10)
+            .onChanged{value in
+                if(isFlipping || !posDat.canDragToFlip){return}
+                let height = value.translation.height
+                var h = 0.0
+                
+                if(height > 20.0){
+                    h = height - 20.0
+                }else if(height < -20.0){
+                    h = height + 20.0
+                }
+                let angle = -h*0.4
+                
+                if angle > -45 && angle < 45 {
+                    posDat.flipAngle = angle
+                    isReadyToFlip = false
+                }else if angle > 0{
+                    posDat.flipAngle = 45
+                    isReadyToFlip = true
+                }else{
+                    posDat.flipAngle = -45
+                    isReadyToFlip = true
+                }
+            }
+            .onEnded{value in
+                isReadyToFlip = false
+                if abs(posDat.flipAngle) >= 44.0 {
+                    flip(dir: value.translation.height < 0)
+                }else{
+                    withAnimation(.spring(dampingFraction: 0.5)){
+                        posDat.flipAngle = 0
+                    }
+                }
+            }
+    }
+    
+    private func flip(dir: Bool) -> Void {
         if(isFlipping){return}
         
         let f = dir ? 1.0 : -1.0
@@ -111,8 +153,11 @@ struct RulerView: View {
             isFlipping = false
         }
     }
-    
-    func startPhysics() -> Void {
+}
+
+
+extension RulerView {
+    private func startPhysics() -> Void {
         if !isPhysicsActive {
             motionManager.startAccelerometerUpdates()
             isPhysicsActive = true
@@ -123,14 +168,14 @@ struct RulerView: View {
         }
     }
     
-    func stopPhysics() -> Void {
+    private func stopPhysics() -> Void {
         if isPhysicsActive {
             motionManager.stopAccelerometerUpdates()
             isPhysicsActive = false
         }
     }
     
-    func stepPhysics() -> Void {
+    private func stepPhysics() -> Void {
         isSteppingPhysics = true
         let dt: CGFloat = 0.01
         
@@ -198,4 +243,3 @@ struct RulerView: View {
         DispatchQueue.main.asyncAfter(deadline: .now()+dt, execute: stepPhysics)
     }
 }
-

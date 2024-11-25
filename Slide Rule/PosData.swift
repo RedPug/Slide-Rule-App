@@ -47,4 +47,7 @@ struct PosData: Equatable {
     
     var velocity: CGFloat = 0
     var physicsEnabled: Bool = true
+    
+    var zoomLevel: CGFloat = 1.0
+    var zoomAnchor: CGPoint = .zero
 }

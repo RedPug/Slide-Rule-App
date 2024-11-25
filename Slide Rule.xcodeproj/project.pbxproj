@@ -60,6 +60,8 @@
 		58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */; };
 		58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B7705F2C9CC410006DA44D /* SettingsManager.swift */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
+		58DAE0122CF39E2000480851 /* PulsingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0112CF39E2000480851 /* PulsingCircleView.swift */; };
+		58DAE0142CF439DC00480851 /* RulerZoomWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0132CF439DC00480851 /* RulerZoomWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +150,8 @@
 		58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouView.swift; sourceTree = "<group>"; };
 		58B7705F2C9CC410006DA44D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
+		58DAE0112CF39E2000480851 /* PulsingCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingCircleView.swift; sourceTree = "<group>"; };
+		58DAE0132CF439DC00480851 /* RulerZoomWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerZoomWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +275,7 @@
 				585906132B0DB8FF0051F3FC /* Slide_RuleApp.swift */,
 				585906152B0DB8FF0051F3FC /* ContentView.swift */,
 				58C175052B43B5DC008F0097 /* SlideRuleView.swift */,
+				581206722C92524500ACA6F1 /* PosData.swift */,
 				581249752C93A91D005C4F15 /* Notes */,
 				581206682C900AE600ACA6F1 /* Settings */,
 				58B770612C9CC5DF006DA44D /* Tips */,
@@ -328,7 +333,7 @@
 				58A680192C7690DC00A0E055 /* CursorView.swift */,
 				58A6801B2C7691BB00A0E055 /* SlideView.swift */,
 				58A6801D2C7691F500A0E055 /* Frame.swift */,
-				581206722C92524500ACA6F1 /* PosData.swift */,
+				58DAE0132CF439DC00480851 /* RulerZoomWrapper.swift */,
 			);
 			path = Ruler;
 			sourceTree = "<group>";
@@ -339,6 +344,7 @@
 				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
 				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
+				58DAE0112CF39E2000480851 /* PulsingCircleView.swift */,
 				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
 				58A680252C769D8F00A0E055 /* GuidesTipView.swift */,
 			);
@@ -513,6 +519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58A6801E2C7691F500A0E055 /* Frame.swift in Sources */,
+				58DAE0142CF439DC00480851 /* RulerZoomWrapper.swift in Sources */,
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
 				581249772C93A931005C4F15 /* MathNotesView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
@@ -521,6 +528,7 @@
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
 				58230FC42C62EB56005BB934 /* String.swift in Sources */,
+				58DAE0122CF39E2000480851 /* PulsingCircleView.swift in Sources */,
 				58A6801C2C7691BB00A0E055 /* SlideView.swift in Sources */,
 				58230FC22C61F60D005BB934 /* PlainLaTeXStyle.swift in Sources */,
 				589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */,
