@@ -24,32 +24,6 @@
 
 import Foundation
 
-struct InstructionColumn: Codable {
-    let header: String
-    let instructions: [Instruction]
-    
-    static let allColumns: [InstructionColumn] = Bundle.main.decode(file: "SlideRuleInstructions.json")
-}
-
-struct Instruction: Codable {
-    let title: String
-    let body: String
-    var animation: [Keyframe] = []
-}
-
-struct Keyframe: Codable{
-    let t: CGFloat?
-    let frame: CGFloat?
-    let slide: CGFloat?
-    let cursor: CGFloat?
-    let selectionNum: Int?
-    let selectionX: CGFloat?
-    let selectionNum2: Int?
-    let selectionX2: CGFloat?
-    let label: String?
-    let action: String?
-}
-
 extension Bundle {
     func decode<T: Decodable>(file: String) -> T {
         guard let url = self.url(forResource: file, withExtension: nil) else {

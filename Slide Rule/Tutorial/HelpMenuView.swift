@@ -71,6 +71,9 @@ To zoom:  Pinch to zoom in anywhere.
                             HelpButtonView(string:"General")
                         })
                         .navigationTitle("Guides")
+                        NavigationLink(destination: TestTutorialView()){
+                            HelpButtonView(string:"Test")
+                        }
                     }
                     Spacer()
                 }.padding(.top,20)
@@ -85,6 +88,12 @@ To zoom:  Pinch to zoom in anywhere.
             Task{await GuidesTip.openedGuides.donate()}
             
         }
+    }
+}
+
+struct TestTutorialView: View {
+    var body: some View {
+        HelpBodyView(instruction: Instruction(title: "Test multiplication", body: "this is the body", animation: parseEquation("1.5 3 *")))
     }
 }
 

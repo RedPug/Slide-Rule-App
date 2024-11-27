@@ -42,8 +42,8 @@ struct TutorialRulerView: View{
     @State var selectionNum2: Int = -1
     
     @State var instructionNum: Int = 0
-    @State var label: String = "_"
-    @State var action: String = ""
+    @State var label: String = ""
+    @State var action: KeyframeActions = .none
     @State var gestureHint: GestureHint = .none
     
     @State var needsNextInput: Bool = false
@@ -174,16 +174,13 @@ struct TutorialRulerView: View{
         
         if instructionNum < 0 || instructionNum >= keyframes.count {return}
         let key = keyframes[instructionNum]
-        if key.frame != nil {posData.framePos = center(x:key.frame!); posData.framePos0 = posData.framePos}
-        if key.slide != nil {posData.slidePos = key.slide! ;posData.slidePos0 = posData.slidePos}
-        if key.cursor != nil {posData.cursorPos = key.cursor!-50; posData.cursorPos0 = posData.cursorPos}
         if key.selectionNum != nil {selectionNum = key.selectionNum!}
         if key.selectionX != nil {selectionX0 = calcXValue(x: key.selectionX!, slideNum: selectionNum)}
         if key.selectionNum2 != nil {selectionNum2 = key.selectionNum2!}
         if key.selectionX2 != nil {selectionX20 = calcXValue(x: key.selectionX2!, slideNum: selectionNum2)}
         if key.label != nil {label = key.label!}
         //if key.action != nil {action = key.action!}
-        action = key.action ?? ""
+        action = key.action
     }
     
     
@@ -284,8 +281,8 @@ extension TutorialRulerView{
         instructionNum = num;
         
         let key = keyframes[instructionNum]
-        withAnimation(.easeInOut(duration:key.t ?? 1)){
-            action = key.action ?? ""
+        withAnimation(.easeInOut(duration: 1)){
+            action = key.action
             if key.selectionNum != nil {
                 selectionNum = key.selectionNum!
             }
@@ -313,7 +310,7 @@ extension TutorialRulerView{
         
         if(shouldMove){
             moveToKeyframe()
-            let seconds = (action == "read" || action == "none") ? 0 : 1.5;
+            let seconds = (action == .readValue || action == .none) ? 0 : 1.5;
             DispatchQueue.main.asyncAfter(deadline: .now() + seconds){setInstructionNum0(num: num)}
         }else{
             setInstructionNum0(num: num)
@@ -335,16 +332,15 @@ extension TutorialRulerView{
     }
     
     private func moveToKeyframe(){
-        let key = keyframes[instructionNum]
-        withAnimation(.easeInOut(duration:key.t ?? 1)){
+        withAnimation(.easeInOut(duration:1)){
             switch action{
-            case "cursor":
+            case .alignCursor:
                 posData.cursorPos = selectionX
                 posData.cursorPos0 = posData.cursorPos
-            case "indexL":
+            case .alignIndexLeft:
                 posData.slidePos = selectionX-124.25
                 posData.slidePos0 = posData.slidePos
-            case "indexR":
+            case .alignIndexRight:
                 posData.slidePos = selectionX-1600+124.25
                 posData.slidePos0 = posData.slidePos
             default:
@@ -360,19 +356,19 @@ extension TutorialRulerView{
         if selectionNum < 0 {return}
         
         switch action{
-        case "cursor":
+        case .alignCursor:
             if abs(posData.cursorPos - selectionX) < 3 {
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.75, execute: {incInstructionNum()})
             }
-        case "indexL":
+        case .alignIndexLeft:
             if abs(posData.slidePos+124.25 - selectionX) < 3 {
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.75, execute: {incInstructionNum()})
             }
-        case "indexR":
+        case .alignIndexRight:
             if abs(posData.slidePos+1600-124.25 - selectionX) < 3 {
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.75, execute: {incInstructionNum()})
             }
-        case "slideToSlide":
+        case .alignScales:
             if abs(selectionX - selectionX2) < 3 {
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.75, execute: {incInstructionNum()})
             }
@@ -387,7 +383,7 @@ extension TutorialRulerView{
 
 extension TutorialRulerView{
     private func checkIfNeedsNextInput(){
-        needsNextInput = (action == "read" || action == "none") && instructionNum < keyframes.count - 1
+        needsNextInput = (action == .readValue || action == .none) && instructionNum < keyframes.count - 1
     }
     
     private func updateGestureHintState(){
@@ -413,7 +409,7 @@ extension TutorialRulerView{
         
         return Group{
             if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
-                if (action == "cursor" || action == "indexR" || action == "indexL" || action == "read") && selectionNum >= 0{
+                if (action == .alignCursor || action == .alignIndexLeft || action == .alignIndexRight || action == .readValue) && selectionNum >= 0{
                     Capsule()
                         .stroke(.red)
                         .frame(width:6,height:12)
@@ -421,7 +417,7 @@ extension TutorialRulerView{
                     //.zIndex(/*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
                 }
                 
-                if selectionNum2 >= 0 && action == "slideToSlide"{
+                if selectionNum2 >= 0 && action == .alignScales{
                     //ZStack{
                     Capsule()
                         .stroke(.red)
@@ -456,11 +452,11 @@ extension TutorialRulerView{
                         .offset(x:selectionX2 + posData.framePos)
                     //}
                 }
-                if action == "indexR" || action == "indexL" {
+                if action == .alignIndexRight || action == .alignIndexLeft{
                     Capsule()
                         .fill(.red)
                         .frame(width:0.6,height:190)
-                        .offset(x: posData.framePos + posData.slidePos + (action == "indexL" ? 124.25 : 1600-124.25))
+                        .offset(x: posData.framePos + posData.slidePos + (action == .alignIndexLeft ? 124.25 : 1600-124.25))
                     //.zIndex(/*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
                 }
             }
