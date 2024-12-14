@@ -29,8 +29,22 @@ enum GestureHint{
 }
 
 struct GestureHandView: View {
+    var hint: GestureHint
+    
     var body: some View {
-        Image(systemName:"hand.point.up.left")
+        let img: String
+        switch hint {
+        case .flip:
+            img = "arrowshape.up"
+        case .left:
+            img = "arrowshape.left"
+        case .right:
+            img = "arrowshape.right"
+        default:
+            img = "questionmark"
+        }
+        
+        return Image(systemName:img)
             .resizable()
             .scaledToFill()
             .frame(width:50, height:50)
@@ -48,11 +62,11 @@ struct TutorialGestureView: View {
     var body: some View {
         Group{
             if(gestureHint == .flip){
-                GestureHandView()
+                GestureHandView(hint:gestureHint)
                     .offset(y:isGestureMoving ? -75 : 75)
             }else{
-                GestureHandView()
-                    .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:110)
+                GestureHandView(hint:gestureHint)
+                    .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:100)
             }
         }
         .opacity(isGestureVisible ? 1 : 0)

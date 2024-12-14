@@ -38,17 +38,21 @@ func parseEquation(_ text: String) -> [Keyframe]{
             stack.append(token.numericValue!)
         }else if let op = token.operation{
             let n = op.numOperands
-            let args = Array(stack.suffix(op.numOperands))
-            
-            stack.removeLast(n)
-            
-            let result = op.expression(args)
-            
-            stack.append(result)
-            
-            keyframes.append(contentsOf: op.getKeyframes(args))
+            if n <= stack.count && n > 0{
+                let args = Array(stack.suffix(n))
+                
+                stack.removeLast(n)
+                
+                let result = op.expression(args)
+                
+                stack.append(result)
+                
+                keyframes.append(contentsOf: op.getKeyframes(args))
+            }
         }
     }
+    
+    print("Expression evaluated to: \(stack[0])")
     
     return keyframes
 }

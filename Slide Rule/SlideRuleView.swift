@@ -43,15 +43,7 @@ struct SlideRuleView: View {
     var body: some View {
         NavigationStack{
             HStack{
-                Color(.gray)
-                    .frame(width:45*(1+0.5*(posData.zoomLevel-1))+10)
-                    .overlay(alignment:.leading){
-                        LeftSlideLabelView(scales: posData.isFlippedTemp ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront, minIndex: 0, maxIndex: 10, zoom:posData.zoomLevel, zoomAnchor:posData.zoomAnchor)
-                            .frame(width:70, height:240, alignment:.leading)
-                            .scaleEffect(1.4, anchor: .leading)
-                            .padding(5)
-                    }
-                    .opacity(min(1,max(0.7, 1-(-250.0-min(posData.framePos,posData.framePos + posData.slidePos))/50.0)))
+                SideScaleLabelView(posData: $posData)
                 
                 RulerView(posData: $posData)
                     .zIndex(-1)

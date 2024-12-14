@@ -109,7 +109,6 @@ struct SettingsView: View {
             .listRowBackground(Color.theme.background_dark)
             .listRowSeparatorTint(Color.theme.background)
         }
-        
         .foregroundStyle(Color.theme.text)
         .navigationTitle("Settings")
         .scrollContentBackground(.hidden)

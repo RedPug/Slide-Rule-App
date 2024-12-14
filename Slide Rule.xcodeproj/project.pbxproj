@@ -58,6 +58,9 @@
 		58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A680232C76954000A0E055 /* Launch Screen.storyboard */; };
 		58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680252C769D8F00A0E055 /* GuidesTipView.swift */; };
 		58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */; };
+		58B194572CF6F918003E7B3D /* ValueRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194562CF6F918003E7B3D /* ValueRange.swift */; };
+		58B194592CF91A6C003E7B3D /* SideScaleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */; };
+		58B1945B2CF92C20003E7B3D /* TutorialStepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */; };
 		58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B7705F2C9CC410006DA44D /* SettingsManager.swift */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 		58DAE0122CF39E2000480851 /* PulsingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0112CF39E2000480851 /* PulsingCircleView.swift */; };
@@ -152,6 +155,9 @@
 		58A680232C76954000A0E055 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		58A680252C769D8F00A0E055 /* GuidesTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesTipView.swift; sourceTree = "<group>"; };
 		58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouView.swift; sourceTree = "<group>"; };
+		58B194562CF6F918003E7B3D /* ValueRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueRange.swift; sourceTree = "<group>"; };
+		58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideScaleLabelView.swift; sourceTree = "<group>"; };
+		58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepListView.swift; sourceTree = "<group>"; };
 		58B7705F2C9CC410006DA44D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		58DAE0112CF39E2000480851 /* PulsingCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingCircleView.swift; sourceTree = "<group>"; };
@@ -337,6 +343,7 @@
 			children = (
 				58A36A972BF3058300439007 /* RulerScaleDefinitions.swift */,
 				58A680152C768EFD00A0E055 /* SlideMarkingView.swift */,
+				58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */,
 				58A680172C768FA300A0E055 /* RulerView.swift */,
 				58A680192C7690DC00A0E055 /* CursorView.swift */,
 				58A6801B2C7691BB00A0E055 /* SlideView.swift */,
@@ -352,11 +359,12 @@
 				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
 				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
+				58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */,
 				58DAE0112CF39E2000480851 /* PulsingCircleView.swift */,
 				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
 				58A680252C769D8F00A0E055 /* GuidesTipView.swift */,
-				58DAE0192CF6D3D700480851 /* Equation Parser */,
 				58DAE0172CF6D26100480851 /* Keyframe.swift */,
+				58DAE0192CF6D3D700480851 /* Equation Parser */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -380,6 +388,7 @@
 				58DAE0152CF69E2D00480851 /* EquationInstructionParser.swift */,
 				58DAE01E2CF6D4DC00480851 /* Operators.swift */,
 				58DAE01A2CF6D41600480851 /* EquationToken.swift */,
+				58B194562CF6F918003E7B3D /* ValueRange.swift */,
 			);
 			path = "Equation Parser";
 			sourceTree = "<group>";
@@ -543,6 +552,7 @@
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
 				581249772C93A931005C4F15 /* MathNotesView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
+				58B194572CF6F918003E7B3D /* ValueRange.swift in Sources */,
 				581206732C92524500ACA6F1 /* PosData.swift in Sources */,
 				58DAE0182CF6D26100480851 /* Keyframe.swift in Sources */,
 				58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */,
@@ -561,6 +571,7 @@
 				585906142B0DB8FF0051F3FC /* Slide_RuleApp.swift in Sources */,
 				589BC8722B0F0A3F0065B527 /* Color.swift in Sources */,
 				588DFE8F2C16694600576254 /* View.swift in Sources */,
+				58B1945B2CF92C20003E7B3D /* TutorialStepListView.swift in Sources */,
 				58A36A982BF3058300439007 /* RulerScaleDefinitions.swift in Sources */,
 				581206642C9000BB00ACA6F1 /* TipMenuView.swift in Sources */,
 				581797502C12552F0077491B /* OrientationManager.swift in Sources */,
@@ -569,6 +580,7 @@
 				58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */,
 				58A680182C768FA300A0E055 /* RulerView.swift in Sources */,
 				58A6801A2C7690DC00A0E055 /* CursorView.swift in Sources */,
+				58B194592CF91A6C003E7B3D /* SideScaleLabelView.swift in Sources */,
 				58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */,
 				5876FF9B2C980BF500C88190 /* WebView.swift in Sources */,
 				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,

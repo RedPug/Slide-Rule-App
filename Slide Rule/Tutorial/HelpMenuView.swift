@@ -92,8 +92,47 @@ To zoom:  Pinch to zoom in anywhere.
 }
 
 struct TestTutorialView: View {
+    @State var text: String = ""
+    @State var isNav: Bool = false
+    @State var keyframes: [Keyframe] = []
+    
     var body: some View {
-        HelpBodyView(instruction: Instruction(title: "Test multiplication", body: "this is the body", animation: parseEquation("1.5 3 *")))
+        ZStack{
+            Color.background.ignoresSafeArea(.all)
+            
+            VStack{
+                Text("Enter an expression to evaluate")
+                    .foregroundStyle(Color.theme.text)
+                    .padding()
+                
+                TextField("", text:$text)
+                    .background(Color.theme.background_dark)
+                    .foregroundStyle(Color.theme.text)
+                    .border(.black)
+                    .frame(width:200, height:30)
+                    .padding()
+                
+                Button(){
+                    isNav = true
+                    keyframes = parseEquation(text)
+                }label:{
+                    Text("Step-by-Step")
+                        .frame(width:200,height:30)
+                        .background(Color.theme.text)
+                        .foregroundColor(.theme.background)
+                        .fontWeight(.heavy)
+                        .cornerRadius(10)
+                }
+                .navigationDestination(isPresented: $isNav){
+                    ZStack{
+                        Color.background.ignoresSafeArea(.all)
+                        TutorialRulerView(keyframes: keyframes)
+                    }
+                }
+                .padding()
+            }
+        }
+        
     }
 }
 
@@ -181,8 +220,7 @@ struct HelpButtonView: View {
         LaTeX(string)
             .latexStyle(PlainLaTeXStyle(fontSize: 18, color: Color.theme.background, weight: Font.Weight.bold))
             .frame(width:100,height:30)
-            .background(Color.theme.text)
-            .cornerRadius(10)
+            .background(Color.theme.text, in:RoundedRectangle(cornerRadius: 10))
     }
 }
 

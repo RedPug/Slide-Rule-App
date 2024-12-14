@@ -126,7 +126,7 @@ struct LabelingInterval{
         
         let diff: CGFloat = max-min
         let dist: CGFloat = diff/spacing
-        let range: Int = Int(floor(dist + 0.01))
+        let range: Int = Int(floor(dist + 0.0001))
         
         for i in 0...range{
             if skipping > 0 && i%skipping == 0{continue}
@@ -337,8 +337,8 @@ enum RulerScales{
             MarkingInterval(min: 50, max: 100, spacing: 1, skipping:5, size:.small),
         ],
         labelingIntervals: [
-            LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))".first!.description},
-            LabelingInterval(min: 10, max: 100, spacing: 10){x in return "\(Int(x)/10)".first!.description},
+            LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))"},
+            LabelingInterval(min: 10, max: 100, spacing: 10){x in return "\(Int(x))"},
         ]
     )
     
@@ -369,9 +369,12 @@ enum RulerScales{
             MarkingInterval(min: 400, max: 1000, spacing: 10, skipping:5, size:.small),
         ],
         labelingIntervals: [
-            LabelingInterval(min: 1, max: 10, spacing: 1){x in return "\(Int(x))".first!.description},
-            LabelingInterval(min: 10, max: 100, spacing: 10){x in return "\(Int(x)/10)".first!.description},
-            LabelingInterval(min: 100, max: 1000, spacing: 100){x in return "\(Int(x)/100)".first!.description},
+            LabelingInterval(min: 1, max: 9, spacing: 1){x in return "\(Int(x))"},
+            LabelingInterval(x: 10, text: "10"),
+            LabelingInterval(min: 20, max: 90, spacing: 10){x in return "\(Int(x/10))"},
+            LabelingInterval(x: 100, text: "100"),
+            LabelingInterval(min: 200, max: 900, spacing: 100){x in return "\(Int(x/100))"},
+            LabelingInterval(x: 1000, text: "1000"),
         ]
     )
     

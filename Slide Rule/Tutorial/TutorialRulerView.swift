@@ -50,65 +50,59 @@ struct TutorialRulerView: View{
     
     @State var sensoryTrigger: Bool = false
     
+    @State var isInfoPopoverDisplayed: Bool = false
+    
     var body: some View {
         GeometryReader{ geometry in
-            VStack(alignment:.center){
-                HStack{
-                    RulerView(posData: $posData){
-                        tutorialOverlayView
-                    }.scaleEffect(0.85)
-                    
-                    rulerButtonView
-                        .sensoryFeedback(.impact, trigger: sensoryTrigger)
-                }
-                
-                HStack{
-                    Button{
-                        decInstructionNum()
-                    }label:{
-                        Image(systemName:"arrow.left.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.theme.text)
-                            .frame(width:30,height:30)
-                    }
-                    Spacer()
-                    Text("Step \(instructionNum+1)/\(keyframes.count)")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Button{
-                        incInstructionNum(shouldMove: true)
-                    }label:{
-                        Image(systemName:"arrow.right.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.theme.text)
-                            .frame(width:30,height:30)
-                            .overlay{
-                                if(needsNextInput){
-                                    PulsingCircleView(beginWidth: 30, endWidth: 50, color: .theme.text)
-                                }
+            HStack{
+                SideScaleLabelView(posData: $posData)
+                    .overlay(
+                        HStack{
+                            VStack(alignment: .leading){
+                                Spacer()
+                                
                             }
-                    }
-                    
-                    //Spacer()
-                }.padding(.bottom, 5)
-                    .padding(.horizontal, 10)
+                            Spacer()
+                        }
+                    )
+                
+                RulerView(posData: $posData){
+                    tutorialOverlayView
+                }.scaleEffect(1)
+                    .zIndex(-1)
+                
+                rulerButtonView
+                    .sensoryFeedback(.impact, trigger: sensoryTrigger)
             }
+            
             .frame(width: geometry.size.width, height: geometry.size.height+geometry.safeAreaInsets.bottom)
-            //.frame(maxWidth:.infinity, maxHeight:.infinity)
             .clipped()
             .toolbar{
                 ToolbarItem(placement: .principal){
-                    HStack{
-                        LaTeX("\(label)")
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.4)
-                            .foregroundColor(.white)
-                    }
+                    toolbarContent
                 }
             }
+            .sheet(isPresented: $isInfoPopoverDisplayed){
+                ZStack{
+                    RoundedRectangle(cornerRadius:5)
+                        .fill(Color.theme.background)
+                    VStack{
+                        TutorialStepListView(instructionNum: instructionNum, keyframes: keyframes, setInstructionNum:{i in return setInstructionNum(i)})
+                        Spacer()
+                        Button{
+                            isInfoPopoverDisplayed = false
+                        }label:{
+                            HelpButtonView("Done")
+                        }
+                    }
+                }
+                .frame(minWidth:geometry.size.width*0.9)
+                .padding(10)
+                .presentationCompactAdaptation(.sheet)
+                .presentationBackground(.gray)
+            }
         }
+        
         .onAppear(){
             setInitialState()
         }
@@ -124,21 +118,13 @@ struct TutorialRulerView: View{
             }
         }
         .onChange(of: selectionX0){
-            if selectionNum >= 3 && selectionNum <= 7 || selectionNum >= 14 && selectionNum <= 18 {
-                selectionX = selectionX0 + posData.slidePos
-            }else{
-                selectionX = selectionX0;
-            }
+            onSelectionChange()
         }
         .onChange(of:selectionNum){
             updateGestureHintState()
         }
         .onChange(of: selectionX20){
-            if selectionNum2 >= 3 && selectionNum2 <= 7 || selectionNum2 >= 14 && selectionNum2 <= 18 {
-                selectionX2 = selectionX20 + posData.slidePos
-            }else{
-                selectionX2 = selectionX20;
-            }
+            onSelection2Change()
         }
         .onChange(of:selectionNum2){
             updateGestureHintState()
@@ -154,6 +140,21 @@ struct TutorialRulerView: View{
         }
     }
     
+    func onSelectionChange(){
+        if selectionNum >= 3 && selectionNum <= 7 || selectionNum >= 14 && selectionNum <= 18 {
+            selectionX = selectionX0 + posData.slidePos
+        }else{
+            selectionX = selectionX0;
+        }
+    }
+    
+    func onSelection2Change(){
+        if selectionNum2 >= 3 && selectionNum2 <= 7 || selectionNum2 >= 14 && selectionNum2 <= 18 {
+            selectionX2 = selectionX20 + posData.slidePos
+        }else{
+            selectionX2 = selectionX20;
+        }
+    }
     
     
     func setPosData(data: PosData){
@@ -179,7 +180,6 @@ struct TutorialRulerView: View{
         if key.selectionNum2 != nil {selectionNum2 = key.selectionNum2!}
         if key.selectionX2 != nil {selectionX20 = calcXValue(x: key.selectionX2!, slideNum: selectionNum2)}
         if key.label != nil {label = key.label!}
-        //if key.action != nil {action = key.action!}
         action = key.action
     }
     
@@ -220,8 +220,64 @@ extension TutorialRulerView{
                             .frame(width:30,height:30)
                     }
                     .padding(.top, 10)
+                    
+                    Spacer()
+                    
+                    
                 }
             }
+    }
+    
+    private var toolbarContent: some View {
+        HStack{
+            Text("Step \(instructionNum+1)/\(keyframes.count):")
+                .foregroundStyle(.white)
+            
+            LaTeX("\(label)")
+                .lineLimit(1)
+                .minimumScaleFactor(0.4)
+                .foregroundStyle(.white)
+            
+            Spacer()
+            
+            Button{
+                isInfoPopoverDisplayed = true
+            }label:{
+                Image(systemName:"list.number")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.theme.text)
+                    .frame(width:30,height:30)
+            }
+            
+            Button{
+                decInstructionNum()
+            }label:{
+                Image(systemName:"arrow.left.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.theme.text)
+                    .frame(width:30,height:30)
+            }
+            .frame(width:30)
+            
+            Button{
+                incInstructionNum(shouldMove: true)
+            }label:{
+                Image(systemName:"arrow.right.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.theme.text)
+                    .frame(width:30,height:30)
+                    .overlay{
+                        if(needsNextInput){
+                            PulsingCircleView(beginWidth: 30, endWidth: 50, color: .theme.text)
+                        }
+                    }
+            }
+            .frame(width:30)
+            
+        }
     }
 }
 
@@ -277,29 +333,42 @@ extension TutorialRulerView{
 
 
 extension TutorialRulerView{
-    private func setInstructionNum0(num: Int){
+    private func setInstructionNum0(num: Int, isInstant: Bool = false){
         instructionNum = num;
         
         let key = keyframes[instructionNum]
-        withAnimation(.easeInOut(duration: 1)){
-            action = key.action
-            if key.selectionNum != nil {
-                selectionNum = key.selectionNum!
-            }
-            if key.selectionX != nil {
-                selectionX0 = calcXValue(x: key.selectionX!, slideNum: key.selectionNum!)
-            }
-            if key.selectionNum2 != nil {
-                selectionNum2 = key.selectionNum2!
-            }
-            if key.selectionX2 != nil {
-                selectionX20 = calcXValue(x: key.selectionX2!, slideNum: key.selectionNum2!)
-            }
+        action = key.action
+        if key.selectionNum != nil {
+            selectionNum = key.selectionNum!
         }
+        if key.selectionX != nil {
+            selectionX0 = calcXValue(x: key.selectionX!, slideNum: key.selectionNum!)
+            onSelectionChange()
+        }
+        if key.selectionNum2 != nil {
+            selectionNum2 = key.selectionNum2!
+        }
+        if key.selectionX2 != nil {
+            selectionX20 = calcXValue(x: key.selectionX2!, slideNum: key.selectionNum2!)
+            onSelection2Change()
+        }
+        
         if key.label != nil {label = key.label!}
     }
     
-    private func incInstructionNum(shouldMove: Bool = false){
+    private func setInstructionNum(_ num: Int){
+        if num < instructionNum {
+            for _ in 1...(instructionNum-num){
+                decInstructionNum(isInstant: true)
+            }
+        }else if num > instructionNum {
+            for _ in 1...(num - instructionNum){
+                incInstructionNum(shouldMove:true, isInstant: true)
+            }
+        }
+    }
+    
+    private func incInstructionNum(shouldMove: Bool = false, isInstant: Bool = false){
         var num = instructionNum + 1;
         if num < 0 {num = 0}
         else if num >= keyframes.count {num = keyframes.count-1}
@@ -309,30 +378,40 @@ extension TutorialRulerView{
         states[instructionNum] = posData
         
         if(shouldMove){
-            moveToKeyframe()
-            let seconds = (action == .readValue || action == .none) ? 0 : 1.5;
-            DispatchQueue.main.asyncAfter(deadline: .now() + seconds){setInstructionNum0(num: num)}
+            
+//            if isInstant{
+//                setInstructionNum0(num: num, isInstant: true)
+//            }else{
+//                let seconds = (action == .readValue || action == .none) ? 0 : 1.5;
+//                DispatchQueue.main.asyncAfter(deadline: .now() + seconds){}
+//            }
+            moveToKeyframe(isInstant: isInstant) //move to the current target keyframe
+            setInstructionNum0(num: num, isInstant: isInstant) //change the target keyframe to be the next one
         }else{
             setInstructionNum0(num: num)
         }
     }
     
-    private func decInstructionNum(){
+    private func decInstructionNum(isInstant: Bool = false){
         var num = instructionNum - 1;
         if num < 0 {num = 0}
         else if num >= keyframes.count {num = keyframes.count-1}
         
         if num == instructionNum {return}
         
-        withAnimation(.easeInOut(duration:1)){
+        if(isInstant){
             setPosData(data: states[num])
+        }else{
+            withAnimation(.easeInOut(duration:1)){
+                setPosData(data: states[num])
+            }
         }
         
-        setInstructionNum0(num: num)
+        setInstructionNum0(num: num, isInstant: isInstant)
     }
     
-    private func moveToKeyframe(){
-        withAnimation(.easeInOut(duration:1)){
+    private func moveToKeyframe(isInstant: Bool = false){
+        let f = {()->() in
             switch action{
             case .alignCursor:
                 posData.cursorPos = selectionX
@@ -345,6 +424,14 @@ extension TutorialRulerView{
                 posData.slidePos0 = posData.slidePos
             default:
                 return
+            }
+        }
+        
+        if isInstant{
+            f()
+        }else{
+            withAnimation(.easeInOut(duration:1)){
+                f()
             }
         }
     }

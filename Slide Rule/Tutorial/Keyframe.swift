@@ -72,6 +72,15 @@ struct Keyframe: Codable{
         self.init(scaleNum:scaleNum, x:x, scaleNum2:scaleNum2, x2:x2, action:KeyframeActions.from(action), label:label)
     }
     
+    init(label:String){
+        self.selectionNum = nil
+        self.selectionX = nil
+        self.selectionNum2 = nil
+        self.selectionX2 = nil
+        self.action = .none
+        self.label = label
+    }
+    
     enum CodingKeys: String, CodingKey{
         case selectionNum
         case selectionX
