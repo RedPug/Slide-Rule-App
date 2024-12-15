@@ -41,9 +41,9 @@ To slide: Drag the cursor, slide, or body left to right.
 To flip:  Drag on the cursor, slide, or body up or down, or press the circular arrow button.
 To zoom:  Pinch to zoom in anywhere.
 
-"""
+""", operation: Operators.none
                             )), label:{
-                            HelpButtonView(string:"Controls")
+                            HelpButtonView("Controls")
                         })
                         .navigationTitle("Guides")
                         
@@ -66,13 +66,13 @@ To zoom:  Pinch to zoom in anywhere.
     Any operation can be reversed from that found in a guide. Simply reverse the steps to undo an operation.
 
     There are often many ways to calculate an expression, and these guides cannot cover them all.
-"""
+""", operation: Operators.none
                             )), label:{
-                            HelpButtonView(string:"General")
+                            HelpButtonView("General")
                         })
                         .navigationTitle("Guides")
                         NavigationLink(destination: TestTutorialView()){
-                            HelpButtonView(string:"Test")
+                            HelpButtonView("Test")
                         }
                     }
                     Spacer()
@@ -148,7 +148,7 @@ struct HelpListView: View {
                             NavigationLink(
                                 destination: HelpBodyView(instruction: instruction),
                                 label:{
-                                HelpButtonView(string: instruction.title)
+                                    HelpButtonView(instruction.title)
                                 }
                             )
                             .navigationTitle("Guides")
@@ -183,12 +183,9 @@ struct HelpBodyView: View {
                     
                 }
                 Spacer()
-                if !instruction.animation.isEmpty {
-                    NavigationLink(destination:
-                        ZStack{
-                            Color.background.ignoresSafeArea(.all)
-                            TutorialRulerView(keyframes: instruction.animation)
-                        }, label:{
+                if !(instruction.operation == Operators.none) {
+                    NavigationLink(destination:TutorialStepsView(operation: instruction.operation),
+                        label:{
                             Text("Step-by-Step")
                                 .frame(width:200,height:30)
                                 .background(Color.theme.text)
@@ -200,14 +197,12 @@ struct HelpBodyView: View {
                 }
             }
         }
-        //.toolbarBackground(.hidden, for: .navigationBar)
         .toolbar{
             ToolbarItem(placement: .principal){
                 HStack{
                     LaTeX("Guide: \(instruction.title)")
                         .foregroundColor(.white)
                 }
-                //.background(.gray)
             }
         }
     }
@@ -215,6 +210,10 @@ struct HelpBodyView: View {
 
 struct HelpButtonView: View {
     var string: String
+    
+    init(_ string: String){
+        self.string = string
+    }
     
     var body: some View {
         LaTeX(string)

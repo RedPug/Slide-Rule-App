@@ -24,21 +24,7 @@
 
 import Foundation
 
-
-struct InstructionColumn: Codable {
-    let header: String
-    let instructions: [Instruction]
-    
-    static let allColumns: [InstructionColumn] = Bundle.main.decode(file: "SlideRuleInstructions.json")
-}
-
-struct Instruction: Codable {
-    let title: String
-    let body: String
-    var animation: [Keyframe] = []
-}
-
-struct Keyframe: Codable{
+struct Keyframe{
     let selectionNum: Int?
     let selectionX: CGFloat?
     let selectionNum2: Int?
@@ -80,45 +66,9 @@ struct Keyframe: Codable{
         self.action = .none
         self.label = label
     }
-    
-    enum CodingKeys: String, CodingKey{
-        case selectionNum
-        case selectionX
-        case selectionNum2
-        case selectionX2
-        case label
-        case action
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        selectionNum = try values.decodeIfPresent(Int.self, forKey:.selectionNum)
-        selectionX = try values.decodeIfPresent(CGFloat.self, forKey:.selectionX)
-        selectionNum2 = try values.decodeIfPresent(Int.self, forKey:.selectionNum2)
-        selectionX2 = try values.decodeIfPresent(CGFloat.self, forKey:.selectionX2)
-        
-        label = try values.decodeIfPresent(String.self, forKey:.label)
-        
-        let ac = try values.decode(String.self, forKey:.action)
-        action = KeyframeActions.from(ac)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(selectionNum, forKey:.selectionNum)
-        try container.encode(selectionX, forKey:.selectionX)
-        try container.encode(selectionNum2, forKey:.selectionNum2)
-        try container.encode(selectionX2, forKey:.selectionX2)
-        
-        try container.encode(label, forKey:.label)
-        
-        try container.encode(action.rawValue, forKey:.action)
-    }
 }
 
-enum KeyframeActions: String{
+enum KeyframeActions: String, CaseIterable{
     case alignCursor = "cursor"
     case alignIndexLeft = "indexL"
     case alignIndexRight = "indexR"
@@ -127,19 +77,11 @@ enum KeyframeActions: String{
     case none = "none"
     
     static func from(_ action: String) -> KeyframeActions{
-        switch action{
-        case "cursor":
-            return .alignCursor
-        case "indexL":
-            return .alignIndexLeft
-        case "indexR":
-            return .alignIndexRight
-        case "read":
-            return .readValue
-        case "slideToSlide":
-            return .alignScales
-        default:
-            return .none
+        for item in KeyframeActions.allCases {
+            if action == item.rawValue {
+                return item
+            }
         }
+        return .none
     }
 }

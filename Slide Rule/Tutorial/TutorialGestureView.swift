@@ -37,9 +37,9 @@ struct GestureHandView: View {
         case .flip:
             img = "arrowshape.up"
         case .left:
-            img = "arrowshape.left"
-        case .right:
             img = "arrowshape.right"
+        case .right:
+            img = "arrowshape.left"
         default:
             img = "questionmark"
         }
@@ -66,7 +66,7 @@ struct TutorialGestureView: View {
                     .offset(y:isGestureMoving ? -75 : 75)
             }else{
                 GestureHandView(hint:gestureHint)
-                    .offset(x:(gestureHint == .left ? -1 : 1)*(isGestureMoving ? 75 : -75), y:100)
+                    .offset(x:(gestureHint == .right ? -1 : 1)*(isGestureMoving ? 75 : -75), y:100)
             }
         }
         .opacity(isGestureVisible ? 1 : 0)

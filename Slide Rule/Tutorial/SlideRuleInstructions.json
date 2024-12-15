@@ -6,46 +6,27 @@
             {
                 "title":"$a \\times b$",
                 "body":"Use C and D scales.",
-                "animation":[
-                    {"selectionX":1.8, "selectionNum":8, "action":"cursor", "label":"Calculate $1.8 \\times 14$: Place the cursor at $1.8$ on the D scale"},
-                    {"selectionX":1.8, "selectionNum":8, "action":"indexL", "label":"Move the index of the C scale to the cursor"},
-                    {"selectionX":1.4, "selectionNum":7, "action":"cursor", "label":"Place the cursor at $1.4$ on the C scale"},
-                    {"selectionX":2.52, "selectionNum":8, "action":"read", "label":"Read 2.52 on the D scale. Move the decimal to get 25.2"},
-                ]
+                "operation":"*",
             },
             {
                 "title":"$a / b$",
                 "body":"Use the C and D scales.",
-                "animation":[
-                    {"selectionX":1.8, "selectionNum":8, "selectionX2":1.4, "selectionNum2":7, "action":"slideToSlide", "label":"Calculate $1.8 / 14$: Align $1.8$ on the D scale with $1.4$ on the C scale"},
-                    {"selectionX":1, "selectionNum":7, "action":"cursor", "label":"Move the cursor to the left index of the C scale (1)"},
-                    {"selectionX":1.2857, "selectionNum":8, "action":"read", "label":"Read 1.286 on the D scale at the index of the C scale"},
-                    {"selectionX":1.2857, "selectionNum":8, "action":"read", "label":"Shift the decimal to get 0.1286 as the answer."},
-                ]
+                "operation":"/",
             },
             {
                 "title":"$1 / a$",
                 "body":"Use the C and CI or D and DI scales.",
-                "animation":[
-                    {"selectionX":1.7, "selectionNum":7, "action":"cursor", "label":"Calculate $1 / 17$: Place the cursor at $1.7$ on the C scale"},
-                    {"selectionX":5.88, "selectionNum":6, "action":"read", "label":"Read 5.88 on the CI scale. Move the decimal to get 0.0588"},
-                ]
+                "operation":"1/",
             },
             {
                 "title":"$a^{2}$ or $a^{3}$",
                 "body":"Use the D and A (square) or K (cube) scales.",
-                "animation":[
-                    {"selectionX":2.3, "selectionNum":19, "action":"cursor", "label":"Calculate $2.3^{3}$: Place the cursor at $2.3$ on the D scale"},
-                    {"selectionX":12.167, "selectionNum":12, "action":"read", "label":"Read 12.2 on the K scale."},
-                ]
+                "operation":"sqr",
             },
             {
                 "title":"$\\sqrt{a}$ or $\\sqrt[3]{a}$",
                 "body":"Use the D and A ($\\sqrt{a}$) or K ($\\sqrt[3]{a}$) scales.\n\nNote:\n    For square roots, use the left half of the A scale for numbers between 1 and 10 and use the right half for those between 10 and 100.\nFor numbers outside this range, shift 2 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 2 on the input.\n\n    For cube roots, use the left third of the K scale for numbers between 1 and 10, the middle third for those between 10 and 100, and the last third for those between 100 and 1000.\nFor numbers outside this range, shift 3 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 3 on the input.",
-                "animation":[
-                    {"selectionX":14, "selectionNum":12, "action":"cursor", "label":"Calculate $\\sqrt[3]{14}$: Place the cursor at $14$ on the K scale"},
-                    {"selectionX":2.410, "selectionNum":19, "action":"read", "label":"Read 2.41 on the D scale."},
-                ]
+                "operation":"sqrt",
             },
         ]
     },
@@ -56,63 +37,27 @@
             {
                 "title":"$e^{a}$",
                 "body":"Use the D scale and LL scales.\n$\\begin{array}{lcccc} \\text{Scale:} & LL3 & LL2 & LL1\\\\ \\text{Range:} & [1,10] & [0.1,1] & [0.01,0.1]\\\\ & & & & \\\\ \\text{Scale:} & LL03 & LL02 & LL01 \\\\ \\text{Range:} & [-10,-1] & [-1,-0.1] & [-0.1,-0.01] \\\\ \\end{array}$",
-                "animation":[
-                    {"selectionX":2, "selectionNum":8, "action":"cursor", "label":"Calculate $e^{-0.20}$: Place the cursor at $2.0$ on the D scale"},
-                    {"selectionX":0.81873, "selectionNum":0, "action":"read", "label":"Read the answer $0.819$ on the LL02 scale (with a range from $-0.1x$ to $-1.0x$)"},
-                ]
+                "operation":"exp",
             },
             {
                 "title":"$a^{b}$",
                 "body":"Use the C, D and L scales.\nEquation Used: $a ^ {b} = 10 ^ {\\text{log}(a) \\times b}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "animation":[
-                    {"selectionX":2.32, "selectionNum":7, "action":"cursor", "label":"Calculate $23.2^{1.8}$:    Place the cursor at $2.32$ on the C scale"},
-                    {"selectionX":0.365, "selectionNum":5, "action":"read", "label":"Read $0.365$ on the L scale"},
-                    {"selectionNum":-1, "action":"none", "label":"Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $1.365$"},
-                    {"selectionX":1.365, "selectionNum":8, "action":"cursor", "label":"Move the cursor to $1.365$ on the D scale"},
-                    {"selectionX":1.365, "selectionNum":8, "action":"indexL", "label":"Move the index of the C scale to the cursor"},
-                    {"selectionX":1.8, "selectionNum":7, "action":"cursor", "label":"Place the cursor at $1.8$ on the C scale"},
-                    {"selectionX":2.457, "selectionNum":8, "action":"read", "label":"Read $2.457$ on the D scale"},
-                    {"selectionX":0.457, "selectionNum":5, "action":"cursor", "label":"Move the cursor to $0.457$ (mantissa of $2.457$) on the L scale"},
-                    {"selectionX":2.87, "selectionNum":7, "action":"read", "label":"Read $2.87$ on the C scale. Because we cut a $2$ from $2.457$, we shift $2$ places to get $287$ as our final answer"},
-                ]
+                "operation":"^",
             },
             {
                 "title":"ln($a$)",
                 "body":"Use the C, D, and L scales.\nEquation Used: ln$(a) = \\text{log}(a) \\times 2.303$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "animation":[
-                    {"selectionX":3.14, "selectionNum":7, "action":"cursor", "label":"Calculate ln$(31.4)$: Place the cursor at $3.14$ on the C scale"},
-                    {"selectionX":0.4969, "selectionNum":5, "action":"read", "label":"Read 0.497 on the L scale"},
-                    {"selectionNum":-1, "action":"none", "label":"Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $1.497$"},
-                    {"selectionX":1.497, "selectionNum":8, "action":"cursor", "label":"Move the cursor to $1.497$ on the D scale"},
-                    {"selectionX":1.497, "selectionNum":8, "action":"indexL", "label":"Move the index of the C scale to the cursor"},
-                    {"selectionX":2.303, "selectionNum":7, "action":"cursor", "label":"Place the cursor at $2.303$ on the C scale"},
-                    {"selectionX":3.4475, "selectionNum":8, "action":"read", "label":"Read the answer $3.447$ on the D scale"},
-                ]
+                "operation":"ln",
             },
             {
                 "title":"log($a$)",
                 "body":"Use the C and L scales.\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "animation":[
-                    {"selectionX":3.14, "selectionNum":7, "action":"cursor", "label":"Calculate log$(31.4)$: Place the cursor at $3.14$ on the C scale"},
-                    {"selectionX":0.4969, "selectionNum":5, "action":"read", "label":"Read 0.497 on the L scale"},
-                    {"selectionNum":-1, "action":"none", "label":"Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $1.497$"},
-                ]
+                "operation":"log",
             },
             {
                 "title":"log$_{b}$($a$)",
                 "body":"Use the C, D, and L scales.\nEquation Used: log$_{b}(a) = \\frac{\\text{log}(a)}{\\text{log}(b)}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "animation":[
-                    {"selectionX":3.14, "selectionNum":7, "action":"cursor", "label":"Calculate log$_{5}(31.4)$: Place the cursor at $3.14$ on the C scale"},
-                    {"selectionX":0.4969, "selectionNum":5, "action":"read", "label":"Read 0.497 on the L scale"},
-                    {"selectionNum":-1, "action":"none", "label":"Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $1.497$"},
-                    {"selectionX":5, "selectionNum":7, "action":"cursor", "label":"Place the cursor at $5.00$ on the C scale"},
-                    {"selectionX":0.69897, "selectionNum":5, "action":"read", "label":"Read 0.699 on the L scale"},
-                    {"selectionX":6.99, "selectionNum":6, "action":"cursor", "label":"Move the cursor to $0.699$ on the CI scale"},
-                    {"selectionX":1.431, "selectionNum":8, "action":"read", "label":"Read 1.431 on the D scale"},
-                    {"selectionX":1.431, "selectionNum":8, "action":"indexL", "label":"Move the index of the C scale to the cursor"},
-                    {"selectionX":1.497, "selectionNum":7, "action":"cursor", "label":"Place the cursor at $1.497$ on the C scale"},
-                    {"selectionX":2.141, "selectionNum":8, "action":"read", "label":"Read the answer $2.141$ on the D scale"},
-                ]
+                "operation":"logb",
             },
         ]
     },
@@ -123,44 +68,27 @@
             {
                 "title":"sin($\\alpha$)",
                 "body":"Use the D and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For cosine, use the italicized numbers on the S scale.",
-                "animation":[
-                    {"selectionX":23, "selectionNum":18, "action":"cursor", "label":"Calculate sin($23°$): Place the cursor at $23$ on the S scale"},
-                    {"selectionX":3.9073, "selectionNum":19, "action":"read", "label":"Read 0.391 on the D scale."},
-                ]
+                "operation":"sin",
             },
             {
                 "title":"csc($\\alpha$)",
                 "body":"Use the DI and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For secant (1/cosine), use the italicized numbers on the S scale.",
-                "animation":[
-                    {"selectionX":23, "selectionNum":18, "action":"cursor", "label":"Calculate csc($23°$): Place the cursor at $23$ on the S scale"},
-                    {"selectionX":2.5575, "selectionNum":20, "action":"read", "label":"Read 2.56 on the DI scale."},
-                ]
+                "operation":"csc",
             },
             {
                 "title":"tan($\\alpha$)",
                 "body":"Use the D and T or ST scales.\n\nNote:\n    For angles less than 5.71°, use the ST scale. Use the T scales for angles between 5.74° and 90°, using the <45° and >45° scales appropriately.\n    For cotangent, use the italicized numbers on the T scale.",
-                "animation":[
-                    {"selectionX":23, "selectionNum":15, "action":"cursor", "label":"Calculate tan($23°$): Place the cursor at $23$ on the T scale"},
-                    {"selectionX":4.245, "selectionNum":19, "action":"read", "label":"Read 4.24 on the D scale."},
-                ]
+                "operation":"tan",
             },
             {
                 "title":"$\\pi \\times a$",
                 "body":"Use the C and CF scales.",
-                "animation":[
-                    {"selectionX":2, "selectionNum":7, "action":"cursor", "label":"Calculate $\\pi*2$: Place the cursor at $2$ on the C scale"},
-                    {"selectionX":6.2832, "selectionNum":3, "action":"read", "label":"Read 6.28 on the CF scale."},
-                ]
+                "operation":"pi*",
             },
             {
                 "title":"Min & Sec",
                 "body":"Use the ST and D scales.\n\nNote:\n    The tick marks on the ST scale are used to convert minutes (') and seconds ('') into radians.",
-                "animation":[
-                    {"selectionX":4.2, "selectionNum":19, "action":"cursor", "label":"Convert 42 minutes to radians: Place the cursor at $42$ on the D scale"},
-                    {"selectionX":4.2, "selectionNum":19, "action":"indexR", "label":"Move the index of the slide to the cursor"},
-                    {"selectionX":1.667, "selectionNum":17, "action":"cursor", "label":"Move the cursor to the minutes mark (') on the ST scale"},
-                    {"selectionX":1.221, "selectionNum":19, "action":"read", "label":"Read 0.0122 radians on the D scale."},
-                ]
+                "operation":"'",
             },
         ]
     }

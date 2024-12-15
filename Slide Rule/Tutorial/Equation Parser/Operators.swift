@@ -29,17 +29,36 @@ enum OperatorError: Error{
     case invalidOperator
 }
 
-struct Operator{
+struct Operator: Equatable{
     let symbol: String
     let numOperands: Int
+    let format: String
     let expression: ([CGFloat])->CGFloat
     let getKeyframes: ([CGFloat]) -> [Keyframe]
+    
+    
+    init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
+        self.symbol = symbol
+        self.numOperands = numOperands
+        self.format = format
+        
+        self.expression = expression
+        self.getKeyframes = getKeyframes
+    }
+    
+    static func == (lhs: Operator, rhs: Operator) -> Bool{
+        return lhs.symbol == rhs.symbol
+    }
 }
 
+
+
+
+
 enum Operators{
-    static let allOperators = [times, divide, inverse, square, cube, squareroot, cuberoot, euler, power, commonLog, naturalLog, logb, sine, cosecant, tangent, piTimes, minutes, seconds, seconds2]
+    static let allOperators = [times, divide, inverse, square, cube, squareroot, cuberoot, euler, power, commonLog, naturalLog, logb, sine, cosecant, tangent, piTimes, minutes, seconds, seconds2, none]
     
-    static let times = Operator(symbol: "*", numOperands: 2){args in
+    static let times = Operator(symbol: "*", numOperands: 2, format: "{a} x {b}"){args in
         return args[0] * args[1]
     }getKeyframes:{args in
         let a = args[0]
@@ -56,7 +75,7 @@ enum Operators{
         ]
     }
     
-    static let divide = Operator(symbol: "/", numOperands: 2){args in return args[0] / args[1]}getKeyframes:{args in
+    static let divide = Operator(symbol: "/", numOperands: 2, format: "{a} / {b}"){args in return args[0] / args[1]}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let b = args[1]
@@ -70,7 +89,7 @@ enum Operators{
         ]
     }
     
-    static let inverse = Operator(symbol: "1/", numOperands: 1){args in return 1/args[0]}getKeyframes: { args in
+    static let inverse = Operator(symbol: "1/", numOperands: 1, format: "1 / {b}"){args in return 1/args[0]}getKeyframes: { args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = 1/a
@@ -81,7 +100,7 @@ enum Operators{
         ]
     }
     
-    static let square = Operator(symbol: "sqr", numOperands: 1){args in return args[0]*args[0]}getKeyframes:{args in
+    static let square = Operator(symbol: "sqr", numOperands: 1, format: "{a} ^ 2"){args in return args[0]*args[0]}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = a*a
@@ -92,7 +111,7 @@ enum Operators{
         ]
     }
     
-    static let cube = Operator(symbol: "cube", numOperands: 1){args in return args[0]*args[0]*args[0]}getKeyframes:{args in
+    static let cube = Operator(symbol: "cube", numOperands: 1, format: "{a} ^ 3"){args in return args[0]*args[0]*args[0]}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = a*a*a
@@ -103,7 +122,7 @@ enum Operators{
         ]
     }
 
-    static let squareroot = Operator(symbol: "sqrt", numOperands: 1){args in return sqrt(args[0])}getKeyframes:{args in
+    static let squareroot = Operator(symbol: "sqrt", numOperands: 1, format: "sqrt( {a} )"){args in return sqrt(args[0])}getKeyframes:{args in
         let a = args[0]
         let a1 = pow(mapOnC(sqrt(a)),2) //find the value of a such that 1 <= sqrt(a1) <= 10
         let out = sqrt(a)
@@ -114,7 +133,7 @@ enum Operators{
         ]
     }
     
-    static let cuberoot = Operator(symbol: "cbrt", numOperands: 1){args in return CGFloat(pow(args[0],1/3))}getKeyframes:{args in
+    static let cuberoot = Operator(symbol: "cbrt", numOperands: 1, format: "cube root( {a} )"){args in return CGFloat(pow(args[0],1/3))}getKeyframes:{args in
         let a = args[0]
         let a1 = pow(mapOnC(pow(a,1/3)),3) //find the value of a such that 1 <= sqrt(a1) <= 10
         let out = pow(a,1/3)
@@ -126,7 +145,7 @@ enum Operators{
         ]
     }
     
-    static let euler = Operator(symbol: "exp", numOperands: 1){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
+    static let euler = Operator(symbol: "exp", numOperands: 1, format: "e ^ {a}"){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
         let a = args[0]
         var scale = 0
         var scaleName = "ERROR"
@@ -176,7 +195,7 @@ enum Operators{
     }
     
     //a^b
-    static let power = Operator(symbol:"^", numOperands: 2){args in return CGFloat(pow(args[0], args[1]))}getKeyframes:{args in
+    static let power = Operator(symbol:"^", numOperands: 2, format: "{a} ^ {b}"){args in return CGFloat(pow(args[0], args[1]))}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let b = args[1]
@@ -210,7 +229,7 @@ enum Operators{
     
     
     //ln(a)
-    static let naturalLog = Operator(symbol:"ln", numOperands: 1){args in return CGFloat(log(args[0]))}getKeyframes:{args in
+    static let naturalLog = Operator(symbol:"ln", numOperands: 1, format: "ln( {a} )"){args in return CGFloat(log(args[0]))}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -232,7 +251,7 @@ enum Operators{
     }
     
     //log(a)
-    static let commonLog = Operator(symbol:"log", numOperands: 1){args in return CGFloat(log10(args[0]))}getKeyframes:{args in
+    static let commonLog = Operator(symbol:"log", numOperands: 1, format: "log( {a} )"){args in return CGFloat(log10(args[0]))}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -247,7 +266,7 @@ enum Operators{
     }
 
     //log_b (a)
-    static let logb = Operator(symbol:"logb", numOperands: 2){args in return log10(args[1])/log10(args[0])}getKeyframes:{args in
+    static let logb = Operator(symbol:"logb", numOperands: 2, format: "log {a} ( {b} )"){args in return log10(args[1])/log10(args[0])}getKeyframes:{args in
         let a = args[1]
         let a1 = mapOnC(a)
         
@@ -283,7 +302,7 @@ enum Operators{
     }
     
     //sin(a)
-    static let sine = Operator(symbol:"sin", numOperands: 1){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+    static let sine = Operator(symbol:"sin", numOperands: 1, format: "sin( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -302,7 +321,7 @@ enum Operators{
     }
     
     //csc(a)
-    static let cosecant = Operator(symbol:"csc", numOperands: 1){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
+    static let cosecant = Operator(symbol:"csc", numOperands: 1, format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
         let a = args[0]
         let out = 1/sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -321,7 +340,7 @@ enum Operators{
     }
     
     //tan(a)
-    static let tangent = Operator(symbol:"tan", numOperands: 1){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
+    static let tangent = Operator(symbol:"tan", numOperands: 1, format: "tan( {a} )"){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = tan(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -346,7 +365,7 @@ enum Operators{
     }
     
     //pi*x
-    static let piTimes = Operator(symbol:"pi*", numOperands: 1){args in return args[0]*Double.pi}getKeyframes:{args in
+    static let piTimes = Operator(symbol:"pi*", numOperands: 1, format: "π x {a}"){args in return args[0]*Double.pi}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -360,7 +379,7 @@ enum Operators{
     }
 
     //minutes and seconds
-    static let minutes = Operator(symbol:"'", numOperands: 1){args in return args[0]*Double.pi/180/60}getKeyframes:{args in
+    static let minutes = Operator(symbol:"'", numOperands: 1, format: "{a} minutes to radians"){args in return args[0]*Double.pi/180/60}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -375,7 +394,7 @@ enum Operators{
         ]
     }
     
-    static let seconds = Operator(symbol:"\"", numOperands: 1){args in return args[0]*Double.pi/180/60/60}getKeyframes:{args in
+    static let seconds = Operator(symbol:"\"", numOperands: 1, format: "{a} seconds to radians"){args in return args[0]*Double.pi/180/60/60}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -391,15 +410,13 @@ enum Operators{
     }
     
     //alias symbol
-    static let seconds2 = Operator(symbol:"''", numOperands: 1, expression: seconds.expression, getKeyframes: seconds.getKeyframes)
+    static let seconds2 = Operator(symbol:"''", numOperands: 1, format: seconds.format, expression: seconds.expression, getKeyframes: seconds.getKeyframes)
     
+    static let none = Operator(symbol:"none", numOperands: 0, format:"No Operator"){args in return args[0]}getKeyframes:{args in return []}
     
-    
-    static let doNothing = Operator(symbol:"do nothing", numOperands: 0){args in return args[0]}getKeyframes:{args in return []}
-    
-    static func getOperator(_ token: String)throws -> Operator{
+    static func fromSymbol(_ symbol: String) throws -> Operator{
         for op in Operators.allOperators {
-            if op.symbol == token {
+            if op.symbol == symbol {
                 return op
             }
         }

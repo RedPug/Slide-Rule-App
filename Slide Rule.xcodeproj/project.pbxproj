@@ -61,6 +61,8 @@
 		58B194572CF6F918003E7B3D /* ValueRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194562CF6F918003E7B3D /* ValueRange.swift */; };
 		58B194592CF91A6C003E7B3D /* SideScaleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */; };
 		58B1945B2CF92C20003E7B3D /* TutorialStepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */; };
+		58B1945D2D0E323C003E7B3D /* TutorialStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */; };
+		58B1945F2D0E3AED003E7B3D /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945E2D0E3AED003E7B3D /* Instruction.swift */; };
 		58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B7705F2C9CC410006DA44D /* SettingsManager.swift */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
 		58DAE0122CF39E2000480851 /* PulsingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0112CF39E2000480851 /* PulsingCircleView.swift */; };
@@ -158,6 +160,8 @@
 		58B194562CF6F918003E7B3D /* ValueRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueRange.swift; sourceTree = "<group>"; };
 		58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideScaleLabelView.swift; sourceTree = "<group>"; };
 		58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepListView.swift; sourceTree = "<group>"; };
+		58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
+		58B1945E2D0E3AED003E7B3D /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		58B7705F2C9CC410006DA44D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		58DAE0112CF39E2000480851 /* PulsingCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingCircleView.swift; sourceTree = "<group>"; };
@@ -358,12 +362,14 @@
 			children = (
 				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
 				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
+				58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */,
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
 				58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */,
 				58DAE0112CF39E2000480851 /* PulsingCircleView.swift */,
 				589742322BE7543E00ADC916 /* TutorialGestureView.swift */,
 				58A680252C769D8F00A0E055 /* GuidesTipView.swift */,
 				58DAE0172CF6D26100480851 /* Keyframe.swift */,
+				58B1945E2D0E3AED003E7B3D /* Instruction.swift */,
 				58DAE0192CF6D3D700480851 /* Equation Parser */,
 			);
 			path = Tutorial;
@@ -584,6 +590,8 @@
 				58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */,
 				5876FF9B2C980BF500C88190 /* WebView.swift in Sources */,
 				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,
+				58B1945D2D0E323C003E7B3D /* TutorialStepsView.swift in Sources */,
+				58B1945F2D0E3AED003E7B3D /* Instruction.swift in Sources */,
 				5812066D2C900EED00ACA6F1 /* TipStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

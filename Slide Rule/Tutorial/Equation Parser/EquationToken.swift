@@ -39,14 +39,14 @@ struct EquationToken: CustomStringConvertible{
             numericValue = nil
             isNumeric = false
             do{
-                operation = try Operators.getOperator(token)
+                operation = try Operators.fromSymbol(token)
             }
             catch OperatorError.invalidOperator{
                 print("Invalid Operator Input!")
-                operation = Operators.doNothing
+                operation = Operators.none
             }catch{
                 print("Unknown error occured")
-                operation = Operators.doNothing
+                operation = Operators.none
             }
             
         }
