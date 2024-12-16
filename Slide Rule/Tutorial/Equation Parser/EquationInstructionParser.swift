@@ -25,13 +25,20 @@
 import Foundation
 
 
-func parseEquation(_ text: String) -> [Keyframe]{
+/// Evaluates the given expression and gives a list of instructions for the user to complete
+/// - Parameter text: Space-seperated tokens for operations and numbers, written in post-fix notation
+/// - Returns: An array of keyframes which guide the user to evaluate the expression on the ruler.
+func parseEquation(_ text: String) throws -> [Keyframe]{
     let phrases: [String] = text.components(separatedBy: " ")
     
+    //a token is a single operator or number
     let tokens: [EquationToken] = phrases.map{token in return EquationToken(token)}
     
+    //stores the current list of items. Numbers are added directly
+    //operators apply to numbers at the top of the stack
     var stack: [CGFloat] = []
     var keyframes: [Keyframe] = []
+    
     
     for token in tokens{
         if token.isNumeric{
@@ -43,16 +50,16 @@ func parseEquation(_ text: String) -> [Keyframe]{
                 
                 stack.removeLast(n)
                 
-                let result = op.expression(args)
+				let result = try op.evaluate(args)
                 
                 stack.append(result)
                 
-                keyframes.append(contentsOf: op.getKeyframes(args))
+                keyframes.append(contentsOf: try op.getKeyframes(args))
             }
         }
     }
     
-    print("Expression evaluated to: \(stack[0])")
+//    print("Expression evaluated to: \(stack[0])")
     
     return keyframes
 }

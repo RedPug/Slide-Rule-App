@@ -114,7 +114,7 @@ struct TestTutorialView: View {
                 
                 Button(){
                     isNav = true
-                    keyframes = parseEquation(text)
+					keyframes = (try? parseEquation(text)) ?? []
                 }label:{
                     Text("Step-by-Step")
                         .frame(width:200,height:30)

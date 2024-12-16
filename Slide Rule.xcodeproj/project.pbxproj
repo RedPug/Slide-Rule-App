@@ -45,6 +45,7 @@
 		588DFE8F2C16694600576254 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588DFE8E2C16694600576254 /* View.swift */; };
 		589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742302BE7527E00ADC916 /* TutorialRulerView.swift */; };
 		589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589742322BE7543E00ADC916 /* TutorialGestureView.swift */; };
+		58974F3A2D0F9A33003F158B /* NumberInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58974F392D0F9A33003F158B /* NumberInputView.swift */; };
 		589BC8722B0F0A3F0065B527 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8712B0F0A3F0065B527 /* Color.swift */; };
 		589BC8742B0F12FE0065B527 /* HelpMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8732B0F12FE0065B527 /* HelpMenuView.swift */; };
 		589BC8782B0F150A0065B527 /* JSON Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589BC8772B0F150A0065B527 /* JSON Manager.swift */; };
@@ -58,13 +59,13 @@
 		58A680242C76954000A0E055 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58A680232C76954000A0E055 /* Launch Screen.storyboard */; };
 		58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A680252C769D8F00A0E055 /* GuidesTipView.swift */; };
 		58AF5A772CDB07CD00A1D214 /* ThankYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */; };
-		58B194572CF6F918003E7B3D /* ValueRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194562CF6F918003E7B3D /* ValueRange.swift */; };
 		58B194592CF91A6C003E7B3D /* SideScaleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */; };
 		58B1945B2CF92C20003E7B3D /* TutorialStepListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */; };
 		58B1945D2D0E323C003E7B3D /* TutorialStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */; };
 		58B1945F2D0E3AED003E7B3D /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B1945E2D0E3AED003E7B3D /* Instruction.swift */; };
 		58B770602C9CC410006DA44D /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B7705F2C9CC410006DA44D /* SettingsManager.swift */; };
 		58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C175052B43B5DC008F0097 /* SlideRuleView.swift */; };
+		58D4EAC42D0FAE9F0044A510 /* KeypadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D4EAC32D0FAE9E0044A510 /* KeypadView.swift */; };
 		58DAE0122CF39E2000480851 /* PulsingCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0112CF39E2000480851 /* PulsingCircleView.swift */; };
 		58DAE0142CF439DC00480851 /* RulerZoomWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0132CF439DC00480851 /* RulerZoomWrapper.swift */; };
 		58DAE0162CF69E2D00480851 /* EquationInstructionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DAE0152CF69E2D00480851 /* EquationInstructionParser.swift */; };
@@ -144,6 +145,7 @@
 		588DFE8E2C16694600576254 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		589742302BE7527E00ADC916 /* TutorialRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialRulerView.swift; sourceTree = "<group>"; };
 		589742322BE7543E00ADC916 /* TutorialGestureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialGestureView.swift; sourceTree = "<group>"; };
+		58974F392D0F9A33003F158B /* NumberInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberInputView.swift; sourceTree = "<group>"; };
 		589BC8712B0F0A3F0065B527 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		589BC8732B0F12FE0065B527 /* HelpMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpMenuView.swift; sourceTree = "<group>"; };
 		589BC8772B0F150A0065B527 /* JSON Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSON Manager.swift"; sourceTree = "<group>"; };
@@ -157,13 +159,13 @@
 		58A680232C76954000A0E055 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		58A680252C769D8F00A0E055 /* GuidesTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesTipView.swift; sourceTree = "<group>"; };
 		58AF5A762CDB07CD00A1D214 /* ThankYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouView.swift; sourceTree = "<group>"; };
-		58B194562CF6F918003E7B3D /* ValueRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueRange.swift; sourceTree = "<group>"; };
 		58B194582CF91A6C003E7B3D /* SideScaleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideScaleLabelView.swift; sourceTree = "<group>"; };
 		58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepListView.swift; sourceTree = "<group>"; };
 		58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStepsView.swift; sourceTree = "<group>"; };
 		58B1945E2D0E3AED003E7B3D /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		58B7705F2C9CC410006DA44D /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		58C175052B43B5DC008F0097 /* SlideRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideRuleView.swift; sourceTree = "<group>"; usesTabs = 0; };
+		58D4EAC32D0FAE9E0044A510 /* KeypadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeypadView.swift; sourceTree = "<group>"; };
 		58DAE0112CF39E2000480851 /* PulsingCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingCircleView.swift; sourceTree = "<group>"; };
 		58DAE0132CF439DC00480851 /* RulerZoomWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerZoomWrapper.swift; sourceTree = "<group>"; };
 		58DAE0152CF69E2D00480851 /* EquationInstructionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquationInstructionParser.swift; sourceTree = "<group>"; };
@@ -363,6 +365,8 @@
 				589BC87A2B0F180D0065B527 /* SlideRuleInstructions.json */,
 				589BC8732B0F12FE0065B527 /* HelpMenuView.swift */,
 				58B1945C2D0E323B003E7B3D /* TutorialStepsView.swift */,
+				58D4EAC32D0FAE9E0044A510 /* KeypadView.swift */,
+				58974F392D0F9A33003F158B /* NumberInputView.swift */,
 				589742302BE7527E00ADC916 /* TutorialRulerView.swift */,
 				58B1945A2CF92C20003E7B3D /* TutorialStepListView.swift */,
 				58DAE0112CF39E2000480851 /* PulsingCircleView.swift */,
@@ -394,7 +398,6 @@
 				58DAE0152CF69E2D00480851 /* EquationInstructionParser.swift */,
 				58DAE01E2CF6D4DC00480851 /* Operators.swift */,
 				58DAE01A2CF6D41600480851 /* EquationToken.swift */,
-				58B194562CF6F918003E7B3D /* ValueRange.swift */,
 			);
 			path = "Equation Parser";
 			sourceTree = "<group>";
@@ -558,9 +561,9 @@
 				58C175062B43B5DC008F0097 /* SlideRuleView.swift in Sources */,
 				581249772C93A931005C4F15 /* MathNotesView.swift in Sources */,
 				589742312BE7527E00ADC916 /* TutorialRulerView.swift in Sources */,
-				58B194572CF6F918003E7B3D /* ValueRange.swift in Sources */,
 				581206732C92524500ACA6F1 /* PosData.swift in Sources */,
 				58DAE0182CF6D26100480851 /* Keyframe.swift in Sources */,
+				58D4EAC42D0FAE9F0044A510 /* KeypadView.swift in Sources */,
 				58A680162C768EFD00A0E055 /* SlideMarkingView.swift in Sources */,
 				589742332BE7543E00ADC916 /* TutorialGestureView.swift in Sources */,
 				585906162B0DB8FF0051F3FC /* ContentView.swift in Sources */,
@@ -591,6 +594,7 @@
 				5876FF9B2C980BF500C88190 /* WebView.swift in Sources */,
 				58A680262C769D8F00A0E055 /* GuidesTipView.swift in Sources */,
 				58B1945D2D0E323C003E7B3D /* TutorialStepsView.swift in Sources */,
+				58974F3A2D0F9A33003F158B /* NumberInputView.swift in Sources */,
 				58B1945F2D0E3AED003E7B3D /* Instruction.swift in Sources */,
 				5812066D2C900EED00ACA6F1 /* TipStore.swift in Sources */,
 			);

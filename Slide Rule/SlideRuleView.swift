@@ -48,8 +48,6 @@ struct SlideRuleView: View {
                 RulerView(posData: $posData)
                     .zIndex(-1)
                 
-//                ZoomSliderView($zoomLevel)
-                
                 ButtonBarView
             }
             .background(Color.theme.background)
@@ -85,18 +83,6 @@ extension SlideRuleView{
 
 
 extension SlideRuleView{
-    
-    private struct ZoomSliderView: View {
-        @Binding var zoomLevel: CGFloat
-        
-        init(_ zoomLevel: Binding<CGFloat>){
-            self._zoomLevel = zoomLevel
-        }
-        
-        var body: some View {
-            Slider(value: $zoomLevel, in: 0.5...3)
-        }
-    }
     
     private var ButtonBarView: some View {
         Color(.gray)

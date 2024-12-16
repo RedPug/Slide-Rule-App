@@ -36,11 +36,11 @@ struct Slide_RuleApp: App {
             ContentView()
                 .onAppear {
                     UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-                    WebView.preload()
+//                    WebView.preload()
                 }
                 .onDisappear {
                     UIDevice.current.endGeneratingDeviceOrientationNotifications()
-                    WebView.unload()
+//                    WebView.unload()
                 }
                 .task{
                     //try? Tips.resetDatastore()

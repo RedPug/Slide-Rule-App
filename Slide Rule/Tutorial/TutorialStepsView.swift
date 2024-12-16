@@ -25,72 +25,135 @@
 import SwiftUI
 
 struct TutorialStepsView: View {
-    var operation: Operator
+    private var operation: Operator
     
-    var format: [Substring]
+    private var format: [Substring]
     
-    @State var inputs: [CGFloat]
+    @State private var inputs: [String]
     
-    @State var isNav: Bool = false
+    @State private var isNav: Bool = false
     
-    @State var keyframes: [Keyframe] = []
+    @State private var keyframes: [Keyframe] = []
+	
+	@State private var focusIndex: Int = -1
+	
+	@State private var isErrorDisplayed: Bool = false
     
     
     init(operation: Operator){
         self.operation = operation
         
-        self.inputs = [CGFloat](repeating:1.0, count: operation.numOperands)
+        self.inputs = [String](repeating:"1.0", count: operation.numOperands)
         
         self.format = " \(operation.format)".split(whereSeparator: { $0 == "{" || $0 == "}" })
+        
+
     }
     
     var body: some View {
-        let formatter = NumberFormatter()
-        formatter.usesSignificantDigits = true
-        formatter.maximumSignificantDigits = 4
+        
         
         return ZStack{
             Color.background.ignoresSafeArea(.all)
-            VStack{
-                HStack{
-                    ForEach(0 ..< format.count, id: \.self){index in
-                        Group{
-                            if index % 2 == 1{
-                                let char = format[index].first ?? Character("a")
-                                
-                                let i = char.isASCII ? (Int(char.asciiValue!) - 97) : 0 //start lower case letters at 0
-                                
-                                
-                                TextField("Arg \(i)", value: $inputs[i], formatter: formatter)
-                                    .keyboardType(.decimalPad)
-                                    .padding(10)
-                                    .background(Color.theme.background_dark, in:Capsule())
-                                    .foregroundStyle(Color.white)
-                                    .frame(width: 100, height: 20)
-                                
-                                
-                            }else{
-                                Text(format[index])
-                            }
-                        }
-                    }
-                }
-                
-                
-                Button(){
-                    isNav = true
-                    keyframes = parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(operation.symbol)")
-                }label:{
-                    HelpButtonView("Start")
-                }
-                .navigationDestination(isPresented: $isNav){
-                    ZStack{
-                        Color.background.ignoresSafeArea(.all)
-                        TutorialRulerView(keyframes: keyframes)
-                    }
-                }
-                .padding(10);
-            }
+				.onTapGesture{
+					focusIndex = -1
+				}
+			VStack{
+				HStack{
+					VStack{
+						Text("Enter the equation parameters:")
+							.bold()
+							.foregroundStyle(Color.theme.text)
+						
+						
+						argsView
+						
+						
+						Button(){
+							focusIndex = -1
+							
+							let result = try? parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(operation.symbol)")
+							
+							if let result = result {
+								keyframes = result
+								isNav = true
+							}
+						}label:{
+							HelpButtonView("Start")
+						}
+						.navigationDestination(isPresented: $isNav){
+							ZStack{
+								Color.background.ignoresSafeArea(.all)
+								TutorialRulerView(keyframes: keyframes)
+							}
+						}
+					}
+					
+					KeypadView(value: focusIndex >= 0 ? $inputs[focusIndex]: nil)
+				}
+				
+				if isErrorDisplayed {
+					Text("There is an error in one or more inputs!")
+				}
+			}
         }
+		.onChange(of:focusIndex){
+			isErrorDisplayed = !validateInputs()
+		}
     }
+}
+
+extension TutorialStepsView{
+	var argsView: some View {
+		HStack{
+			ForEach(0 ..< format.count, id: \.self){index in
+				Group{
+					if index % 2 == 1{
+						let char = format[index].first ?? Character("a")
+						
+						//argument index. a -> 0, b -> 1, etc.
+						let i = char.isASCII ? (Int(char.asciiValue!) - 97) : 0
+						
+						let focusBinding: Binding<Bool> = Binding(
+							get: {
+								return i == focusIndex
+							},
+							set: {state in
+								if state {
+									focusIndex = i
+								}else{
+									focusIndex = -1
+								}
+							}
+						)
+						
+						NumberInputView(value: $inputs[i], isFocused: focusBinding)
+							.background(Color.theme.background_dark, in:Capsule())
+							.foregroundStyle(Color.white)
+						
+					}else{
+						Text(format[index])
+							.foregroundStyle(Color.theme.text)
+							.font(.system(size:30, weight:.bold))
+					}
+				}
+			}
+		}
+	}
+}
+
+
+extension TutorialStepsView{
+	private func validateInputs() -> Bool{
+		for input in inputs{
+			if let n = Double(input) {
+				if !operation.isValidInput(CGFloat(n)){
+					return false
+				}
+			}else{
+				return false
+			}
+		}
+		return true
+	}
 }

@@ -39,8 +39,8 @@ struct ContentView: View {
                 .zIndex(1.0)
         }
         .persistentSystemOverlays(.hidden)
-            .onAppear{
-                Task{await GuidesTip.openedApp.donate()}
-            }
+        .onAppear{
+            Task{await GuidesTip.openedApp.donate()}
+        }
     }
 }

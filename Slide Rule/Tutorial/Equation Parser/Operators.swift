@@ -27,24 +27,68 @@ import Foundation
 
 enum OperatorError: Error{
     case invalidOperator
+	case invalidArgument
 }
 
 struct Operator: Equatable{
     let symbol: String
     let numOperands: Int
     let format: String
-    let expression: ([CGFloat])->CGFloat
-    let getKeyframes: ([CGFloat]) -> [Keyframe]
+	let bounds: [any RangeExpression<CGFloat>]
+    fileprivate let expression: ([CGFloat])->CGFloat
+    fileprivate let _getKeyframes: ([CGFloat]) -> [Keyframe]
     
     
-    init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
+	init(symbol: String, numOperands: Int, range: any RangeExpression<CGFloat>, _ moreRanges: any RangeExpression<CGFloat>..., format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
         self.symbol = symbol
         self.numOperands = numOperands
         self.format = format
+		
+		var arr = [range]
+		arr.append(contentsOf: moreRanges)
+		self.bounds = arr
         
         self.expression = expression
-        self.getKeyframes = getKeyframes
+        self._getKeyframes = getKeyframes
     }
+	
+	//overload for default range of all positive (not including 0)
+	init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
+		self.init(symbol: symbol, numOperands: numOperands, range:0.00001..., format:format,expression:expression,getKeyframes: getKeyframes)
+	}
+	
+	func evaluate(_ values: [CGFloat]) throws -> CGFloat{
+		for v in values{
+			if !(isValidInput(v)){
+				print("Operator '\(symbol)' recieved invalid input of '\(v)'.")
+				
+				throw OperatorError.invalidArgument
+			}
+		}
+
+		return expression(values)
+	}
+	
+	func getKeyframes(_ values: [CGFloat]) throws -> [Keyframe]{
+		for v in values{
+			if !(isValidInput(v)){
+				print("Operator '\(symbol)' recieved invalid input of '\(v)'.")
+				
+				throw OperatorError.invalidArgument
+			}
+		}
+		
+		return self._getKeyframes(values)
+	}
+	
+	func isValidInput(_ value: CGFloat) -> Bool{
+		for range in bounds{
+			if range.contains(value){
+				return true
+			}
+		}
+		return false
+	}
     
     static func == (lhs: Operator, rhs: Operator) -> Bool{
         return lhs.symbol == rhs.symbol
@@ -58,7 +102,7 @@ struct Operator: Equatable{
 enum Operators{
     static let allOperators = [times, divide, inverse, square, cube, squareroot, cuberoot, euler, power, commonLog, naturalLog, logb, sine, cosecant, tangent, piTimes, minutes, seconds, seconds2, none]
     
-    static let times = Operator(symbol: "*", numOperands: 2, format: "{a} x {b}"){args in
+	static let times = Operator(symbol: "*", numOperands: 2, format: "{a} X {b}"){args in
         return args[0] * args[1]
     }getKeyframes:{args in
         let a = args[0]
@@ -145,7 +189,7 @@ enum Operators{
         ]
     }
     
-    static let euler = Operator(symbol: "exp", numOperands: 1, format: "e ^ {a}"){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
+	static let euler = Operator(symbol: "exp", numOperands: 1, range: 0.01...10, (-10)...(-0.01), format: "e ^ {a}"){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
         let a = args[0]
         var scale = 0
         var scaleName = "ERROR"
@@ -251,7 +295,7 @@ enum Operators{
     }
     
     //log(a)
-    static let commonLog = Operator(symbol:"log", numOperands: 1, format: "log( {a} )"){args in return CGFloat(log10(args[0]))}getKeyframes:{args in
+    static let commonLog = Operator(symbol:"log", numOperands: 1, format: "log({a})"){args in return CGFloat(log10(args[0]))}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -302,7 +346,7 @@ enum Operators{
     }
     
     //sin(a)
-    static let sine = Operator(symbol:"sin", numOperands: 1, format: "sin( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let sine = Operator(symbol:"sin", numOperands: 1, range: 0.571...90, format: "sin( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -321,7 +365,7 @@ enum Operators{
     }
     
     //csc(a)
-    static let cosecant = Operator(symbol:"csc", numOperands: 1, format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
+    static let cosecant = Operator(symbol:"csc", numOperands: 1, range: 0.571...90, format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
         let a = args[0]
         let out = 1/sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -340,7 +384,7 @@ enum Operators{
     }
     
     //tan(a)
-    static let tangent = Operator(symbol:"tan", numOperands: 1, format: "tan( {a} )"){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let tangent = Operator(symbol:"tan", numOperands: 1, range: 0.571...84.3, format: "tan( {a} )"){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = tan(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -410,7 +454,7 @@ enum Operators{
     }
     
     //alias symbol
-    static let seconds2 = Operator(symbol:"''", numOperands: 1, format: seconds.format, expression: seconds.expression, getKeyframes: seconds.getKeyframes)
+    static let seconds2 = Operator(symbol:"''", numOperands: 1, format: seconds.format, expression: seconds.expression, getKeyframes: seconds._getKeyframes)
     
     static let none = Operator(symbol:"none", numOperands: 0, format:"No Operator"){args in return args[0]}getKeyframes:{args in return []}
     
