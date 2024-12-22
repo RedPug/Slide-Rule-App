@@ -48,8 +48,6 @@ struct NumberInputView: View {
 				Text(hasTypingBar ? "|" : " ")
 				Spacer()
 			}
-			.padding(10)
-			.frame(width: 100, alignment: .leading)
 		}
 		.onChange(of:isFocused){
 			if isFocused {

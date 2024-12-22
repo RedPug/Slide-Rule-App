@@ -41,7 +41,7 @@ To slide: Drag the cursor, slide, or body left to right.
 To flip:  Drag on the cursor, slide, or body up or down, or press the circular arrow button.
 To zoom:  Pinch to zoom in anywhere.
 
-""", operation: Operators.none
+""", operations: []
                             )), label:{
                             HelpButtonView("Controls")
                         })
@@ -66,7 +66,7 @@ To zoom:  Pinch to zoom in anywhere.
     Any operation can be reversed from that found in a guide. Simply reverse the steps to undo an operation.
 
     There are often many ways to calculate an expression, and these guides cannot cover them all.
-""", operation: Operators.none
+""", operations: []
                             )), label:{
                             HelpButtonView("General")
                         })
@@ -175,7 +175,6 @@ struct HelpBodyView: View {
                         LaTeX(instruction.body)
                             .lineSpacing(10.0)
                             .foregroundColor(.white)
-                            //.imageRenderingMode(.original)
                             .padding(.top,50)
                             .padding(.leading,10)
                         Spacer()
@@ -183,8 +182,8 @@ struct HelpBodyView: View {
                     
                 }
                 Spacer()
-                if !(instruction.operation == Operators.none) {
-                    NavigationLink(destination:TutorialStepsView(operation: instruction.operation),
+				if instruction.operations.count > 0 {
+                    NavigationLink(destination:TutorialInputsView(operations: instruction.operations),
                         label:{
                             Text("Step-by-Step")
                                 .frame(width:200,height:30)

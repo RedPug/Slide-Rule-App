@@ -430,7 +430,7 @@ enum RulerScales{
             
             MarkingInterval(1.105, .xlarge),
             MarkingInterval(min: 1.105, max:1.11, spacing:0.001, skipping:5, size:.small),
-            MarkingInterval(min: 1.11, max: 1.2, xlargeDivs:8, mediumDivs:2, smallDivs:5),
+            MarkingInterval(min: 1.11, max: 1.2, xlargeDivs:9, mediumDivs:2, smallDivs:5),
             MarkingInterval(min: 1.2, max: 1.4, xlargeDivs:4, mediumDivs:5, smallDivs:5),
             MarkingInterval(min: 1.4, max: 1.8, xlargeDivs:8, mediumDivs:5, smallDivs:2),
             MarkingInterval(min: 1.8, max: 2.5, xlargeDivs:7, mediumDivs:2, smallDivs:5),

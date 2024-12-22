@@ -24,10 +24,12 @@
 
 import SwiftUI
 
-struct TutorialStepsView: View {
-    private var operation: Operator
+struct TutorialInputsView: View {
+    private var operations: [Operator]
     
-    private var format: [Substring]
+    @State private var format: [String]
+	
+	@State private var selectedOperator: Operator
     
     @State private var inputs: [String]
     
@@ -40,14 +42,14 @@ struct TutorialStepsView: View {
 	@State private var isErrorDisplayed: Bool = false
     
     
-    init(operation: Operator){
-        self.operation = operation
+    init(operations: [Operator]){
+        self.operations = operations
+		let selectedOperator = operations[0]
+		self.selectedOperator = selectedOperator
         
-        self.inputs = [String](repeating:"1.0", count: operation.numOperands)
+        self.inputs = [String](repeating:"1.0", count: selectedOperator.numOperands)
         
-        self.format = " \(operation.format)".split(whereSeparator: { $0 == "{" || $0 == "}" })
-        
-
+		self.format = selectedOperator.format
     }
     
     var body: some View {
@@ -72,7 +74,7 @@ struct TutorialStepsView: View {
 						Button(){
 							focusIndex = -1
 							
-							let result = try? parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(operation.symbol)")
+							let result = try? parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(selectedOperator.symbol)")
 							
 							if let result = result {
 								keyframes = result
@@ -103,13 +105,13 @@ struct TutorialStepsView: View {
     }
 }
 
-extension TutorialStepsView{
+extension TutorialInputsView{
 	var argsView: some View {
-		HStack{
+		return HStack{
 			ForEach(0 ..< format.count, id: \.self){index in
 				Group{
-					if index % 2 == 1{
-						let char = format[index].first ?? Character("a")
+					if format[index].hasPrefix("{"){
+						let char = format[index].last ?? Character("a")
 						
 						//argument index. a -> 0, b -> 1, etc.
 						let i = char.isASCII ? (Int(char.asciiValue!) - 97) : 0
@@ -126,11 +128,44 @@ extension TutorialStepsView{
 								}
 							}
 						)
-						
-						NumberInputView(value: $inputs[i], isFocused: focusBinding)
+						if inputs.indices.contains(i) {
+							NumberInputView(value: $inputs[i], isFocused: focusBinding)
+								.font(.system(size:30, weight:.bold))
+								.padding(5)
+								.frame(width: 100, alignment: .leading)
+								.background(Color.theme.background_dark, in:Capsule())
+								.foregroundStyle(Color.white)
+						}else{
+							EmptyView()
+								.onAppear{
+									print("Error creating NumberInputView because index is out of range.")
+								}
+						}
+					}else if format[index].hasPrefix("$") && operations.count > 1{
+						Menu{
+							ForEach(operations, id:\.symbol){operation in
+								Button{
+									selectedOperator = operation
+									format = selectedOperator.format
+								}label:{
+									Text(operation.format[index].dropFirst())
+										.foregroundStyle(Color.theme.text)
+										.font(.system(size:30, weight:.bold))
+								}
+									
+							}
+						}label:{
+							HStack{
+								Text(format[index].dropFirst())
+									.foregroundStyle(Color.theme.text)
+									.font(.system(size:30, weight:.bold))
+								Text("+")
+									.foregroundStyle(Color.gray)
+									.font(.system(size:30, weight:.bold))
+							}
+							.padding(5)
 							.background(Color.theme.background_dark, in:Capsule())
-							.foregroundStyle(Color.white)
-						
+						}
 					}else{
 						Text(format[index])
 							.foregroundStyle(Color.theme.text)
@@ -143,11 +178,11 @@ extension TutorialStepsView{
 }
 
 
-extension TutorialStepsView{
+extension TutorialInputsView{
 	private func validateInputs() -> Bool{
 		for input in inputs{
 			if let n = Double(input) {
-				if !operation.isValidInput(CGFloat(n)){
+				if !selectedOperator.isValidInput(CGFloat(n)){
 					return false
 				}
 			}else{

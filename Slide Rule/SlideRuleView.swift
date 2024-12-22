@@ -88,7 +88,7 @@ extension SlideRuleView{
         Color(.gray)
             .frame(width:50)
             .overlay{
-                VStack{
+                VStack(spacing:20){
                     Button{
                         posData.shouldFlip = true
                         sensoryTrigger.toggle()
@@ -99,8 +99,6 @@ extension SlideRuleView{
                             .foregroundColor(.theme.text)
                             .frame(width:30,height:30)
                     }
-                    .frame(width:30)
-                    .padding(.top, 10)
                     
                     Button{
                         withAnimation(.snappy(duration: 0.3)){
@@ -116,7 +114,6 @@ extension SlideRuleView{
                             .foregroundColor(.theme.text)
                             .frame(width:30,height:30)
                     }
-                    .padding(.top, 10)
                     
                     Spacer()
                     
@@ -127,7 +124,6 @@ extension SlideRuleView{
 //                            .foregroundColor(.theme.text)
 //                            .frame(width:30,height:30)
 //                    })
-//                    .padding(.bottom, 10)
 //                    
 //                    Spacer()
                     
@@ -144,7 +140,6 @@ extension SlideRuleView{
                                     .offset(x:1,y:-3)
                             }
                     })
-                    .padding(.bottom, 10)
                     .popoverTip(guideTip)
                     
                     NavigationLink(destination: SettingsView(), label:{
@@ -154,10 +149,8 @@ extension SlideRuleView{
                             .foregroundColor(.theme.text)
                             .frame(width:30,height:30)
                     })
-                    .padding(.bottom, 10)
-                    
-                    
                 }
+                .padding(.vertical, 15)
             }
     }
 }

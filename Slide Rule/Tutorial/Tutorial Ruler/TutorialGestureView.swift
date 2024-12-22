@@ -34,8 +34,8 @@ struct GestureHandView: View {
     var body: some View {
         let img: String
         switch hint {
-        case .flip:
-            img = "arrowshape.up"
+		case .flip:
+			img = "arrowshape.up"
         case .left:
             img = "arrowshape.right"
         case .right:
@@ -61,13 +61,13 @@ struct TutorialGestureView: View {
     
     var body: some View {
         Group{
-            if(gestureHint == .flip){
-                GestureHandView(hint:gestureHint)
-                    .offset(y:isGestureMoving ? -75 : 75)
-            }else{
+			if(gestureHint == .left || gestureHint == .right){
                 GestureHandView(hint:gestureHint)
                     .offset(x:(gestureHint == .right ? -1 : 1)*(isGestureMoving ? 75 : -75), y:100)
-            }
+			}else if gestureHint == .flip{
+				GestureHandView(hint:gestureHint)
+					.offset(x:0, y: isGestureMoving ? -75 : 75)
+			}
         }
         .opacity(isGestureVisible ? 1 : 0)
         .onAppear(){
@@ -76,14 +76,13 @@ struct TutorialGestureView: View {
     }
     
     func cycleGestureMoving(){
-        if(gestureHint != .none){
+		if(gestureHint == .left || gestureHint == .right || gestureHint == .flip){
             if(!isGestureAnimating){
                 isGestureAnimating = true
                 isGestureMoving = false
                 isGestureVisible = true
                 withAnimation(.easeInOut(duration:0.5)){
                     isGestureMoving = true
-                    //isGestureVisible = false
                 }
                 withAnimation(.easeInOut(duration:0.5).delay(0.5)){
                     isGestureVisible = false

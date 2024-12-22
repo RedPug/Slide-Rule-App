@@ -34,19 +34,19 @@ struct InstructionColumn: Codable {
 struct Instruction: Codable {
     let title: String
     let body: String
-    let operation: Operator
+    let operations: [Operator]
     
-    init(title: String, body: String, operation: Operator){
+    init(title: String, body: String, operations: [Operator]){
         self.title = title
         self.body = body
-        self.operation = operation
+        self.operations = operations
     }
     
     
     enum CodingKeys: String, CodingKey{
         case title
         case body
-        case operation
+        case operations = "operation"
     }
     
     init(from decoder: Decoder) throws {
@@ -55,8 +55,11 @@ struct Instruction: Codable {
         title = try values.decode(String.self, forKey:.title)
         body = try values.decode(String.self, forKey:.body)
         
-        let symbol = try values.decode(String.self, forKey:.operation)
-        operation = try Operators.fromSymbol(symbol)
+        let symbolString = try values.decode(String.self, forKey:.operations)
+		let symbols = symbolString.split(separator:"|")
+		operations = try symbols.map{symbol in
+			return try Operators.fromSymbol(String(symbol))
+		}
     }
     
     func encode(to encoder: Encoder) throws {
@@ -64,6 +67,6 @@ struct Instruction: Codable {
         
         try container.encode(title, forKey:.title)
         try container.encode(body, forKey:.body)
-        try container.encode(operation.symbol, forKey:.operation)
+		try container.encode(operations.map{$0.symbol}.joined(separator: "|"), forKey:.operations)
     }
 }

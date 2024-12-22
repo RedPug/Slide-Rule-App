@@ -27,6 +27,7 @@ import SwiftUI
 
 extension Color {
     static let theme = ColorTheme()
+	static let lightGray = Color(UIColor.lightGray)
 }
 
 struct ColorTheme {

@@ -33,7 +33,7 @@ enum OperatorError: Error{
 struct Operator: Equatable{
     let symbol: String
     let numOperands: Int
-    let format: String
+    let format: [String]
 	let bounds: [any RangeExpression<CGFloat>]
     fileprivate let expression: ([CGFloat])->CGFloat
     fileprivate let _getKeyframes: ([CGFloat]) -> [Keyframe]
@@ -42,7 +42,7 @@ struct Operator: Equatable{
 	init(symbol: String, numOperands: Int, range: any RangeExpression<CGFloat>, _ moreRanges: any RangeExpression<CGFloat>..., format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
         self.symbol = symbol
         self.numOperands = numOperands
-        self.format = format
+		self.format = Operator.split(format)
 		
 		var arr = [range]
 		arr.append(contentsOf: moreRanges)
@@ -55,6 +55,32 @@ struct Operator: Equatable{
 	//overload for default range of all positive (not including 0)
 	init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
 		self.init(symbol: symbol, numOperands: numOperands, range:0.00001..., format:format,expression:expression,getKeyframes: getKeyframes)
+	}
+	
+	private static func split(_ str: String) -> [String]{
+		let chars = ["{", "}", "$"]
+		var isInside = false
+		var arr = [String]()
+		var buffer = ""
+		
+		for i in 0..<str.count {
+			let ch = String(str[str.index(str.startIndex, offsetBy:i)])
+			
+			if chars.contains(ch) {
+				arr.append(buffer)
+				buffer = ""
+				if !isInside{
+					buffer += ch
+				}
+				isInside.toggle()
+			}else{
+				buffer += ch
+			}
+		}
+		
+		arr.append(buffer)
+		
+		return arr
 	}
 	
 	func evaluate(_ values: [CGFloat]) throws -> CGFloat{
@@ -100,7 +126,7 @@ struct Operator: Equatable{
 
 
 enum Operators{
-    static let allOperators = [times, divide, inverse, square, cube, squareroot, cuberoot, euler, power, commonLog, naturalLog, logb, sine, cosecant, tangent, piTimes, minutes, seconds, seconds2, none]
+    static let allOperators = [times, divide, inverse, square, cube, squareroot, cuberoot, euler, power, commonLog, naturalLog, logb, sine, cosine, cosecant, tangent, piTimes, minutes, seconds, seconds2, none]
     
 	static let times = Operator(symbol: "*", numOperands: 2, format: "{a} X {b}"){args in
         return args[0] * args[1]
@@ -133,7 +159,7 @@ enum Operators{
         ]
     }
     
-    static let inverse = Operator(symbol: "1/", numOperands: 1, format: "1 / {b}"){args in return 1/args[0]}getKeyframes: { args in
+    static let inverse = Operator(symbol: "1/", numOperands: 1, format: "1 / {a}"){args in return 1/args[0]}getKeyframes: { args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = 1/a
@@ -144,7 +170,7 @@ enum Operators{
         ]
     }
     
-    static let square = Operator(symbol: "sqr", numOperands: 1, format: "{a} ^ 2"){args in return args[0]*args[0]}getKeyframes:{args in
+    static let square = Operator(symbol: "sqr", numOperands: 1, format: "{a} ^ $2$"){args in return args[0]*args[0]}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = a*a
@@ -155,7 +181,7 @@ enum Operators{
         ]
     }
     
-    static let cube = Operator(symbol: "cube", numOperands: 1, format: "{a} ^ 3"){args in return args[0]*args[0]*args[0]}getKeyframes:{args in
+    static let cube = Operator(symbol: "cube", numOperands: 1, format: "{a} ^ $3$"){args in return args[0]*args[0]*args[0]}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let out = a*a*a
@@ -166,7 +192,7 @@ enum Operators{
         ]
     }
 
-    static let squareroot = Operator(symbol: "sqrt", numOperands: 1, format: "sqrt( {a} )"){args in return sqrt(args[0])}getKeyframes:{args in
+    static let squareroot = Operator(symbol: "sqrt", numOperands: 1, format: "$square root$( {a} )"){args in return sqrt(args[0])}getKeyframes:{args in
         let a = args[0]
         let a1 = pow(mapOnC(sqrt(a)),2) //find the value of a such that 1 <= sqrt(a1) <= 10
         let out = sqrt(a)
@@ -177,7 +203,7 @@ enum Operators{
         ]
     }
     
-    static let cuberoot = Operator(symbol: "cbrt", numOperands: 1, format: "cube root( {a} )"){args in return CGFloat(pow(args[0],1/3))}getKeyframes:{args in
+    static let cuberoot = Operator(symbol: "cbrt", numOperands: 1, format: "$cube root$( {a} )"){args in return CGFloat(pow(args[0],1/3))}getKeyframes:{args in
         let a = args[0]
         let a1 = pow(mapOnC(pow(a,1/3)),3) //find the value of a such that 1 <= sqrt(a1) <= 10
         let out = pow(a,1/3)
@@ -267,7 +293,7 @@ enum Operators{
             Keyframe(scaleNum: 7, x: b1, action: .alignCursor, label: "Place the cursor at $\(format(b1))$ on the C scale"),
             Keyframe(scaleNum: 8, x: logProd1, action: .readValue, label: "Read $\(format(logProd))$ on the D scale"),
             Keyframe(scaleNum: 5, x: prodMantissa, action: .alignCursor, label: "Move the cursor to $\(format(prodMantissa))$ (mantissa of $\(format(logProd))$) on the L scale"),
-            Keyframe(scaleNum: 7, x: out1, action: .readValue, label: "Read $\(out1)$ on the C scale. Because we cut a $\(shiftAmount)$ from $\(format(logProd))$, we shift $\(shiftAmount)$ places to get $\(out)$ as our final answer")
+            Keyframe(scaleNum: 7, x: out1, action: .readValue, label: "Read $\(format(out1))$ on the C scale. Because we cut a $\(shiftAmount)$ from $\(format(logProd))$, we shift $\(shiftAmount)$ places to get $\(format(out))$ as our final answer")
         ]
     }
     
@@ -279,18 +305,20 @@ enum Operators{
         
         let fullLog = log10(a)
         let mantissa = fullLog.truncatingRemainder(dividingBy: 1)
+		
+		let fullLogMapped = mapOnC(fullLog)
         
         let out = fullLog*2.303
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate ln$(\(format(a))$: Place the cursor at $\(format(a1))$ on the C scale"),
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate ln$(\(format(a)))$: Place the cursor at $\(format(a1))$ on the C scale"),
             Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Read \(format(mantissa)) on the L scale"),
             Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLog))$"),
-            Keyframe(scaleNum: 8, x: fullLog, action: .alignCursor, label: "Move the cursor to $\(format(fullLog))$ on the D scale"),
-            Keyframe(scaleNum: 8, x: fullLog, action: .alignIndexLeft, label: "Move the index of the C scale to the cursor"),
+            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignCursor, label: "Move the cursor to $\(format(fullLog))$ on the D scale"),
+            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignIndexLeft, label: "Move the index of the C scale to the cursor"),
             Keyframe(scaleNum: 7, x: 2.303, action: .alignCursor, label: "Place the cursor at $2.303$ (log -> ln conversion factor) on the C scale"),
-            Keyframe(scaleNum: 8, x: out1, action: .readValue, label: "Read the answer $\(out)$ on the D scale")
+            Keyframe(scaleNum: 8, x: out1, action: .readValue, label: "Read the answer $\(format(out))$ on the D scale")
         ]
     }
     
@@ -346,7 +374,7 @@ enum Operators{
     }
     
     //sin(a)
-	static let sine = Operator(symbol:"sin", numOperands: 1, range: 0.571...90, format: "sin( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let sine = Operator(symbol:"sin", numOperands: 1, range: 0.571...90, format: "$sin$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -363,6 +391,24 @@ enum Operators{
             Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
         ]
     }
+	
+	static let cosine = Operator(symbol:"cos", numOperands: 1, range: 0.571...90, format: "$cos$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+		let a = 90-args[0]
+		let out = sin(a*Double.pi/180)
+		let out1 = mapOnC(out)
+		
+		if a > 5.73917{
+			return [
+				Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Calculate cos($\(format(args[0]))°$): Place the cursor at $\(format(args[0]))$ on the S scale italics"),
+				Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+			]
+		}
+		
+		return [
+			Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Calculate cos($\(format(args[0]))°$): Place the cursor at $90 - \(format(args[0])) = \(format(a))$ on the ST scale"),
+			Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+		]
+	}
     
     //csc(a)
     static let cosecant = Operator(symbol:"csc", numOperands: 1, range: 0.571...90, format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
@@ -423,7 +469,7 @@ enum Operators{
     }
 
     //minutes and seconds
-    static let minutes = Operator(symbol:"'", numOperands: 1, format: "{a} minutes to radians"){args in return args[0]*Double.pi/180/60}getKeyframes:{args in
+    static let minutes = Operator(symbol:"'", numOperands: 1, format: "{a} $minutes$ to radians"){args in return args[0]*Double.pi/180/60}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -438,7 +484,7 @@ enum Operators{
         ]
     }
     
-    static let seconds = Operator(symbol:"\"", numOperands: 1, format: "{a} seconds to radians"){args in return args[0]*Double.pi/180/60/60}getKeyframes:{args in
+    static let seconds = Operator(symbol:"\"", numOperands: 1, format: "{a} $seconds$ to radians"){args in return args[0]*Double.pi/180/60/60}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         
@@ -454,7 +500,7 @@ enum Operators{
     }
     
     //alias symbol
-    static let seconds2 = Operator(symbol:"''", numOperands: 1, format: seconds.format, expression: seconds.expression, getKeyframes: seconds._getKeyframes)
+    static let seconds2 = Operator(symbol:"''", numOperands: 1, format: "{a} $seconds$ to radians", expression: seconds.expression, getKeyframes: seconds._getKeyframes)
     
     static let none = Operator(symbol:"none", numOperands: 0, format:"No Operator"){args in return args[0]}getKeyframes:{args in return []}
     

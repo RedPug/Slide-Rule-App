@@ -21,12 +21,12 @@
             {
                 "title":"$a^{2}$ or $a^{3}$",
                 "body":"Use the D and A (square) or K (cube) scales.",
-                "operation":"sqr",
+                "operation":"sqr|cube",
             },
             {
                 "title":"$\\sqrt{a}$ or $\\sqrt[3]{a}$",
                 "body":"Use the D and A ($\\sqrt{a}$) or K ($\\sqrt[3]{a}$) scales.\n\nNote:\n    For square roots, use the left half of the A scale for numbers between 1 and 10 and use the right half for those between 10 and 100.\nFor numbers outside this range, shift 2 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 2 on the input.\n\n    For cube roots, use the left third of the K scale for numbers between 1 and 10, the middle third for those between 10 and 100, and the last third for those between 100 and 1000.\nFor numbers outside this range, shift 3 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 3 on the input.",
-                "operation":"sqrt",
+                "operation":"sqrt|cbrt",
             },
         ]
     },
@@ -68,7 +68,7 @@
             {
                 "title":"sin($\\alpha$)",
                 "body":"Use the D and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For cosine, use the italicized numbers on the S scale.",
-                "operation":"sin",
+                "operation":"sin|cos",
             },
             {
                 "title":"csc($\\alpha$)",
@@ -88,7 +88,7 @@
             {
                 "title":"Min & Sec",
                 "body":"Use the ST and D scales.\n\nNote:\n    The tick marks on the ST scale are used to convert minutes (') and seconds ('') into radians.",
-                "operation":"'",
+                "operation":"'|\"",
             },
         ]
     }
