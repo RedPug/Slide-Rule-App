@@ -56,7 +56,7 @@ struct RulerView <Overlay: View>: View {
     
     var body: some View {
         RulerZoomWrapper(posData: $posDat){
-            Frame(posDat: $posDat)
+            FrameView(posDat: $posDat)
                 .sensoryFeedback(.impact, trigger: isReadyToFlip)
                 .overlay(overlay)
                 .rotation3DEffect(Angle(degrees:posDat.flipAngle), axis: (x:1,y:0,z:0), anchorZ:0)

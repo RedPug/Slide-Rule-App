@@ -73,6 +73,8 @@ extension KeypadView{
 				if str.count > 0 {
 					str.removeLast()
 				}
+			}else if self.value.count >= 5 {
+				return
 			}else if v == "."{
 				if !value.contains(/\./){
 					str += v

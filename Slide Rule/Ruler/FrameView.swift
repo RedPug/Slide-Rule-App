@@ -24,7 +24,7 @@
 
 import SwiftUI
 
-struct Frame: View {
+struct FrameView: View {
     
 //    @State var isDragging = false
     
@@ -102,13 +102,13 @@ struct Frame: View {
                 
                 //former height = 88
                 Group{
-                    SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesFront, minIndex: 0, maxIndex:2)
-                    SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesFront, minIndex: 8, maxIndex:10)
+                    SlideMarkingView(width:1350, height:202, scales: RulerScales.frontScales, minIndex: 0, maxIndex:2)
+                    SlideMarkingView(width:1350, height:202, scales: RulerScales.frontScales, minIndex: 8, maxIndex:10)
                 }
                     .zIndex(posDat.isFlippedTemp ? 0.5 : 1.5)
                 Group{
-                    SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesBack, minIndex: 0, maxIndex:2)
-                    SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesBack, minIndex: 8, maxIndex:10)
+                    SlideMarkingView(width:1350, height:202, scales: RulerScales.backScales, minIndex: 0, maxIndex:2)
+					SlideMarkingView(width:1350, height:202, scales: RulerScales.backScales, minIndex: 8, maxIndex:10)
                 }
                     .zIndex(posDat.isFlippedTemp ? 1.5 : 0.5)
             }

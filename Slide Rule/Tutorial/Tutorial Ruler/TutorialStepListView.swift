@@ -18,7 +18,7 @@ struct TutorialStepListView: View {
 	var body: some View {
 		List(Array(keyframes.enumerated()), id: \.offset){index, keyframe in
 			HStack{
-				let label = keyframe.label ?? ""
+				let label = keyframe.label
 				let text = "\(label)"
 				Button{
 					setInstructionNum(index)

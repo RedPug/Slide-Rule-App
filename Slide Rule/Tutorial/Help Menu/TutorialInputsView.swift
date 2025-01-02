@@ -37,7 +37,7 @@ struct TutorialInputsView: View {
     
     @State private var keyframes: [Keyframe] = []
 	
-	@State private var focusIndex: Int = -1
+	@State private var focusIndex: Int = 0
 	
 	@State private var isErrorDisplayed: Bool = false
     
@@ -63,6 +63,7 @@ struct TutorialInputsView: View {
 			VStack{
 				HStack{
 					VStack{
+						Text("Calc \(selectedOperator.getFormatWithInputs([2,3]))")
 						Text("Enter the equation parameters:")
 							.bold()
 							.foregroundStyle(Color.theme.text)
@@ -132,7 +133,7 @@ extension TutorialInputsView{
 							NumberInputView(value: $inputs[i], isFocused: focusBinding)
 								.font(.system(size:30, weight:.bold))
 								.padding(5)
-								.frame(width: 100, alignment: .leading)
+								.frame(width: 130, alignment: .leading)
 								.background(Color.theme.background_dark, in:Capsule())
 								.foregroundStyle(Color.white)
 						}else{

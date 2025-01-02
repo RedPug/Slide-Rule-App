@@ -33,7 +33,7 @@ struct SideScaleLabelView: View {
         Color(.gray)
             .frame(width:45*(1+0.5*(posData.zoomLevel-1))+10)
             .overlay(alignment:.leading){
-                LeftSlideLabelView(scales: posData.isFlippedTemp ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront, minIndex: 0, maxIndex: 10, zoom:posData.zoomLevel, zoomAnchor:posData.zoomAnchor)
+                LeftSlideLabelView(scales: posData.isFlippedTemp ? RulerScales.backScales : RulerScales.frontScales, minIndex: 0, maxIndex: 10, zoom:posData.zoomLevel, zoomAnchor:posData.zoomAnchor)
                     .frame(width:70, height:240, alignment:.leading)
                     .scaleEffect(1.4, anchor: .leading)
                     .padding(5)

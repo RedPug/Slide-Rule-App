@@ -43,6 +43,7 @@ struct TutorialRulerView: View{
     @State var selectionNum2: Int = -1
     
     @State var keyframeNum: Int = 0
+	@State var description: String?
     @State var label: String = ""
     @State var action: KeyframeActions = .none
     @State var gestureHint: GestureHint = .none
@@ -51,7 +52,9 @@ struct TutorialRulerView: View{
     
     @State var sensoryTrigger: Bool = false
     
-    @State var isInfoPopoverDisplayed: Bool = false
+    @State var isStepListDisplayed: Bool = false
+	
+	@State var isExtraInfoDisplayed: Bool = false
 	
 	@Environment(\.dismiss) var dismiss //used for the back button
     
@@ -72,18 +75,17 @@ struct TutorialRulerView: View{
 					}
 				}
                 
-                rulerButtonView
+                sideButtonsView
                     .sensoryFeedback(.impact, trigger: sensoryTrigger)
             }
-            
             .frame(width: geometry.size.width, height: geometry.size.height+geometry.safeAreaInsets.bottom)
             .clipped()
-            .sheet(isPresented: $isInfoPopoverDisplayed){
+            .sheet(isPresented: $isStepListDisplayed){
 				VStack{
 					TutorialStepListView(instructionNum: keyframeNum, keyframes: keyframes, setInstructionNum:{i in return setInstructionNum(i)})
 					Spacer()
 					Button{
-						isInfoPopoverDisplayed = false
+						isStepListDisplayed = false
 					}label:{
 						Text("Done")
 							.foregroundStyle(Color.lightGray)
@@ -105,10 +107,10 @@ struct TutorialRulerView: View{
             checkActionChange()
         }
         .onChange(of: posData.slidePos){
-            if selectionNum >= 3 && selectionNum <= 7 || selectionNum >= 14 && selectionNum <= 18 {
+			if RulerScales.isScaleOnSlide(scaleNum: selectionNum) {
                 selectionX = selectionX0 + posData.slidePos
             }
-            if selectionNum2 >= 3 && selectionNum2 <= 7 || selectionNum2 >= 14 && selectionNum2 <= 18 {
+            if RulerScales.isScaleOnSlide(scaleNum: selectionNum2) {
                 selectionX2 = selectionX20 + posData.slidePos
             }
         }
@@ -136,7 +138,7 @@ struct TutorialRulerView: View{
     }
     
     func onSelectionChange(){
-        if selectionNum >= 3 && selectionNum <= 7 || selectionNum >= 14 && selectionNum <= 18 {
+        if RulerScales.isScaleOnSlide(scaleNum: selectionNum) {
             selectionX = selectionX0 + posData.slidePos
         }else{
             selectionX = selectionX0;
@@ -144,7 +146,7 @@ struct TutorialRulerView: View{
     }
     
     func onSelection2Change(){
-        if selectionNum2 >= 3 && selectionNum2 <= 7 || selectionNum2 >= 14 && selectionNum2 <= 18 {
+        if RulerScales.isScaleOnSlide(scaleNum: selectionNum2) {
             selectionX2 = selectionX20 + posData.slidePos
         }else{
             selectionX2 = selectionX20;
@@ -170,19 +172,20 @@ struct TutorialRulerView: View{
         
         if keyframeNum < 0 || keyframeNum >= keyframes.count {return}
         let key = keyframes[keyframeNum]
-        if key.selectionNum != nil {selectionNum = key.selectionNum!}
-        if key.selectionX != nil {selectionX0 = calcXValue(x: key.selectionX!, slideNum: selectionNum)}
-        if key.selectionNum2 != nil {selectionNum2 = key.selectionNum2!}
-        if key.selectionX2 != nil {selectionX20 = calcXValue(x: key.selectionX2!, slideNum: selectionNum2)}
-        if key.label != nil {label = key.label!}
+        if key.scaleIndex != nil {selectionNum = key.scaleIndex!}
+		if key.scaleValue != nil {selectionX0 = calcXValue(x: key.scaleValue!, scaleNum: selectionNum)}
+        if key.scaleIndex2 != nil {selectionNum2 = key.scaleIndex2!}
+		if key.scaleValue2 != nil {selectionX20 = calcXValue(x: key.scaleValue2!, scaleNum: selectionNum2)}
+        label = key.label
         action = key.action
+		description = key.description
     }
     
     
 }
 
 extension TutorialRulerView{
-    private var rulerButtonView: some View {
+    private var sideButtonsView: some View {
         Color(.gray)
             .frame(width:50)
             .overlay{
@@ -221,7 +224,7 @@ extension TutorialRulerView{
 					Spacer()
 					
 					Button{
-						isInfoPopoverDisplayed = true
+						isStepListDisplayed = true
 					}label:{
 						Image(systemName:"list.number")
 							.resizable()
@@ -293,6 +296,27 @@ extension TutorialRulerView{
 				.lineLimit(1)
 				.minimumScaleFactor(0.4)
 				.foregroundStyle(.white)
+			if description != nil {
+				Button{
+					isExtraInfoDisplayed.toggle()
+				}label:{
+					Image(systemName:"info.circle")
+						.resizable()
+						.scaledToFit()
+						.frame(width:20, height: 20)
+						.padding(10)
+						.foregroundStyle(Color.theme.text)
+				}
+				.popover(isPresented:$isExtraInfoDisplayed){
+					ZStack{
+						LaTeX(description ?? "How did you get here?")
+							.foregroundStyle(Color.theme.text)
+					}
+					.padding()
+					.presentationCompactAdaptation(.popover)
+					.presentationBackground(Color.gray)
+				}
+			}
 			
 			Spacer()
 		}
@@ -303,19 +327,15 @@ extension TutorialRulerView{
 
 
 extension TutorialRulerView{
-    private func calcXValue(x : CGFloat, slideNum : Int) -> CGFloat {
+    private func calcXValue(x : CGFloat, scaleNum : Int) -> CGFloat {
         let x0 = 125.0
         let w = 1350.0
         
-        let scales = slideNum >= 11 ? ScaleLists.slideScalesBack : ScaleLists.slideScalesFront
-        
-        let f: (CGFloat)->(CGFloat) = scales[slideNum%11].data.equation
-        
-        return x0 + w * f(x)
+		return x0 + w * RulerScales.getFactorAlongScale(scaleNum:scaleNum, value:x)
     }
     
-    private func calcSelectionHeight(slideNum: Int) -> CGFloat{
-        switch slideNum {
+    private func calcSelectionHeight(scaleNum: Int) -> CGFloat{
+        switch scaleNum {
         case 0: return 20.0
         case 1: return 37.0
         case 2: return 56.5
@@ -341,10 +361,6 @@ extension TutorialRulerView{
         default: return -1
         }
     }
-	
-	func isScaleOnSlide(_ slideNum: Int) -> Bool {
-		return slideNum >= 3 && slideNum <= 7 || slideNum >= 14 && slideNum <= 18
-	}
     
     func center(x: CGFloat) -> CGFloat{
         return -x
@@ -360,22 +376,24 @@ extension TutorialRulerView{
         
         let key = keyframes[keyframeNum]
         action = key.action
-        if key.selectionNum != nil {
-            selectionNum = key.selectionNum!
+        if key.scaleIndex != nil {
+            selectionNum = key.scaleIndex!
         }
-        if key.selectionX != nil {
-            selectionX0 = calcXValue(x: key.selectionX!, slideNum: key.selectionNum!)
+        if key.scaleValue != nil {
+			selectionX0 = calcXValue(x: key.scaleValue!, scaleNum: key.scaleIndex!)
             onSelectionChange()
         }
-        if key.selectionNum2 != nil {
-            selectionNum2 = key.selectionNum2!
+        if key.scaleIndex2 != nil {
+            selectionNum2 = key.scaleIndex2!
         }
-        if key.selectionX2 != nil {
-            selectionX20 = calcXValue(x: key.selectionX2!, slideNum: key.selectionNum2!)
+        if key.scaleValue2 != nil {
+			selectionX20 = calcXValue(x: key.scaleValue2!, scaleNum: key.scaleIndex2!)
             onSelection2Change()
         }
+		
+		description = key.description
         
-        if key.label != nil {label = key.label!}
+        label = key.label
     }
     
     private func setInstructionNum(_ num: Int){
@@ -523,14 +541,21 @@ extension TutorialRulerView{
                     Capsule()
                         .stroke(.red)
                         .frame(width:6,height:12)
-                        .offset(x:selectionX + posData.framePos, y:calcSelectionHeight(slideNum: selectionNum) + y_offset)
+						.offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
                 }
 				
 				if action != .none && selectionNum >= 0 {
-					let h = calcSelectionHeight(slideNum: selectionNum)
+					let h = calcSelectionHeight(scaleNum: selectionNum)
 					Color.yellow.opacity(0.4)
 						.frame(width: 1350, height:10)
-						.offset(x: 800 + posData.framePos + (isScaleOnSlide(selectionNum) ? posData.slidePos : 0), y: h + y_offset)
+						.offset(x: 800 + posData.framePos + (RulerScales.isScaleOnSlide(scaleNum: selectionNum) ? posData.slidePos : 0), y: h + y_offset)
+				}
+				
+				if action == .alignScales && selectionNum2 >= 0 {
+					let h = calcSelectionHeight(scaleNum: selectionNum2)
+					Color.yellow.opacity(0.4)
+						.frame(width: 1350, height:10)
+						.offset(x: 800 + posData.framePos + (RulerScales.isScaleOnSlide(scaleNum: selectionNum2) ? posData.slidePos : 0), y: h + y_offset)
 				}
                 
                 if selectionNum2 >= 0 && action == .alignScales{
@@ -538,12 +563,12 @@ extension TutorialRulerView{
                     Capsule()
                         .stroke(.red)
                         .frame(width:6,height:12)
-                        .offset(x:selectionX + posData.framePos, y:calcSelectionHeight(slideNum: selectionNum) + y_offset)
+                        .offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
                     
                     Capsule()
                         .stroke(.red)
                         .frame(width:6,height:12)
-                        .offset(x:selectionX2 + posData.framePos, y:calcSelectionHeight(slideNum: selectionNum2) + y_offset)
+                        .offset(x:selectionX2 + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
                     
                     Capsule()
                         .frame(width:1,height:190)
@@ -551,7 +576,7 @@ extension TutorialRulerView{
                             //crop out selected box
                             Rectangle()
                                 .frame(width:6,height:12)
-                                .offset(y:calcSelectionHeight(slideNum: selectionNum) + y_offset)
+                                .offset(y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
                         }
                         .offset(x:selectionX + posData.framePos)
                         .foregroundStyle(.red)
@@ -562,7 +587,7 @@ extension TutorialRulerView{
                             //crop out selected box
                             Rectangle()
                                 .frame(width:6,height:12)
-                                .offset(y:calcSelectionHeight(slideNum: selectionNum2) + y_offset)
+                                .offset(y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
                         }
                         .foregroundStyle(.red)
                         .offset(x:selectionX2 + posData.framePos)

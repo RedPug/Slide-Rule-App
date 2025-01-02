@@ -49,6 +49,15 @@ struct NumberInputView: View {
 				Spacer()
 			}
 		}
+		.onAppear{
+			if isFocused {
+				startTicking()
+				hasTypingBar = true
+			}else{
+				hasTypingBar = false
+				dispatch?.cancel()
+			}
+		}
 		.onChange(of:isFocused){
 			if isFocused {
 				startTicking()

@@ -41,10 +41,10 @@ struct SlideView: View {
                 .zIndex(1.0)
             
             //former height = 88
-            SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesFront, minIndex: 3, maxIndex:7)
+            SlideMarkingView(width:1350, height:202, scales: RulerScales.frontScales, minIndex: 3, maxIndex:7)
                 .zIndex(posDat.isFlippedTemp ? 0.5 : 1.5)
                 .frame(width:1600, height:88)
-            SlideMarkingView(width:1350, height:202, scales: ScaleLists.slideScalesBack, minIndex: 3, maxIndex:7)
+            SlideMarkingView(width:1350, height:202, scales: RulerScales.backScales, minIndex: 3, maxIndex:7)
                 .zIndex(posDat.isFlippedTemp ? 1.5 : 0.5)
                 .frame(width:1600, height:88)
         }

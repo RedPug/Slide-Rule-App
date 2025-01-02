@@ -185,44 +185,90 @@ struct RulerScale: Equatable{
     }
 }
 
-enum ScaleLists{
-    static let slideScalesFront : [RulerScale] = [
-        RulerScale(data:RulerScales.LL02, name:"LL02", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-0.1x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{-1.0x}} ]$"),
-        RulerScale(data:RulerScales.LL03, name:"LL03", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-1.0x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{-10.0x}} ]$"),
+enum RulerScales{
+    static let frontScales : [RulerScale] = [
+        RulerScale(data:RulerScales.LL02, name:"LL02",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-0.1x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{-1.0x}} ]$"),
+        RulerScale(data:RulerScales.LL03, name:"LL03",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-1.0x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{-10.0x}} ]$"),
         RulerScale(data:RulerScales.CF, name:"DF", rightLabel: "$\\textbf{𝝅x}$"),
         
+		
         RulerScale(data:RulerScales.CF, name:"CF", rightLabel: "$\\textbf{𝝅x}$"),
         RulerScale(data:RulerScales.CF.reversed(), name:"CIF", rightLabel: "$\\frac{\\textbf{1}}{\\textbf{𝝅x}}$"),
         RulerScale(data:RulerScales.L, name:"L", rightLabel: "$\\small \\textbf{LOG x}$"),
         RulerScale(data:RulerScales.C.reversed(), name:"CI", rightLabel: "$\\frac{\\textbf{1}}{\\textbf{x}}$"),
         RulerScale(data:RulerScales.C, name:"C", rightLabel: "$\\textbf{x}$"),
         
+		
         RulerScale(data:RulerScales.C, name:"D", rightLabel: "$\\textbf{x}$"),
-        RulerScale(data:RulerScales.LL3, name:"LL3", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{1.0x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{10.0x}} ]$"),
-        RulerScale(data:RulerScales.LL2, name:"LL2", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{0.1x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{1.0x}} ]$"),
+        RulerScale(data:RulerScales.LL3, name:"LL3",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{1.0x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{10.0x}} ]$"),
+        RulerScale(data:RulerScales.LL2, name:"LL2",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{0.1x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{1.0x}} ]$"),
     ]
-    //"$ \\left[ \\tiny \\begin{array}{l}0 1x \\\\0 1x \\end{array} \\right. $"
-    static let slideScalesBack : [RulerScale] = [
-        RulerScale(data:RulerScales.LL01, name:"LL01", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-0.01x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{-0.1x}} ]$"),
+	
+    static let backScales : [RulerScale] = [
+        RulerScale(data:RulerScales.LL01, name:"LL01",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{-0.01x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{-0.1x}} ]$"),
         RulerScale(data:RulerScales.K, name:"K", rightLabel: "$\\textbf{x}^{\\textbf{3}}$"),
         RulerScale(data:RulerScales.A, name:"A", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
         
+		
         RulerScale(data:RulerScales.A, name:"B", rightLabel: "$\\textbf{x}^{\\textbf{2}}$"),
-        RulerScale(data:RulerScales.TL, name:"T <45°", leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0.1x} \\\\[-5px] \\textbf{0.1x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
-        RulerScale(data:RulerScales.TG, name:"T >45°", leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $", rightLabel:"$\\small \\begin{array}{l} \\textbf{10.0x} \\\\[-5px] \\textbf{10.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
-        RulerScale(data:RulerScales.ST, name:"ST", leftLabel:"$ \\left[ \\textbf{0.01x} \\right. $",
+        RulerScale(data:RulerScales.TL, name:"T <45°",
+				   leftLabel:"$ \\left [ \\begin{array}{l} \\textbf{0.1x} \\\\[-5px] \\textbf{0.1x} \\end{array} \\right. $",
+				   rightLabel:"$\\small \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
+        RulerScale(data:RulerScales.TG, name:"T >45°",
+				   leftLabel:"$ \\left[ \\begin{array}{l} \\textbf{1.0x} \\\\[-5px] \\textbf{1.0x} \\end{array} \\right. $",
+				   rightLabel:"$\\small \\begin{array}{l} \\textbf{10.0x} \\\\[-5px] \\textbf{10.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{TAN} \\\\[-5px] \\textit{c \\;o \\;t} \\end{array}$"),
+        RulerScale(data:RulerScales.ST, name:"ST",
+				   leftLabel:"$ \\left[ \\textbf{0.01x} \\right. $",
                    rightLabel:"$\\small\\begin{array}{l} \\textbf{0.1x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textbf{TAN}\\end{array}$"),
-        RulerScale(data:RulerScales.S, name:"S", leftLabel:"$ \\left[ \\textbf{0.1x} \\right. $",
+        RulerScale(data:RulerScales.S, name:"S",
+				   leftLabel:"$ \\left[ \\textbf{0.1x} \\right. $",
                    rightLabel:"$\\small\\begin{array}{l} \\textbf{1.0x} \\end{array} \\Large ] \\small \\begin{array}{l} \\textbf{S I N} \\\\[-5px] \\textit{c \\;o \\;s}\\end{array}$"),
         
+		
         RulerScale(data:RulerScales.C, name:"D", rightLabel: "$\\textbf{x}$"),
         RulerScale(data:RulerScales.C.reversed(), name:"DI", rightLabel: "$\\frac{\\textbf{1}}{\\textbf{x}}$"),
-        RulerScale(data:RulerScales.LL1, name:"LL1", leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{0.01x}}\\end{array} \\right.$", rightLabel: "$\\large \\textbf{e}^{\\textbf{0.1x}} ]$"),
+        RulerScale(data:RulerScales.LL1, name:"LL1",
+				   leftLabel:"$\\left [ \\begin{array}{l} \\large \\textbf{e}^{\\textbf{0.01x}}\\end{array} \\right.$",
+				   rightLabel: "$\\large \\textbf{e}^{\\textbf{0.1x}} ]$"),
     ]
-}
-
-enum RulerScales{
-    static let C = RulerScaleData(
+	
+	static func getScaleName(index: Int) -> String? {
+		if !(index >= 0 && index < frontScales.count + backScales.count) {return nil}
+		
+		if index < frontScales.count {
+			return frontScales[index].name
+		}else{
+			return backScales[index-frontScales.count].name
+		}
+	}
+	
+	static func getFactorAlongScale(scaleNum index: Int, value x: CGFloat) -> CGFloat{
+		if !(index >= 0 && index < frontScales.count + backScales.count) {return 0}
+		
+		if index < frontScales.count {
+			return frontScales[index].data.equation(x)
+		}else{
+			return backScales[index-frontScales.count].data.equation(x)
+		}
+	}
+	
+	static func isScaleOnSlide(scaleNum: Int) -> Bool {
+		return scaleNum >= 3 && scaleNum <= 7 || scaleNum >= 14 && scaleNum <= 18
+	}
+	
+	
+	
+	private static let C = RulerScaleData(
         equation: { x in
             return log10(x)
         },
@@ -259,7 +305,7 @@ enum RulerScales{
         ]
     )
     
-    static let L = RulerScaleData(
+	private static let L = RulerScaleData(
         equation: { x in
             return x
         },
@@ -275,7 +321,7 @@ enum RulerScales{
         ]
     )
     
-    static let CF = RulerScaleData(
+	private static let CF = RulerScaleData(
         equation: { x in
             return log10(x) - log10(Double.pi)
         },
@@ -315,7 +361,7 @@ enum RulerScales{
         ]
     )
     
-    static let A = RulerScaleData(
+	private static let A = RulerScaleData(
         equation: { x in
             return log10(x)/2
         },
@@ -342,7 +388,7 @@ enum RulerScales{
         ]
     )
     
-    static let K = RulerScaleData(
+	private static let K = RulerScaleData(
         equation: { x in
             return log10(x)/3
         },
@@ -378,7 +424,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL3 = RulerScaleData(
+	private static let LL3 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))
         },
@@ -422,7 +468,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL2 = RulerScaleData(
+	private static let LL2 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))+1
         },
@@ -448,7 +494,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL1 = RulerScaleData(
+	private static let LL1 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))+2
         },
@@ -463,7 +509,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL01 = RulerScaleData(
+	private static let LL01 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))+2
         },
@@ -484,7 +530,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL02 = RulerScaleData(
+	private static let LL02 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))+1
         },
@@ -504,7 +550,7 @@ enum RulerScales{
         ]
     )
     
-    static let LL03 = RulerScaleData(
+	private static let LL03 = RulerScaleData(
         equation: { x in
             return log10(abs(log(x)))
         },
@@ -537,7 +583,7 @@ enum RulerScales{
         ]
     )
     
-    static let S = RulerScaleData(
+	private static let S = RulerScaleData(
         equation: { x in
             return log10(sin(x*Double.pi/180))+1
         },
@@ -568,7 +614,7 @@ enum RulerScales{
         ]
     )
     
-    static let ST = RulerScaleData(
+	private static let ST = RulerScaleData(
         equation: { x in
             return log10(sin(x*Double.pi/180))+2
         },
@@ -616,7 +662,7 @@ enum RulerScales{
         ]
     )
     
-    static let TG = RulerScaleData(
+	private static let TG = RulerScaleData(
         equation: { x in
             return log10(tan(x*Double.pi/180))
         },
@@ -643,7 +689,7 @@ enum RulerScales{
         ]
     )
     
-    static let TL = RulerScaleData(
+	private static let TL = RulerScaleData(
         equation: { x in
             return log10(tan(x*Double.pi/180))+1
         },

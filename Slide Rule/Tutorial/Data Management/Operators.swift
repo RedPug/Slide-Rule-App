@@ -52,7 +52,7 @@ struct Operator: Equatable{
         self._getKeyframes = getKeyframes
     }
 	
-	//overload for default range of all positive (not including 0)
+	//overload for default range of all positive inputs (not including 0)
 	init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
 		self.init(symbol: symbol, numOperands: numOperands, range:0.00001..., format:format,expression:expression,getKeyframes: getKeyframes)
 	}
@@ -81,6 +81,24 @@ struct Operator: Equatable{
 		arr.append(buffer)
 		
 		return arr
+	}
+	
+	func getFormatWithInputs(_ values: [CGFloat]) -> String {
+		var out = ""
+		
+		for str in format{
+			if str.first == "{" {
+				let char = str.last!
+				let i = char.isASCII ? (Int(char.asciiValue!) - 97) : 0
+				out += Operators.formatNumber(values[i])
+			}else if str.first == "$"{
+				out += str.dropFirst()
+			}else{
+				out += str
+			}
+		}
+		
+		return out
 	}
 	
 	func evaluate(_ values: [CGFloat]) throws -> CGFloat{
@@ -138,10 +156,10 @@ enum Operators{
         let out = a*b
         let out1 = mapOnC(out)
         return [
-            Keyframe(scaleNum:8, x:a1,     action:"cursor",    label:"Calculate $\(format(a)) \\times \(format(b))$: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum:8, x:a1,     action:"indexL",    label:"Move the index of the C scale to the cursor"),
-            Keyframe(scaleNum:7, x:b1,     action:"cursor",    label:"Place the cursor at $\(format(b))$ on the C scale"),
-            Keyframe(scaleNum:8, x:out1,   action:"read",      label:"Read \(format(out)) on the D scale.")
+			Keyframe(scaleNum:8, x:a1,     action:.alignCursor),
+			Keyframe(scaleNum:8, x:a1, scaleNum2:7, x2:b1, action:.alignIndexAuto),
+			Keyframe(scaleNum:7, x:b1,     action:.alignCursor),
+			Keyframe(scaleNum:8, x:out1,   action:.readValue)
         ]
     }
     
@@ -153,9 +171,9 @@ enum Operators{
         let out = a/b
         let out1 = mapOnC(out)
         return [
-            Keyframe(scaleNum:8, x:a1, scaleNum2:7, x2:b1, action:.alignScales, label:"Calculate $\(format(a)) / \(format(b))$: Align $\(format(a1))$ on the D scale with $\(format(b1))$ on the C scale"),
-            Keyframe(scaleNum:7, x:1,       action:.alignCursor,    label:"Move the cursor to the left index of the C scale (1)"),
-            Keyframe(scaleNum:8, x:out1,    action:.readValue,      label:"Read \(format(out)) on the D scale at the index of the C scale"),
+            Keyframe(scaleNum:8, x:a1, scaleNum2:7, x2:b1, action:.alignScales),
+            Keyframe(scaleNum:7, x:1,       action:.alignCursor),
+            Keyframe(scaleNum:8, x:out1,    action:.readValue),
         ]
     }
     
@@ -165,8 +183,8 @@ enum Operators{
         let out = 1/a
         let out1 = mapOnC(out)
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate $1 / \(format(a))$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 6, x: out1, action: .readValue, label: "Read \(format(out)) on the CI scale.")
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 6, x: out1, action: .readValue)
         ]
     }
     
@@ -176,8 +194,8 @@ enum Operators{
         let out = a*a
         let out1 = pow(mapOnC(sqrt(out)),2)
         return [
-            Keyframe(scaleNum: 19, x: a1, action: .alignCursor, label: "Calculate $\(format(a))^{2}$: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum: 13, x: out1, action: .readValue, label: "Read \(format(out)) on the A scale.")
+            Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 13, x: out1, action: .readValue)
         ]
     }
     
@@ -187,8 +205,8 @@ enum Operators{
         let out = a*a*a
         let out1 = pow(mapOnC(pow(out,1/3)),3)
         return [
-            Keyframe(scaleNum: 19, x: a1, action: .alignCursor, label: "Calculate $\(format(a))^{3}$: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum: 12, x: out1, action: .readValue, label: "Read \(format(out)) on the K scale.")
+            Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 12, x: out1, action: .readValue)
         ]
     }
 
@@ -198,8 +216,8 @@ enum Operators{
         let out = sqrt(a)
         let out1 = mapOnC(out) //find the value between 1 and 10
         return [
-            Keyframe(scaleNum: 13, x: a1, action: .alignCursor, label: "Calculate $\\sqrt[2]{\(format(a))}$: Place the cursor at $\(format(a1))$ on the A scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+            Keyframe(scaleNum: 13, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 19, x: out1, action: .readValue)
         ]
     }
     
@@ -210,8 +228,8 @@ enum Operators{
         let out1 = mapOnC(out) //find the value between 1 and 10
         
         return [
-            Keyframe(scaleNum: 12, x: a1, action: .alignCursor, label: "Calculate $\\sqrt[3]{\(format(a))}$: Place the cursor at $\(format(a1))$ on the K scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+            Keyframe(scaleNum: 12, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 19, x: out1, action: .readValue)
         ]
     }
     
@@ -259,8 +277,8 @@ enum Operators{
         let out = exp(a)
         
         return [
-            Keyframe(scaleNum: scale <= 10 ? 8 : 19, x: a1, action: .alignCursor, label: "Calculate $e^{\(format(a))}$: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum: scale, x: out, action: .readValue, label: "Read the answer $\(format(out))$ on the \(scaleName) scale (with a range from $\(lower)x$ to $\(upper)x$)")
+            Keyframe(scaleNum: scale <= 10 ? 8 : 19, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: scale, x: out, action: .readValue, description: "Use the \(scaleName) scale, which has a range from $\(lower)x$ to $\(upper)x$"),
         ]
     }
     
@@ -285,15 +303,16 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate $\(format(a))^{\(format(b))}$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Read $\(format(mantissa))$ on the L scale"),
-            Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLog))$"),
-            Keyframe(scaleNum: 8, x: fullLog1, action: .alignCursor, label: "Move the cursor to $\(format(fullLog1))$ on the D scale"),
-            Keyframe(scaleNum: 8, x: fullLog1, action: .alignIndexLeft, label: "Move the index of the C scale to the cursor"),
-            Keyframe(scaleNum: 7, x: b1, action: .alignCursor, label: "Place the cursor at $\(format(b1))$ on the C scale"),
-            Keyframe(scaleNum: 8, x: logProd1, action: .readValue, label: "Read $\(format(logProd))$ on the D scale"),
-            Keyframe(scaleNum: 5, x: prodMantissa, action: .alignCursor, label: "Move the cursor to $\(format(prodMantissa))$ (mantissa of $\(format(logProd))$) on the L scale"),
-            Keyframe(scaleNum: 7, x: out1, action: .readValue, label: "Read $\(format(out1))$ on the C scale. Because we cut a $\(shiftAmount)$ from $\(format(logProd))$, we shift $\(shiftAmount)$ places to get $\(format(out))$ as our final answer")
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
+					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
+            Keyframe(scaleNum: 8, x: fullLog1, action: .alignCursor),
+            Keyframe(scaleNum: 8, x: fullLog1, scaleNum2: 7, x2: b1, action: .alignIndexAuto),
+            Keyframe(scaleNum: 7, x: b1, action: .alignCursor),
+            Keyframe(scaleNum: 8, x: logProd1, action: .readValue),
+            Keyframe(scaleNum: 5, x: prodMantissa, action: .alignCursor, label: "Move the cursor to $\(formatNumber(prodMantissa))$ (mantissa of $\(formatNumber(logProd))$) on the L scale"),
+            Keyframe(scaleNum: 7, x: out1, action: .readValue, label: "Read $\(formatNumber(out1))$ on the C scale."),
+			Keyframe(label:"Because we cut a $\(shiftAmount)$ from $\(formatNumber(logProd))$, we shift $\(shiftAmount)$ places to get $\(formatNumber(out))$ as our final answer")
         ]
     }
     
@@ -312,13 +331,13 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate ln$(\(format(a)))$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Read \(format(mantissa)) on the L scale"),
-            Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLog))$"),
-            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignCursor, label: "Move the cursor to $\(format(fullLog))$ on the D scale"),
-            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignIndexLeft, label: "Move the index of the C scale to the cursor"),
-            Keyframe(scaleNum: 7, x: 2.303, action: .alignCursor, label: "Place the cursor at $2.303$ (log -> ln conversion factor) on the C scale"),
-            Keyframe(scaleNum: 8, x: out1, action: .readValue, label: "Read the answer $\(format(out))$ on the D scale")
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
+					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
+            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignCursor),
+            Keyframe(scaleNum: 8, x: fullLogMapped, scaleNum2: 7, x2: 2.303, action: .alignIndexAuto),
+            Keyframe(scaleNum: 7, x: 2.303, action: .alignCursor, label: "Place the cursor at $2.303$ on the C scale (log -> ln conversion factor)"),
+            Keyframe(scaleNum: 8, x: out1, action: .readValue)
         ]
     }
     
@@ -331,9 +350,9 @@ enum Operators{
         let mantissa = fullLog.truncatingRemainder(dividingBy: 1)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate log$(\(format(a))$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Read \(format(mantissa)) on the L scale"),
-            Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLog))$"),
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
+					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
         ]
     }
 
@@ -357,19 +376,18 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate log$_{\(format(b))}(\(format(a)))$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 5, x: mantissaA, action: .readValue, label: "Read \(format(mantissaA)) on the L scale"),
-            Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLogA))$"),
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: mantissaA, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLogA))",
+					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissaA))), the logarithm is actually $\(formatNumber(fullLogA))$"),
+            Keyframe(scaleNum: 7, x: b1, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: mantissaB, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLogB))",
+					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissaB))), the logarithm is actually $\(formatNumber(fullLogB))$"),
             
-            Keyframe(scaleNum: 7, x: b1, action: .alignCursor, label: "Place the cursor at $\(format(b1))$ on the C scale"),
-            Keyframe(scaleNum: 5, x: mantissaB, action: .readValue, label: "Read \(format(mantissaB)) on the L scale"),
-            Keyframe(label: "Note that since the L scale only provides the mantissa of the logarithm, the logarithm is actually $\(format(fullLogB))$"),
+            Keyframe(label: "Next, we will divide the first logarithm ($\(formatNumber(fullLogA))$) by the second ($\(formatNumber(fullLogB))$)"),
             
-            Keyframe(label: "Next, divide the first logarithm ($\(format(fullLogA))$) by the second ($\(format(fullLogB))$)"),
-            
-            Keyframe(scaleNum:8, x:fullLogA1, scaleNum2:7, x2:fullLogB1, action:.alignScales, label:"Align $\(format(fullLogA))$ on the D scale with $\(format(fullLogB))$ on the C scale"),
-            Keyframe(scaleNum:7, x:1,       action:.alignCursor,    label:"Move the cursor to the left index of the C scale (1)"),
-            Keyframe(scaleNum:8, x:out1,    action:.readValue,      label:"Read \(format(out)) on the D scale at the index of the C scale"),
+            Keyframe(scaleNum:8, x:fullLogA1, scaleNum2:7, x2:fullLogB1, action:.alignScales),
+            Keyframe(scaleNum:7, x:1,       action:.alignCursor),
+            Keyframe(scaleNum:8, x:out1,    action:.readValue),
         ]
     }
     
@@ -381,32 +399,34 @@ enum Operators{
         
         if a > 5.73917{
             return [
-                Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Calculate sin($\(format(a))°$): Place the cursor at $\(format(a))$ on the S scale"),
-                Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+                Keyframe(scaleNum: 18, x: a, action: .alignCursor, description: "Use the S scale for angles > 5.74°"),
+                Keyframe(scaleNum: 19, x: out1, action: .readValue)
             ]
         }
         
         return [
-            Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Calculate sin($\(format(a))°$): Place the cursor at $\(format(a))$ on the ST scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+            Keyframe(scaleNum: 17, x: a, action: .alignCursor, description: "Use the ST scale for angles < 5.74°"),
+            Keyframe(scaleNum: 19, x: out1, action: .readValue)
         ]
     }
 	
-	static let cosine = Operator(symbol:"cos", numOperands: 1, range: 0.571...90, format: "$cos$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let cosine = Operator(symbol:"cos", numOperands: 1, range: 0...89.42, format: "$cos$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
 		let a = 90-args[0]
 		let out = sin(a*Double.pi/180)
 		let out1 = mapOnC(out)
 		
 		if a > 5.73917{
 			return [
-				Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Calculate cos($\(format(args[0]))°$): Place the cursor at $\(format(args[0]))$ on the S scale italics"),
-				Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+				Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Place the cursor at $\(formatNumber(args[0]))$ on the S scale italics",
+						 description: "Use the S scale for angles < 84.26°"),
+				Keyframe(scaleNum: 19, x: out1, action: .readValue)
 			]
 		}
 		
 		return [
-			Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Calculate cos($\(format(args[0]))°$): Place the cursor at $90 - \(format(args[0])) = \(format(a))$ on the ST scale"),
-			Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+			Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Place the cursor at $90 - \(formatNumber(args[0])) = \(formatNumber(a))$ on the ST scale",
+					 description: "Use the ST scale for angles > 84.26°.\nWe can't directly compute $cos$ for these angles, so we compute $sin(90-\\alpha)$"),
+			Keyframe(scaleNum: 19, x: out1, action: .readValue)
 		]
 	}
     
@@ -418,14 +438,14 @@ enum Operators{
         
         if a > 5.73917{
             return [
-                Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Calculate sin($\(format(a))°$): Place the cursor at $\(format(a))$ on the S scale"),
-                Keyframe(scaleNum: 20, x: out1, action: .readValue, label: "Read \(format(out)) on the DI scale.")
+                Keyframe(scaleNum: 18, x: a, action: .alignCursor),
+                Keyframe(scaleNum: 20, x: out1, action: .readValue)
             ]
         }
         
         return [
-            Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Calculate sin($\(format(a))°$): Place the cursor at $\(format(a))$ on the ST scale"),
-            Keyframe(scaleNum: 20, x: out1, action: .readValue, label: "Read \(format(out)) on the DI scale.")
+            Keyframe(scaleNum: 17, x: a, action: .alignCursor),
+            Keyframe(scaleNum: 20, x: out1, action: .readValue)
         ]
     }
     
@@ -438,19 +458,19 @@ enum Operators{
         if a < 5.73917{
             
             return [
-                Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Calculate tan($\(format(a))°$): Place the cursor at $\(format(a))$ on the ST scale"),
-                Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+                Keyframe(scaleNum: 17, x: a, action: .alignCursor),
+                Keyframe(scaleNum: 19, x: out1, action: .readValue)
             ]
         }else if a < 45{
             return [
-                Keyframe(scaleNum: 15, x: a, action: .alignCursor, label: "Calculate tan($\(format(a))°$): Place the cursor at $\(format(a))$ on the T < 45° scale"),
-                Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+                Keyframe(scaleNum: 15, x: a, action: .alignCursor),
+                Keyframe(scaleNum: 19, x: out1, action: .readValue)
             ]
         }
         
         return [
-            Keyframe(scaleNum: 16, x: a, action: .alignCursor, label: "Calculate tan($\(format(a))°$): Place the cursor at $\(format(a))$ on the T > 45° scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) on the D scale.")
+            Keyframe(scaleNum: 16, x: a, action: .alignCursor),
+            Keyframe(scaleNum: 19, x: out1, action: .readValue)
         ]
     }
     
@@ -463,8 +483,8 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor, label: "Calculate $\\pi*\(format(a))$: Place the cursor at $\(format(a1))$ on the C scale"),
-            Keyframe(scaleNum: 3, x: out1, action: .readValue, label: "Read \(format(out)) on the CF scale.")
+            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 3, x: out1, action: .readValue)
         ]
     }
 
@@ -477,10 +497,10 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 19, x: a1, action: .alignCursor, label: "Convert \(format(a)) minutes to radians: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum: 19, x: a1, action: .alignIndexLeft, label: "Move the index of the slide to the cursor"),
+            Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 19, x: a1, scaleNum2: 17, x2: 1.667, action: .alignIndexAuto),
             Keyframe(scaleNum: 17, x: 1.667, action: .alignCursor, label: "Move the cursor to the minutes mark (') on the ST scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) radians on the D scale.")
+            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(formatNumber(out)) radians on the D scale.")
         ]
     }
     
@@ -492,10 +512,10 @@ enum Operators{
         let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 19, x: a1, action: .alignCursor, label: "Convert \(format(a)) seconds to radians: Place the cursor at $\(format(a1))$ on the D scale"),
-            Keyframe(scaleNum: 19, x: a1, action: .alignIndexLeft, label: "Move the index of the slide to the cursor"),
+            Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
+            Keyframe(scaleNum: 19, x: a1, scaleNum2: 17, x2: 2.778, action: .alignIndexAuto),
             Keyframe(scaleNum: 17, x: 2.778, action: .alignCursor, label: "Move the cursor to the seconds mark (\") on the ST scale"),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(format(out)) radians on the D scale.")
+            Keyframe(scaleNum: 19, x: out1, action: .readValue, label: "Read \(formatNumber(out)) radians on the D scale.")
         ]
     }
     
@@ -531,7 +551,7 @@ enum Operators{
         return x
     }
     
-    private static func format(_ number: Double) -> String {
+    static func formatNumber(_ number: Double) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.usesSignificantDigits = true
