@@ -30,6 +30,8 @@ import LaTeXSwiftUI
 struct TutorialRulerView: View{
 	
     var keyframes: [Keyframe]
+	var title: String
+	
     @State var states: [PosData] = []
     
     @State var posData: PosData = PosData()
@@ -53,18 +55,20 @@ struct TutorialRulerView: View{
     @State var sensoryTrigger: Bool = false
     
     @State var isStepListDisplayed: Bool = false
-	
 	@State var isExtraInfoDisplayed: Bool = false
+	@State var isCompletionScreenDisplayed: Bool = false
 	
 	@Environment(\.dismiss) var dismiss //used for the back button
     
     var body: some View {
-        GeometryReader{ geometry in
-			HStack(spacing:0){
+		ZStack{
+			Color.background.ignoresSafeArea(.all)
+			GeometryReader{ geometry in
 				VStack(spacing:0){
 					toolbarContent
-					.frame(maxWidth:.infinity, maxHeight:40)
-					.background(.gray)
+						.frame(maxWidth:.infinity, maxHeight:40)
+						.background(.gray)
+						.zIndex(1)
 					
 					HStack(spacing:0){
 						SideScaleLabelView(posData: $posData)
@@ -72,37 +76,119 @@ struct TutorialRulerView: View{
 						RulerView(posData: $posData){
 							tutorialOverlayView
 						}.zIndex(-1)
+						
+						sideButtonsView
 					}
 				}
-                
-                sideButtonsView
-                    .sensoryFeedback(.impact, trigger: sensoryTrigger)
-            }
-            .frame(width: geometry.size.width, height: geometry.size.height+geometry.safeAreaInsets.bottom)
-            .clipped()
-            .sheet(isPresented: $isStepListDisplayed){
-				VStack{
-					TutorialStepListView(instructionNum: keyframeNum, keyframes: keyframes, setInstructionNum:{i in return setInstructionNum(i)})
-					Spacer()
-					Button{
-						isStepListDisplayed = false
-					}label:{
-						Text("Done")
-							.foregroundStyle(Color.lightGray)
-							.frame(width:100,height:30)
-							.background(Color.theme.text, in:RoundedRectangle(cornerRadius: 10))
+				.sensoryFeedback(.impact, trigger: sensoryTrigger)
+				.frame(width: geometry.size.width, height: geometry.size.height+geometry.safeAreaInsets.bottom)
+				.clipped()
+				.sheet(isPresented: $isStepListDisplayed){
+					ZStack{
+						Spacer()
+							.frame(maxWidth:.infinity, maxHeight:.infinity)
+							.contentShape(Rectangle())
+							.onTapGesture{
+								isStepListDisplayed = false
+							}
+						VStack{
+							TutorialStepListView(title: title, instructionNum: keyframeNum, keyframes: keyframes, setInstructionNum:{i in return setInstructionNum(i)})
+							Spacer()
+							Button{
+								isStepListDisplayed = false
+							}label:{
+								Text("Done")
+									.foregroundStyle(Color.theme.text)
+									.frame(width:100,height:30)
+									.background(Color.gray, in:Capsule())
+							}
+						}
 					}
+					.padding(10)
+//					.background(Color.clear, in:RoundedRectangle(cornerRadius:10))
+					.presentationCompactAdaptation(.sheet)
+					.presentationBackground(Color.clear)
+				}.sheet(isPresented: $isExtraInfoDisplayed){
+					ZStack{
+						Spacer()
+							.frame(maxWidth:.infinity, maxHeight:.infinity)
+							.contentShape(Rectangle())
+							.onTapGesture{
+								isExtraInfoDisplayed = false
+							}
+						
+						VStack{
+							Text((try? AttributedString(markdown:description!)) ?? "How did you get here?")
+								.foregroundStyle(Color.theme.text)
+								.padding(10)
+								.background(.gray, in:RoundedRectangle(cornerRadius: 10))
+							Button{
+								isExtraInfoDisplayed = false
+							}label:{
+								Text("Done")
+									.foregroundStyle(Color.theme.text)
+									.frame(width:100,height:30)
+									.background(Color.gray, in:Capsule())
+							}
+						}
+					}
+					.padding(.horizontal, 10)
+					.padding(10)
+					.presentationCompactAdaptation(.sheet)
+					.presentationBackground(Color.clear)
+				}.sheet(isPresented: $isCompletionScreenDisplayed){
+					ZStack{
+						Spacer()
+							.frame(maxWidth:.infinity, maxHeight:.infinity)
+							.contentShape(Rectangle())
+							.onTapGesture{
+								isCompletionScreenDisplayed = false
+							}
+						VStack(spacing:20){
+//							Spacer()
+//							Text("The final solution to ___ is ___.")
+							
+							Text("The final answer to \(title) is \(Keyframe.format(keyframes.last!.scaleValue!))")
+								.foregroundStyle(Color.theme.text)
+								.padding()
+								.background(Color.gray, in:RoundedRectangle(cornerRadius:10))
+							
+//							Spacer()
+							HStack(spacing:20){
+								Button{
+									dismiss()
+								}label:{
+									Text("Exit")
+										.foregroundStyle(Color.theme.text)
+										.frame(width:100,height:30)
+										.background(Color.gray, in:Capsule())
+								}
+								
+								Button{
+									isCompletionScreenDisplayed = false
+								}label:{
+									Text("Continue working")
+										.foregroundStyle(Color.theme.text)
+										.frame(width:200,height:30)
+										.background(Color.gray, in:Capsule())
+								}
+							}
+						}
+					}
+					.padding(10)
+//					.background(Color.clear, in:RoundedRectangle(cornerRadius:10))
+					.presentationCompactAdaptation(.sheet)
+					.presentationBackground(Color.clear)
 				}
-				.padding(10)
-				.background(Color.lightGray, in:RoundedRectangle(cornerRadius:10))
-				.presentationCompactAdaptation(.sheet)
-				.presentationBackground(Color.gray)
-            }
-        }
+			}
+		}
 		.toolbar(.hidden)
         .onAppear(){
             setInitialState()
         }
+		.onChange(of:keyframes){
+			setInitialState()
+		}
         .onChange(of: posData.timesPlaced){
             checkActionChange()
         }
@@ -169,16 +255,18 @@ struct TutorialRulerView: View{
     
     private func setInitialState(){
         states = [PosData](repeating: PosData(), count: keyframes.count)
-        
+		
+		keyframeNum = 0
         if keyframeNum < 0 || keyframeNum >= keyframes.count {return}
-        let key = keyframes[keyframeNum]
-        if key.scaleIndex != nil {selectionNum = key.scaleIndex!}
-		if key.scaleValue != nil {selectionX0 = calcXValue(x: key.scaleValue!, scaleNum: selectionNum)}
-        if key.scaleIndex2 != nil {selectionNum2 = key.scaleIndex2!}
-		if key.scaleValue2 != nil {selectionX20 = calcXValue(x: key.scaleValue2!, scaleNum: selectionNum2)}
-        label = key.label
-        action = key.action
-		description = key.description
+		setInstructionNum0(num: keyframeNum, isInstant: true)
+//        let key = keyframes[keyframeNum]
+//        if key.scaleIndex != nil {selectionNum = key.scaleIndex!}
+//		if key.scaleValue != nil {selectionX0 = calcXValue(x: key.scaleValue!, scaleNum: selectionNum)}
+//        if key.scaleIndex2 != nil {selectionNum2 = key.scaleIndex2!}
+//		if key.scaleValue2 != nil {selectionX20 = calcXValue(x: key.scaleValue2!, scaleNum: selectionNum2)}
+//        label = key.label
+//        action = key.action
+//		description = key.description
     }
     
     
@@ -222,55 +310,6 @@ extension TutorialRulerView{
 					}
 					
 					Spacer()
-					
-					Button{
-						isStepListDisplayed = true
-					}label:{
-						Image(systemName:"list.number")
-							.resizable()
-							.aspectRatio(contentMode: .fit)
-							.foregroundColor(.theme.text)
-							.frame(width:30,height:30)
-					}
-					
-					Button{
-						incInstructionNum(shouldMove: true)
-					}label:{
-						VStack{
-							Image(systemName:"arrow.right.circle.fill")
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.foregroundColor(Color.theme.text)
-								.frame(width:30,height:30)
-								.overlay{
-									if(needsNextInput){
-										PulsingCircleView(beginWidth: 30, endWidth: 50, color: .theme.text)
-									}
-								}
-							Text("Next")
-								.foregroundColor(Color.theme.text)
-								.font(.system(size:12))
-						}
-					}
-					.opacity(keyframeNum < keyframes.count - 1 ? 1 : 0.5)
-					
-					Button{
-						decInstructionNum()
-					}label:{
-						VStack{
-							Image(systemName:"arrow.left.circle.fill")
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.foregroundColor(Color.theme.text)
-								.frame(width:30,height:30)
-							Text("Prev")
-								.foregroundColor(Color.theme.text)
-								.font(.system(size:12))
-						}
-						
-					}
-					.frame(width:30)
-					.opacity(keyframeNum > 0 ? 1 : 0.5)
                 }
 				.padding(.vertical, 15)
             }
@@ -281,13 +320,22 @@ extension TutorialRulerView{
 			Button{
 				dismiss()
 			}label:{
-				Image(systemName:"chevron.left")
-					.resizable()
-					.scaledToFit()
-					.frame(width:20, height: 20)
-					.padding(10)
-					.foregroundStyle(Color.theme.text)
+				HStack(spacing:0){
+					Image(systemName:"chevron.left")
+						.resizable()
+						.scaledToFit()
+						.frame(width:20, height: 20)
+						.foregroundStyle(Color.theme.text)
+					
+					Text("Exit")
+						.foregroundStyle(Color.theme.text)
+				}
 			}
+			
+			//vertical spacer line
+			Color.theme.text
+				.frame(width:1)
+				.padding(.vertical, 5)
 			
 			Text("Step \(keyframeNum+1)/\(keyframes.count):")
 				.foregroundStyle(.white)
@@ -307,19 +355,69 @@ extension TutorialRulerView{
 						.padding(10)
 						.foregroundStyle(Color.theme.text)
 				}
-				.popover(isPresented:$isExtraInfoDisplayed){
-					ZStack{
-						LaTeX(description ?? "How did you get here?")
-							.foregroundStyle(Color.theme.text)
-					}
-					.padding()
-					.presentationCompactAdaptation(.popover)
-					.presentationBackground(Color.gray)
-				}
+//				.popover(isPresented:$isExtraInfoDisplayed){
+//					ZStack{
+//						Text((try? AttributedString(markdown:description!)) ?? "How did you get here?")
+//							.foregroundStyle(Color.theme.text)
+//					}
+//					.padding(5)
+//					.presentationCompactAdaptation(.popover)
+//					.presentationBackground(Color.gray)
+//				}
 			}
 			
 			Spacer()
+			
+			Button{
+				decInstructionNum()
+			}label:{
+				VStack{
+					Image(systemName:"arrow.left.circle.fill")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.theme.text)
+						.frame(width:30,height:30)
+//					Text("Prev")
+//						.foregroundColor(Color.theme.text)
+//						.font(.system(size:12))
+				}
+				
+			}
+			.frame(width:30)
+			.opacity(keyframeNum > 0 ? 1 : 0.5)
+			
+			Button{
+				incInstructionNum(shouldMove: true)
+			}label:{
+				VStack{
+					Image(systemName:"arrow.right.circle.fill")
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.foregroundColor(Color.theme.text)
+						.frame(width:30,height:30)
+						.overlay{
+							if(needsNextInput){
+								PulsingCircleView(beginWidth: 30, endWidth: 50, color: .theme.text)
+							}
+						}
+//					Text("Next")
+//						.foregroundColor(Color.theme.text)
+//						.font(.system(size:12))
+				}
+			}
+			.opacity(keyframeNum < keyframes.count - 1 ? 1 : 0.5)
+			
+			Button{
+				isStepListDisplayed = true
+			}label:{
+				Image(systemName:"list.number")
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.foregroundColor(.theme.text)
+					.frame(width:30,height:30)
+			}
 		}
+		.padding(.horizontal,10)
     }
 }
 
@@ -373,6 +471,13 @@ extension TutorialRulerView{
 extension TutorialRulerView{
     private func setInstructionNum0(num: Int, isInstant: Bool = false){
         keyframeNum = num;
+		
+		if keyframeNum == keyframes.count-1 {
+			print("completed tutorial")
+			DispatchQueue.main.asyncAfter(deadline:.now()+2){
+				isCompletionScreenDisplayed = true
+			}
+		}
         
         let key = keyframes[keyframeNum]
         action = key.action
@@ -390,6 +495,9 @@ extension TutorialRulerView{
 			selectionX20 = calcXValue(x: key.scaleValue2!, scaleNum: key.scaleIndex2!)
             onSelection2Change()
         }
+		
+		posData.lockState = action.getLockState()
+		print("set lock state through setInstructionNum0")
 		
 		description = key.description
         
@@ -538,10 +646,12 @@ extension TutorialRulerView{
         return Group{
             if(gestureHint != .flip){ //make sure to only display gui on the correct side of the ruler
                 if (action == .alignCursor || action == .alignIndexLeft || action == .alignIndexRight || action == .readValue) && selectionNum >= 0{
-                    Capsule()
-                        .stroke(.red)
-                        .frame(width:6,height:12)
-						.offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+//                    Capsule()
+//                        .stroke(.red)
+//                        .frame(width:6,height:12)
+//						.offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+					SelectionBoxView(y: calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+						.offset(x:selectionX + posData.framePos)
                 }
 				
 				if action != .none && selectionNum >= 0 {
@@ -560,45 +670,48 @@ extension TutorialRulerView{
                 
                 if selectionNum2 >= 0 && action == .alignScales{
                     //ZStack{
-                    Capsule()
-                        .stroke(.red)
-                        .frame(width:6,height:12)
-                        .offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+//                    Capsule()
+//                        .stroke(.red)
+//                        .frame(width:6,height:12)
+//                        .offset(x:selectionX + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+					SelectionBoxView(y: calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+						.offset(x: selectionX + posData.framePos)
+					SelectionBoxView(y: calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
+						.offset(x: selectionX2 + posData.framePos)
                     
-                    Capsule()
-                        .stroke(.red)
-                        .frame(width:6,height:12)
-                        .offset(x:selectionX2 + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
-                    
-                    Capsule()
-                        .frame(width:1,height:190)
-                        .reverseMask{
-                            //crop out selected box
-                            Rectangle()
-                                .frame(width:6,height:12)
-                                .offset(y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
-                        }
-                        .offset(x:selectionX + posData.framePos)
-                        .foregroundStyle(.red)
-                    
-                    Capsule()
-                        .frame(width:1,height:190)
-                        .reverseMask{
-                            //crop out selected box
-                            Rectangle()
-                                .frame(width:6,height:12)
-                                .offset(y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
-                        }
-                        .foregroundStyle(.red)
-                        .offset(x:selectionX2 + posData.framePos)
+//                    Capsule()
+//                        .stroke(.red)
+//                        .frame(width:6,height:12)
+//                        .offset(x:selectionX2 + posData.framePos, y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
+//                    
+//                    Capsule()
+//                        .frame(width:1,height:190)
+//                        .reverseMask{
+//                            //crop out selected box
+//                            Rectangle()
+//                                .frame(width:6,height:12)
+//                                .offset(y:calcSelectionHeight(scaleNum: selectionNum) + y_offset)
+//                        }
+//                        .offset(x:selectionX + posData.framePos)
+//                        .foregroundStyle(.red)
+//                    
+//                    Capsule()
+//                        .frame(width:1,height:190)
+//                        .reverseMask{
+//                            //crop out selected box
+//                            Rectangle()
+//                                .frame(width:6,height:12)
+//                                .offset(y:calcSelectionHeight(scaleNum: selectionNum2) + y_offset)
+//                        }
+//                        .foregroundStyle(.red)
+//                        .offset(x:selectionX2 + posData.framePos)
                     //}
                 }
                 if action == .alignIndexRight || action == .alignIndexLeft{
                     Capsule()
                         .fill(.red)
-                        .frame(width:0.6,height:190)
+                        .frame(width:1,height:190)
                         .offset(x: posData.framePos + posData.slidePos + (action == .alignIndexLeft ? 124.25 : 1600-124.25))
-                    //.zIndex(/*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/)
                 }
             }
             if(gestureHint != .none){
@@ -606,4 +719,27 @@ extension TutorialRulerView{
             }
         }
     }
+}
+
+
+
+private struct SelectionBoxView: View{
+	var y: CGFloat
+	
+	var body: some View{
+		Capsule()
+			.stroke(.red)
+			.frame(width:6,height:12)
+			.offset(y:y)
+		
+		Capsule()
+			.frame(width:1.3,height:190)
+			.reverseMask{
+				//crop out selected box
+				Rectangle()
+					.frame(width:6,height:12)
+					.offset(y:y)
+			}
+			.foregroundStyle(.red)
+	}
 }

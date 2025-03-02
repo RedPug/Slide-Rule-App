@@ -34,7 +34,7 @@ extension RulerView where Overlay == EmptyView {
 struct RulerView <Overlay: View>: View {
     @EnvironmentObject var settings: SettingsManager
     @EnvironmentObject var orientationInfo: OrientationInfo
-    @Binding var posDat: PosData
+    @Binding var posData: PosData
     @State var isFlipping: Bool = false
     @State var isReadyToFlip = false
     
@@ -48,24 +48,28 @@ struct RulerView <Overlay: View>: View {
     let overlay: Overlay
     
     init(posData: Binding<PosData>, @ViewBuilder overlay: () -> Overlay){
-        self._posDat = posData
+        self._posData = posData
         self.overlay = overlay()
     }
     
     
     
     var body: some View {
-        RulerZoomWrapper(posData: $posDat){
-            FrameView(posDat: $posDat)
+        RulerZoomWrapper(posData: $posData){
+			ZStack{
+				SlideView(posDat: $posData)
+				FrameView(posDat: $posData)
+				CursorView(posDat: $posData)
+			}
                 .sensoryFeedback(.impact, trigger: isReadyToFlip)
                 .overlay(overlay)
-                .rotation3DEffect(Angle(degrees:posDat.flipAngle), axis: (x:1,y:0,z:0), anchorZ:0)
+                .rotation3DEffect(Angle(degrees:posData.flipAngle), axis: (x:1,y:0,z:0), anchorZ:0)
                 .frame(height:240, alignment: .center)
                 .contentShape(.interaction, Rectangle())
                 .simultaneousGesture(
                     rulerFlipGesture
                 )
-                .onChange(of: posDat.shouldFlip){ oldState, newState in
+                .onChange(of: posData.shouldFlip){ oldState, newState in
                     if oldState == false && newState{
                         flip(dir: true);
                     }
@@ -93,7 +97,8 @@ extension RulerView {
     private var rulerFlipGesture: some Gesture {
         DragGesture(minimumDistance: 10)
             .onChanged{value in
-                if(isFlipping || !posDat.canDragToFlip){return}
+				if posData.lockState.contains(.frame) {return}
+                if(isFlipping || !posData.canDragToFlip){return}
                 let height = value.translation.height
                 var h = 0.0
                 
@@ -105,23 +110,23 @@ extension RulerView {
                 let angle = -h*0.4
                 
                 if angle > -45 && angle < 45 {
-                    posDat.flipAngle = angle
+                    posData.flipAngle = angle
                     isReadyToFlip = false
                 }else if angle > 0{
-                    posDat.flipAngle = 45
+                    posData.flipAngle = 45
                     isReadyToFlip = true
                 }else{
-                    posDat.flipAngle = -45
+                    posData.flipAngle = -45
                     isReadyToFlip = true
                 }
             }
             .onEnded{value in
                 isReadyToFlip = false
-                if abs(posDat.flipAngle) >= 44.0 {
+                if abs(posData.flipAngle) >= 44.0 {
                     flip(dir: value.translation.height < 0)
                 }else{
                     withAnimation(.spring(dampingFraction: 0.5)){
-                        posDat.flipAngle = 0
+                        posData.flipAngle = 0
                     }
                 }
             }
@@ -131,25 +136,25 @@ extension RulerView {
         if(isFlipping){return}
         
         let f = dir ? 1.0 : -1.0
-        let t0 = abs(posDat.flipAngle)/90 //portion of first turn time already completed by manual turn
+        let t0 = abs(posData.flipAngle)/90 //portion of first turn time already completed by manual turn
         let t1 = flipTime*0.5*(1-t0) //flip time for first bit
         let t2 = flipTime*0.5 //flip time for second bit
         isFlipping = true
         
         withAnimation(.easeIn(duration: t1)){
-            posDat.flipAngle = 90.0*f
+            posData.flipAngle = 90.0*f
         }
         DispatchQueue.main.asyncAfter(deadline: .now()+t1){
-            posDat.isFlippedTemp.toggle()
-            posDat.isFlipped = posDat.isFlippedTemp
-            posDat.flipAngle += 180*f
+            posData.isFlippedTemp.toggle()
+            posData.isFlipped = posData.isFlippedTemp
+            posData.flipAngle += 180*f
         }
         withAnimation(.easeOut(duration: t2).delay(t1)){
-            posDat.flipAngle += 90*f
+            posData.flipAngle += 90*f
         }
         DispatchQueue.main.asyncAfter(deadline: .now()+t1+t2){
-            posDat.flipAngle = 0
-            posDat.shouldFlip = false
+            posData.flipAngle = 0
+            posData.shouldFlip = false
             isFlipping = false
         }
     }
@@ -180,19 +185,19 @@ extension RulerView {
         let dt: CGFloat = 0.01
         
         if(!isPhysicsActive || !settings.hasPhysics){
-            posDat.velocity = 0
+            posData.velocity = 0
             isSteppingPhysics = false
             return
         }
         
-        if posDat.isDragging {
-            posDat.velocity = 0
+        if posData.isDragging {
+            posData.velocity = 0
         }else if let data = motionManager.accelerometerData {
             //manage if screen is landscale left or right
             let direction: CGFloat = orientationInfo.orientation == .landscapeLeft ? 1 : -1
             
             let g = settings.gravity //gravitational acceleration, in g's
-            let coeff = posDat.velocity == 0 ? settings.friction : settings.friction*0.8 //no units, coefficient of friction
+            let coeff = posData.velocity == 0 ? settings.friction : settings.friction*0.8 //no units, coefficient of friction
             
             var x = data.acceleration.x*direction //top bottom, landscape
             let y = data.acceleration.y*direction //left right, landscape
@@ -221,7 +226,7 @@ extension RulerView {
             sideForce *= factor
             z *= factor
             
-            var velocity = posDat.velocity + -sideForce * dt
+            var velocity = posData.velocity + -sideForce * dt
             
             //normal force, all forces except in direction of travel.
             let normal: CGFloat = sqrt(x*x+z*z) + 10
@@ -235,9 +240,9 @@ extension RulerView {
                 velocity = velocity + friction
             }
             
-            posDat.velocity = velocity
-            posDat.slidePos = posDat.slidePos + velocity*dt
-            posDat.slidePos0 = posDat.slidePos
+            posData.velocity = velocity
+            posData.slidePos = posData.slidePos + velocity*dt
+            posData.slidePos0 = posData.slidePos
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now()+dt, execute: stepPhysics)

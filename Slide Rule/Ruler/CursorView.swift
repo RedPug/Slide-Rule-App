@@ -68,13 +68,13 @@ struct CursorView: View {
             .gesture(
                 DragGesture()
                     .onChanged({value in
-                        if posDat.isLocked {return}
+						if posDat.lockState.contains(.cursor) {return}
                         if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                         posDat.isDragging = true
                         posDat.cursorPos = posDat.cursorPos0+value.translation.width*posDat.movementSpeed
                     })
                     .onEnded({value in
-                        if posDat.isLocked {return}
+						if posDat.lockState.contains(.cursor) {return}
                         posDat.isDragging = false
                         posDat.cursorPos0 = posDat.cursorPos
                         posDat.timesPlaced += 1

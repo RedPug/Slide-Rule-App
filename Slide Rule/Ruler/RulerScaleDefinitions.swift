@@ -147,31 +147,39 @@ struct LabelingInterval{
 struct RulerScaleData{
     let equation: (CGFloat) -> (CGFloat) //outputs on the interval [0,1], using inputs from the MarkingIntervals provided
     let markingIntervals: [MarkingInterval]
+	let _mapOnto: (CGFloat) -> (CGFloat)
     let labels: [(x:CGFloat, text:String, flags:TextFlags)]
+
     
-    func reversed() -> RulerScaleData{
-        return RulerScaleData(
-        equation: {x in return 1-equation(x)},
-        markingIntervals: markingIntervals,
-        labels: labels
-        )
-    }
-    
-    init(equation:@escaping (CGFloat)->(CGFloat), markingIntervals: [MarkingInterval], labelingIntervals: [LabelingInterval]){
+	init(equation:@escaping (CGFloat)->(CGFloat), mapOnto: @escaping (CGFloat)->(CGFloat) = {$0}, markingIntervals: [MarkingInterval], labelingIntervals: [LabelingInterval]){
         self.equation = equation
         self.markingIntervals = markingIntervals
         var arr: [(x:CGFloat,text:String, flags:TextFlags)] = []
         for i in 0..<labelingIntervals.count{
             arr.append(contentsOf: labelingIntervals[i].labels)
         }
+		self._mapOnto = mapOnto
         self.labels = arr
     }
     
-    init(equation:@escaping (CGFloat)->(CGFloat), markingIntervals: [MarkingInterval], labels: [(CGFloat,String,TextFlags)]){
+	init(equation:@escaping (CGFloat)->(CGFloat), mapOnto: @escaping (CGFloat)->(CGFloat) = {$0}, markingIntervals: [MarkingInterval], labels: [(CGFloat,String,TextFlags)]){
         self.equation = equation
         self.markingIntervals = markingIntervals
+		self._mapOnto = mapOnto
         self.labels = labels
     }
+	func reversed() -> RulerScaleData{
+		return RulerScaleData(
+		equation: {x in return 1-equation(x)},
+		mapOnto: mapOnto,
+		markingIntervals: markingIntervals,
+		labels: labels
+		)
+	}
+	
+	func mapOnto(_ x: CGFloat) -> CGFloat{
+		return self._mapOnto(x)
+	}
 }
 
 struct RulerScale: Equatable{
@@ -243,27 +251,40 @@ enum RulerScales{
     ]
 	
 	static func getScaleName(index: Int) -> String? {
-		if !(index >= 0 && index < frontScales.count + backScales.count) {return nil}
-		
-		if index < frontScales.count {
-			return frontScales[index].name
-		}else{
-			return backScales[index-frontScales.count].name
+		if let scale = RulerScales.getScaleAtIndex(index){
+			return scale.name
 		}
+		return nil
 	}
 	
 	static func getFactorAlongScale(scaleNum index: Int, value x: CGFloat) -> CGFloat{
-		if !(index >= 0 && index < frontScales.count + backScales.count) {return 0}
-		
-		if index < frontScales.count {
-			return frontScales[index].data.equation(x)
-		}else{
-			return backScales[index-frontScales.count].data.equation(x)
+		if let scale = RulerScales.getScaleAtIndex(index){
+			return scale.data.equation(scale.data.mapOnto(x))
 		}
+		return 0
 	}
 	
 	static func isScaleOnSlide(scaleNum: Int) -> Bool {
 		return scaleNum >= 3 && scaleNum <= 7 || scaleNum >= 14 && scaleNum <= 18
+	}
+	
+	static func mapOntoScale(scaleNum index: Int, _ x: CGFloat) -> CGFloat{
+		if let scale = RulerScales.getScaleAtIndex(index){
+			return scale.data.mapOnto(x)
+		}
+		return 0
+	}
+	
+	static func getScaleAtIndex(_ index: Int) -> RulerScale?{
+		if !(index >= 0 && index < frontScales.count + backScales.count) {
+			return nil
+		}
+		
+		if index < frontScales.count {
+			return frontScales[index]
+		}else{
+			return backScales[index-frontScales.count]
+		}
 	}
 	
 	
@@ -272,6 +293,18 @@ enum RulerScales{
         equation: { x in
             return log10(x)
         },
+		mapOnto: { val in
+			var x = abs(val)
+			
+			while x > 10 {
+				x = x/10
+			}
+			while x < 1 {
+				x = x*10
+			}
+			
+			return x
+		},
         markingIntervals: [
             MarkingInterval(min: 2.5, max: 10, spacing: 1, size:.xlarge),
             MarkingInterval(min: 1, max: 10, spacing: 1, size:.xlarge),
@@ -309,6 +342,21 @@ enum RulerScales{
         equation: { x in
             return x
         },
+		mapOnto: { val in
+			print("mapping \(val) onto the L scale")
+			var x = val
+//			return x.truncatingRemainder(dividingBy: 1)
+			while x > 1 {
+				x -= 1
+				print("subtracting 1 from x to get \(x)")
+			}
+			while x < 0 {
+				x += 1
+				print("adding 1 from x to get \(x)")
+			}
+			print("returning \(x) as maped value...\n")
+			return x
+		},
         markingIntervals: [
             MarkingInterval(min: 0, max: 1, spacing: 0.05, size:.xlarge),
             MarkingInterval(min: 0, max: 1, spacing: 0.01, skipping:5, size:.large),
@@ -325,6 +373,20 @@ enum RulerScales{
         equation: { x in
             return log10(x) - log10(Double.pi)
         },
+		mapOnto: { val in
+			var x = abs(val)
+			
+			if x > 10*Double.pi {
+				while x > 10*Double.pi {
+					x = x/10
+				}
+			}else if x < Double.pi {
+				while x < Double.pi {
+					x = x*10
+				}
+			}
+			return x
+		},
         markingIntervals: [
             MarkingInterval(min: Double.pi, max: Double.pi, spacing: 1, size:.xlarge),
             MarkingInterval(min: Double.pi*10, max: Double.pi*10, spacing: 1, size:.xlarge),
@@ -365,6 +427,19 @@ enum RulerScales{
         equation: { x in
             return log10(x)/2
         },
+		mapOnto: { val in
+			var x = abs(val)
+			if x > 100 {
+				while x > 100 {
+					x = x/100
+				}
+			}else if x < 1 {
+				while x < 1 {
+					x = x*100
+				}
+			}
+			return x
+		},
         markingIntervals: [
             MarkingInterval(min: 1.5, max: 5, spacing: 1, size:.xlarge),
             MarkingInterval(min: 1, max: 10, spacing: 1, size:.xlarge),
@@ -392,6 +467,19 @@ enum RulerScales{
         equation: { x in
             return log10(x)/3
         },
+		mapOnto: { val in
+			var x = val
+			if x > 1000 {
+				while x > 1000 {
+					x = x/1000
+				}
+			}else if x < 1 {
+				while x < 1 {
+					x = x*1000
+				}
+			}
+			return x
+		},
         markingIntervals: [
             MarkingInterval(min: 1.5, max: 4, spacing: 1, size:.xlarge),
             MarkingInterval(min: 1, max: 10, spacing: 1, size:.xlarge),

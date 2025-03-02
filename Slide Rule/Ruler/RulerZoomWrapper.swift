@@ -29,6 +29,8 @@ struct RulerZoomWrapper <Content: View>: View {
     @State var startY: CGFloat = 0
     
     @State var sensoryTrigger: Bool = false
+	
+	@State var lastLockState: RulerLockState? = nil
     
     
     
@@ -104,7 +106,11 @@ extension RulerZoomWrapper{
     private var rulerMagnificationGesture: some Gesture {
         MagnifyGesture()
             .onChanged { value in
-                posData.isLocked = true
+				if posData.lockState.contains(.zoom) {return}
+				if(lastLockState == nil){
+					lastLockState = posData.lockState
+				}
+				posData.lockState = .motion
                 
                 let val = value.magnification
                 let delta = val / self.lastRawZoomValue
@@ -151,7 +157,11 @@ extension RulerZoomWrapper{
                 
             }.onEnded { value in
                 isZooming = false
-                posData.isLocked = false
+				if(lastLockState != nil){
+					posData.lockState = lastLockState!
+				}
+				lastLockState = nil
+				
                 self.lastRawZoomValue = 1.0
                 
                 posData.framePos0 = posData.framePos
@@ -168,8 +178,13 @@ extension RulerZoomWrapper{
             .onChanged({value in
                 if(posData.canDragToFlip || posData.isDragging){return}
                 if isDraggingUp || abs(value.translation.height) >= 2*abs(value.translation.width) {
+					if posData.lockState.contains(.zoom) {return}
+					if(lastLockState == nil){
+						lastLockState = posData.lockState
+					}
+					posData.lockState = .motion
+					
                     isDraggingUp = true
-                    posData.isLocked = true
                     
                     let yprime = lastZoomAnchor.y - value.translation.height*posData.movementSpeed/2
                     zoomAnchor = CGPoint(x:zoomAnchor.x, y: yprime)
@@ -177,7 +192,12 @@ extension RulerZoomWrapper{
             })
             .onEnded({value in
                 isDraggingUp = false
-                posData.isLocked = false
+				
+				if(lastLockState != nil){
+					posData.lockState = lastLockState!
+				}
+				lastLockState = nil
+				
                 lastZoomAnchor = zoomAnchor
             })
     }

@@ -40,6 +40,8 @@ struct TutorialInputsView: View {
 	@State private var focusIndex: Int = 0
 	
 	@State private var isErrorDisplayed: Bool = false
+	
+	@Environment(\.dismiss) var dismiss //used for the back button
     
     
     init(operations: [Operator]){
@@ -53,50 +55,76 @@ struct TutorialInputsView: View {
     }
     
     var body: some View {
-        
-        
-        return ZStack{
-            Color.background.ignoresSafeArea(.all)
-				.onTapGesture{
-					focusIndex = -1
-				}
-			VStack{
-				HStack{
-					VStack{
-						Text("Calc \(selectedOperator.getFormatWithInputs([2,3]))")
-						Text("Enter the equation parameters:")
-							.bold()
-							.foregroundStyle(Color.theme.text)
-						
-						
-						argsView
-						
-						
-						Button(){
-							focusIndex = -1
+		
+		ZStack{
+			TutorialRulerView(keyframes: keyframes, title:"\(selectedOperator.getFormatWithInputs(inputs.map{CGFloat(Double($0) ?? 0)}))")
+			
+			if !isNav {
+				Color.black
+					.opacity(0.5)
+					.ignoresSafeArea(.all)
+				
+				
+				VStack(alignment:.leading){
+					Button{
+						dismiss()
+					}label:{
+						HStack(spacing:0){
+							Image(systemName:"chevron.left")
+								.resizable()
+								.scaledToFit()
+								.frame(width:20, height: 20)
+								.foregroundStyle(Color.theme.text)
 							
-							let result = try? parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(selectedOperator.symbol)")
-							
-							if let result = result {
-								keyframes = result
-								isNav = true
-							}
-						}label:{
-							HelpButtonView("Start")
-						}
-						.navigationDestination(isPresented: $isNav){
-							ZStack{
-								Color.background.ignoresSafeArea(.all)
-								TutorialRulerView(keyframes: keyframes)
-							}
+							Text("Exit")
+								.foregroundStyle(Color.theme.text)
 						}
 					}
+					.offset(x:-10)
 					
-					KeypadView(value: focusIndex >= 0 ? $inputs[focusIndex]: nil)
+					HStack{
+						VStack{
+							Text("Enter the equation parameters:")
+								.bold()
+								.foregroundStyle(Color.theme.text)
+							
+							argsView
+							
+							Button(){
+								focusIndex = -1
+								
+//								let result = try? parseEquation("\(inputs.map{"\($0)"}.joined(separator: " ")) \(selectedOperator.symbol)")
+								print("attemping to parse equation")
+								let result = try? parseEquation(phrases: inputs + [selectedOperator.symbol])
+								
+								if let result = result {
+									keyframes = result
+//									print("setting keyframes with count \(keyframes.count)")
+									isNav = true
+								}else{
+									print("Something went wrong when parsing the equation...")
+								}
+							}label:{
+								Text("start")
+									.frame(width:100, height:30)
+									.foregroundStyle(.gray)
+									.background(Color.theme.text, in:Capsule())
+							}
+						}
+						
+						KeypadView(value: focusIndex >= 0 ? $inputs[focusIndex]: nil)
+					}
+					
+					if isErrorDisplayed {
+						Text("There is an error in one or more inputs!")
+					}
 				}
-				
-				if isErrorDisplayed {
-					Text("There is an error in one or more inputs!")
+				.padding(.horizontal, 30)
+				.padding(.bottom, 30)
+				.padding(.top, 20)
+				.background(Color.lightGray, in: RoundedRectangle(cornerRadius:10))
+				.onTapGesture{
+					focusIndex = -1
 				}
 			}
         }
@@ -134,7 +162,7 @@ extension TutorialInputsView{
 								.font(.system(size:30, weight:.bold))
 								.padding(5)
 								.frame(width: 130, alignment: .leading)
-								.background(Color.theme.background_dark, in:Capsule())
+								.background(Color.gray, in:Capsule())
 								.foregroundStyle(Color.white)
 						}else{
 							EmptyView()
@@ -161,11 +189,11 @@ extension TutorialInputsView{
 									.foregroundStyle(Color.theme.text)
 									.font(.system(size:30, weight:.bold))
 								Text("+")
-									.foregroundStyle(Color.gray)
+									.foregroundStyle(Color.lightGray)
 									.font(.system(size:30, weight:.bold))
 							}
 							.padding(5)
-							.background(Color.theme.background_dark, in:Capsule())
+							.background(Color.gray, in:Capsule())
 						}
 					}else{
 						Text(format[index])
@@ -181,9 +209,9 @@ extension TutorialInputsView{
 
 extension TutorialInputsView{
 	private func validateInputs() -> Bool{
-		for input in inputs{
+		for (index, input) in inputs.enumerated(){
 			if let n = Double(input) {
-				if !selectedOperator.isValidInput(CGFloat(n)){
+				if !selectedOperator.isValidInput(CGFloat(n), position:index){
 					return false
 				}
 			}else{

@@ -40,7 +40,8 @@ struct PosData: Equatable {
     
     var movementSpeed: CGFloat = 1.0
     
-    var isLocked: Bool = false
+//    var isLocked: Bool = false
+	var lockState: RulerLockState = .none
     
     var isDragging: Bool = false
     var timesPlaced: Int = 0

@@ -61,7 +61,7 @@ struct KeypadView: View {
 			}
 		}
 		.padding(10)
-		.background(Color.theme.background_dark, in:RoundedRectangle(cornerRadius:10))
+		.background(Color.gray, in:RoundedRectangle(cornerRadius:10))
     }
 }
 
@@ -88,7 +88,7 @@ extension KeypadView{
 			Text(text)
 				.frame(width:30,height:30)
 				.background(Color.theme.text, in:RoundedRectangle(cornerRadius: 5))
-				.foregroundStyle(Color.theme.background_dark)
+				.foregroundStyle(Color.gray)
 				
 		}
 	}

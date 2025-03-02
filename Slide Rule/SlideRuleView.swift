@@ -117,16 +117,6 @@ extension SlideRuleView{
                     
                     Spacer()
                     
-//                    NavigationLink(destination: MathNotesView(), label:{
-//                        Image(systemName:"pencil.and.list.clipboard")
-//                            .resizable()
-//                            .aspectRatio(contentMode: .fit)
-//                            .foregroundColor(.theme.text)
-//                            .frame(width:30,height:30)
-//                    })
-//                    
-//                    Spacer()
-                    
                     NavigationLink(destination: HelpMenuView(), label:{
                         Image(systemName:"book.closed")
                             .resizable()

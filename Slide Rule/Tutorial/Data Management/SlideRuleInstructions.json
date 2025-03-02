@@ -1,95 +1,95 @@
 [
-    {
-        "header": "Arithmetic",
-        "instructions":
-        [
-            {
-                "title":"$a \\times b$",
-                "body":"Use C and D scales.",
-                "operation":"*",
-            },
-            {
-                "title":"$a / b$",
-                "body":"Use the C and D scales.",
-                "operation":"/",
-            },
-            {
-                "title":"$1 / a$",
-                "body":"Use the C and CI or D and DI scales.",
-                "operation":"1/",
-            },
-            {
-                "title":"$a^{2}$ or $a^{3}$",
-                "body":"Use the D and A (square) or K (cube) scales.",
-                "operation":"sqr|cube",
-            },
-            {
-                "title":"$\\sqrt{a}$ or $\\sqrt[3]{a}$",
-                "body":"Use the D and A ($\\sqrt{a}$) or K ($\\sqrt[3]{a}$) scales.\n\nNote:\n    For square roots, use the left half of the A scale for numbers between 1 and 10 and use the right half for those between 10 and 100.\nFor numbers outside this range, shift 2 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 2 on the input.\n\n    For cube roots, use the left third of the K scale for numbers between 1 and 10, the middle third for those between 10 and 100, and the last third for those between 100 and 1000.\nFor numbers outside this range, shift 3 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 3 on the input.",
-                "operation":"sqrt|cbrt",
-            },
-        ]
-    },
-    {
-        "header": "Exponents",
-        "instructions":
-        [
-            {
-                "title":"$e^{a}$",
-                "body":"Use the D scale and LL scales.\n$\\begin{array}{lcccc} \\text{Scale:} & LL3 & LL2 & LL1\\\\ \\text{Range:} & [1,10] & [0.1,1] & [0.01,0.1]\\\\ & & & & \\\\ \\text{Scale:} & LL03 & LL02 & LL01 \\\\ \\text{Range:} & [-10,-1] & [-1,-0.1] & [-0.1,-0.01] \\\\ \\end{array}$",
-                "operation":"exp",
-            },
-            {
-                "title":"$a^{b}$",
-                "body":"Use the C, D and L scales.\nEquation Used: $a ^ {b} = 10 ^ {\\text{log}(a) \\times b}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "operation":"^",
-            },
-            {
-                "title":"ln($a$)",
-                "body":"Use the C, D, and L scales.\nEquation Used: ln$(a) = \\text{log}(a) \\times 2.303$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "operation":"ln",
-            },
-            {
-                "title":"log($a$)",
-                "body":"Use the C and L scales.\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "operation":"log",
-            },
-            {
-                "title":"log$_{b}$($a$)",
-                "body":"Use the C, D, and L scales.\nEquation Used: log$_{b}(a) = \\frac{\\text{log}(a)}{\\text{log}(b)}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
-                "operation":"logb",
-            },
-        ]
-    },
-    {
-        "header": "Trigonometry",
-        "instructions":
-        [
-            {
-                "title":"sin($\\alpha$)",
-                "body":"Use the D and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For cosine, use the italicized numbers on the S scale.",
-                "operation":"sin|cos",
-            },
-            {
-                "title":"csc($\\alpha$)",
-                "body":"Use the DI and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For secant (1/cosine), use the italicized numbers on the S scale.",
-                "operation":"csc",
-            },
-            {
-                "title":"tan($\\alpha$)",
-                "body":"Use the D and T or ST scales.\n\nNote:\n    For angles less than 5.71°, use the ST scale. Use the T scales for angles between 5.74° and 90°, using the <45° and >45° scales appropriately.\n    For cotangent, use the italicized numbers on the T scale.",
-                "operation":"tan",
-            },
-            {
-                "title":"$\\pi \\times a$",
-                "body":"Use the C and CF scales.",
-                "operation":"pi*",
-            },
-            {
-                "title":"Min & Sec",
-                "body":"Use the ST and D scales.\n\nNote:\n    The tick marks on the ST scale are used to convert minutes (') and seconds ('') into radians.",
-                "operation":"'|\"",
-            },
-        ]
-    }
+	{
+		"header": "Arithmetic",
+		"instructions":
+		[
+			{
+				"title":"$a \\times b$",
+				"body":"Use C and D scales.",
+				"operation":"*",
+			},
+			{
+				"title":"$a / b$",
+				"body":"Use the C and D scales.",
+				"operation":"/",
+			},
+			{
+				"title":"$1 / a$",
+				"body":"Use the C and CI or D and DI scales.",
+				"operation":"1/",
+			},
+			{
+				"title":"$a^{2}$ or $a^{3}$",
+				"body":"Use the D and A (square) or K (cube) scales.",
+				"operation":"sqr|cube",
+			},
+			{
+				"title":"$\\sqrt{a}$ or $\\sqrt[3]{a}$",
+				"body":"Use the D and A ($\\sqrt{a}$) or K ($\\sqrt[3]{a}$) scales.\n\nNote:\n    For square roots, use the left half of the A scale for numbers between 1 and 10 and use the right half for those between 10 and 100.\nFor numbers outside this range, shift 2 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 2 on the input.\n\n    For cube roots, use the left third of the K scale for numbers between 1 and 10, the middle third for those between 10 and 100, and the last third for those between 100 and 1000.\nFor numbers outside this range, shift 3 decimal places at a time to get into the range, removing 1 decimal place from the answer for every shift of 3 on the input.",
+				"operation":"sqrt|cbrt",
+			},
+		]
+	},
+	{
+		"header": "Exponents",
+		"instructions":
+		[
+			{
+				"title":"$e^{a}$",
+				"body":"Use the D scale and LL scales.\n$\\begin{array}{lcccc} \\text{Scale:} & LL3 & LL2 & LL1\\\\ \\text{Range:} & [1,10] & [0.1,1] & [0.01,0.1]\\\\ & & & & \\\\ \\text{Scale:} & LL03 & LL02 & LL01 \\\\ \\text{Range:} & [-10,-1] & [-1,-0.1] & [-0.1,-0.01] \\\\ \\end{array}$",
+				"operation":"exp",
+			},
+			{
+				"title":"$a^{b}$",
+				"body":"Use the C, D and L scales.\nEquation Used: $a ^ {b} = 10 ^ {\\text{log}(a) \\times b}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
+				"operation":"^",
+			},
+			{
+				"title":"ln($a$)",
+				"body":"Use the C, D, and L scales.\nEquation Used: ln$(a) = \\text{log}(a) \\times 2.303$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
+				"operation":"ln",
+			},
+			{
+				"title":"log($a$)",
+				"body":"Use the C and L scales.\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
+				"operation":"log",
+			},
+			{
+				"title":"log$_{b}$($a$)",
+				"body":"Use the C, D, and L scales.\nEquation Used: log$_{b}(a) = \\frac{\\text{log}(a)}{\\text{log}(b)}$\n\nNote:\n    The L scale produces the $\\textit{Mantissa}$: the fractional portion of a logarithm\nTo know the true value of the logarithm, subtract the amount of decimal places of the largest digit place from the mantissa. \nlog$(25) = 1 + $log$(2.5)$, log$(0.52) = -1 + $log$(5.2)$",
+				"operation":"logb",
+			},
+		]
+	},
+	{
+		"header": "Trigonometry",
+		"instructions":
+		[
+			{
+				"title":"sin($\\alpha$)",
+				"body":"Use the D and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For cosine, use the italicized numbers on the S scale.",
+				"operation":"sin|cos",
+			},
+			{
+				"title":"csc($\\alpha$)",
+				"body":"Use the DI and S or ST scales.\n\nNote:\n    For angles less than 5.74°, use the ST scale. Use the S scale for angles between 5.74° and 90°.\n    For secant (1/cosine), use the italicized numbers on the S scale.",
+				"operation":"csc",
+			},
+			{
+				"title":"tan($\\alpha$)",
+				"body":"Use the D and T or ST scales.\n\nNote:\n    For angles less than 5.71°, use the ST scale. Use the T scales for angles between 5.74° and 90°, using the <45° and >45° scales appropriately.\n    For cotangent, use the italicized numbers on the T scale.",
+				"operation":"tan",
+			},
+			{
+				"title":"$\\pi \\times a$",
+				"body":"Use the C and CF scales.",
+				"operation":"pi*",
+			},
+			{
+				"title":"Min & Sec",
+				"body":"Use the ST and D scales.\n\nNote:\n    The tick marks on the ST scale are used to convert minutes (') and seconds ('') into radians.",
+				"operation":"'|\"",
+			},
+		]
+	}
 ]

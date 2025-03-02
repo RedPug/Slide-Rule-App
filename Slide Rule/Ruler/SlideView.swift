@@ -54,14 +54,14 @@ struct SlideView: View {
         .gesture(
             DragGesture(minimumDistance: 5.0)
                 .onChanged({value in
-                    if posDat.isLocked {return}
+					if posDat.lockState.contains(.slide) {return}
                     
                     if(abs(value.velocity.height) > abs(value.velocity.width)){return}
                     posDat.isDragging = true
                     posDat.slidePos = max(minSlide, min(maxSlide,posDat.slidePos0+value.translation.width*posDat.movementSpeed))
                 })
                 .onEnded({value in
-                    if posDat.isLocked {return}
+					if posDat.lockState.contains(.slide) {return}
                     
                     posDat.isDragging = false
                     posDat.slidePos0 = posDat.slidePos

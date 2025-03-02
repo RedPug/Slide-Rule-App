@@ -34,19 +34,24 @@ struct Operator: Equatable{
     let symbol: String
     let numOperands: Int
     let format: [String]
-	let bounds: [any RangeExpression<CGFloat>]
+	let bounds: [[any RangeExpression<CGFloat>]]
     fileprivate let expression: ([CGFloat])->CGFloat
     fileprivate let _getKeyframes: ([CGFloat]) -> [Keyframe]
     
     
-	init(symbol: String, numOperands: Int, range: any RangeExpression<CGFloat>, _ moreRanges: any RangeExpression<CGFloat>..., format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
+	init(symbol: String, numOperands: Int, range: [any RangeExpression<CGFloat>], _ moreRanges: [any RangeExpression<CGFloat>]..., format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
         self.symbol = symbol
         self.numOperands = numOperands
 		self.format = Operator.split(format)
 		
-		var arr = [range]
-		arr.append(contentsOf: moreRanges)
-		self.bounds = arr
+		
+		if moreRanges.count > 0 {
+			var arr = [range]
+			arr.append(contentsOf: moreRanges)
+			self.bounds = arr
+		}else{
+			self.bounds = [[any RangeExpression<CGFloat>]](repeating:range, count:numOperands)
+		}
         
         self.expression = expression
         self._getKeyframes = getKeyframes
@@ -54,7 +59,7 @@ struct Operator: Equatable{
 	
 	//overload for default range of all positive inputs (not including 0)
 	init(symbol: String, numOperands: Int, format: String, expression: @escaping ([CGFloat])->CGFloat, getKeyframes: @escaping ([CGFloat])->[Keyframe]){
-		self.init(symbol: symbol, numOperands: numOperands, range:0.00001..., format:format,expression:expression,getKeyframes: getKeyframes)
+		self.init(symbol: symbol, numOperands: numOperands, range:[0.00001...], format:format,expression:expression,getKeyframes: getKeyframes)
 	}
 	
 	private static func split(_ str: String) -> [String]{
@@ -102,9 +107,8 @@ struct Operator: Equatable{
 	}
 	
 	func evaluate(_ values: [CGFloat]) throws -> CGFloat{
-		for v in values{
-			if !(isValidInput(v)){
-				print("Operator '\(symbol)' recieved invalid input of '\(v)'.")
+		for (i, v) in values.enumerated(){
+			if !(isValidInput(v, position:i)){
 				
 				throw OperatorError.invalidArgument
 			}
@@ -114,19 +118,18 @@ struct Operator: Equatable{
 	}
 	
 	func getKeyframes(_ values: [CGFloat]) throws -> [Keyframe]{
-		for v in values{
-			if !(isValidInput(v)){
-				print("Operator '\(symbol)' recieved invalid input of '\(v)'.")
+		for (i, v) in values.enumerated(){
+			if !(isValidInput(v, position:i)){
 				
 				throw OperatorError.invalidArgument
 			}
 		}
-		
+
 		return self._getKeyframes(values)
 	}
 	
-	func isValidInput(_ value: CGFloat) -> Bool{
-		for range in bounds{
+	func isValidInput(_ value: CGFloat, position: Int) -> Bool{
+		for range in bounds[position]{
 			if range.contains(value){
 				return true
 			}
@@ -150,41 +153,36 @@ enum Operators{
         return args[0] * args[1]
     }getKeyframes:{args in
         let a = args[0]
-        let a1 = mapOnC(a)
         let b = args[1]
-        let b1 = mapOnC(b)
         let out = a*b
-        let out1 = mapOnC(out)
+		
         return [
-			Keyframe(scaleNum:8, x:a1,     action:.alignCursor),
-			Keyframe(scaleNum:8, x:a1, scaleNum2:7, x2:b1, action:.alignIndexAuto),
-			Keyframe(scaleNum:7, x:b1,     action:.alignCursor),
-			Keyframe(scaleNum:8, x:out1,   action:.readValue)
+			Keyframe(scaleNum:8, x:a,     action:.alignCursor),
+			Keyframe(scaleNum:8, x:a, scaleNum2:7, x2:b, action:.alignIndexAuto),
+			Keyframe(scaleNum:7, x:b,     action:.alignCursor),
+			Keyframe(scaleNum:8, x:out,   action:.readValue),
         ]
     }
     
     static let divide = Operator(symbol: "/", numOperands: 2, format: "{a} / {b}"){args in return args[0] / args[1]}getKeyframes:{args in
         let a = args[0]
-        let a1 = mapOnC(a)
         let b = args[1]
-        let b1 = mapOnC(b)
         let out = a/b
-        let out1 = mapOnC(out)
+		
         return [
-            Keyframe(scaleNum:8, x:a1, scaleNum2:7, x2:b1, action:.alignScales),
+            Keyframe(scaleNum:8, x:a, scaleNum2:7, x2:b, action:.alignScales),
             Keyframe(scaleNum:7, x:1,       action:.alignCursor),
-            Keyframe(scaleNum:8, x:out1,    action:.readValue),
+            Keyframe(scaleNum:8, x:out,    action:.readValue),
         ]
     }
     
     static let inverse = Operator(symbol: "1/", numOperands: 1, format: "1 / {a}"){args in return 1/args[0]}getKeyframes: { args in
         let a = args[0]
-        let a1 = mapOnC(a)
         let out = 1/a
-        let out1 = mapOnC(out)
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: 6, x: out1, action: .readValue)
+            Keyframe(scaleNum: 7, x: a, action: .alignCursor),
+            Keyframe(scaleNum: 6, x: out, action: .readValue),
+			
         ]
     }
     
@@ -195,7 +193,8 @@ enum Operators{
         let out1 = pow(mapOnC(sqrt(out)),2)
         return [
             Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: 13, x: out1, action: .readValue)
+            Keyframe(scaleNum: 13, x: out1, action: .readValue),
+			Keyframe(scaleNum:13, x:out,   action:.answer),
         ]
     }
     
@@ -206,7 +205,8 @@ enum Operators{
         let out1 = pow(mapOnC(pow(out,1/3)),3)
         return [
             Keyframe(scaleNum: 19, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: 12, x: out1, action: .readValue)
+            Keyframe(scaleNum: 12, x: out1, action: .readValue),
+			Keyframe(scaleNum: 12, x:out,   action:.answer),
         ]
     }
 
@@ -217,7 +217,8 @@ enum Operators{
         let out1 = mapOnC(out) //find the value between 1 and 10
         return [
             Keyframe(scaleNum: 13, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue)
+            Keyframe(scaleNum: 19, x: out1, action: .readValue),
+			Keyframe(scaleNum: 19, x:out,   action:.answer),
         ]
     }
     
@@ -229,11 +230,12 @@ enum Operators{
         
         return [
             Keyframe(scaleNum: 12, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: 19, x: out1, action: .readValue)
+            Keyframe(scaleNum: 19, x: out1, action: .readValue),
+			Keyframe(scaleNum: 19, x:out,   action:.answer)
         ]
     }
     
-	static let euler = Operator(symbol: "exp", numOperands: 1, range: 0.01...10, (-10)...(-0.01), format: "e ^ {a}"){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
+	static let euler = Operator(symbol: "exp", numOperands: 1, range: [0.01...10, (-10)...(-0.01)], format: "e ^ {a}"){args in return CGFloat(exp(args[0]))}getKeyframes:{args in
         let a = args[0]
         var scale = 0
         var scaleName = "ERROR"
@@ -278,12 +280,12 @@ enum Operators{
         
         return [
             Keyframe(scaleNum: scale <= 10 ? 8 : 19, x: a1, action: .alignCursor),
-            Keyframe(scaleNum: scale, x: out, action: .readValue, description: "Use the \(scaleName) scale, which has a range from $\(lower)x$ to $\(upper)x$"),
+            Keyframe(scaleNum: scale, x: out, action: .readValue, description: "Use the \(scaleName) scale, which has a range from \(lower)x to \(upper)x"),
         ]
     }
     
     //a^b
-    static let power = Operator(symbol:"^", numOperands: 2, format: "{a} ^ {b}"){args in return CGFloat(pow(args[0], args[1]))}getKeyframes:{args in
+	static let power = Operator(symbol:"^", numOperands: 2, range: [1.001...], [0.001...], format: "{a} ^ {b}"){args in return CGFloat(pow(args[0], args[1]))}getKeyframes:{args in
         let a = args[0]
         let a1 = mapOnC(a)
         let b = args[1]
@@ -302,42 +304,45 @@ enum Operators{
         let out = pow(a,b)
         let out1 = mapOnC(out)
         
-        return [
+        var arr = [
             Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
-			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
-					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
+			Keyframe(fromLogarithm: fullLog),
             Keyframe(scaleNum: 8, x: fullLog1, action: .alignCursor),
             Keyframe(scaleNum: 8, x: fullLog1, scaleNum2: 7, x2: b1, action: .alignIndexAuto),
             Keyframe(scaleNum: 7, x: b1, action: .alignCursor),
             Keyframe(scaleNum: 8, x: logProd1, action: .readValue),
-            Keyframe(scaleNum: 5, x: prodMantissa, action: .alignCursor, label: "Move the cursor to $\(formatNumber(prodMantissa))$ (mantissa of $\(formatNumber(logProd))$) on the L scale"),
-            Keyframe(scaleNum: 7, x: out1, action: .readValue, label: "Read $\(formatNumber(out1))$ on the C scale."),
-			Keyframe(label:"Because we cut a $\(shiftAmount)$ from $\(formatNumber(logProd))$, we shift $\(shiftAmount)$ places to get $\(formatNumber(out))$ as our final answer")
+            Keyframe(scaleNum: 5, x: prodMantissa, action: .alignCursor, label: "Move the cursor to \(formatNumber(prodMantissa)) (mantissa of \(formatNumber(logProd))) on the L scale"),
+            Keyframe(scaleNum: 7, x: out1, action: .readValue),
         ]
+		if shiftAmount != 0 {
+			arr.append(
+			Keyframe(label:"Because we cut a \(shiftAmount) from \(formatNumber(logProd)), we shift \(shiftAmount) places to get \(formatNumber(out)) as our final answer")
+			)
+		}
+		return arr
     }
     
     
     //ln(a)
     static let naturalLog = Operator(symbol:"ln", numOperands: 1, format: "ln( {a} )"){args in return CGFloat(log(args[0]))}getKeyframes:{args in
         let a = args[0]
-        let a1 = mapOnC(a)
+//        let a1 = mapOnC(a)
         
         let fullLog = log10(a)
-        let mantissa = fullLog.truncatingRemainder(dividingBy: 1)
+//        let mantissa = fullLog.truncatingRemainder(dividingBy: 1)
 		
-		let fullLogMapped = mapOnC(fullLog)
+//		let fullLogMapped = mapOnC(fullLog)
         
         let out = fullLog*2.303
-        let out1 = mapOnC(out)
+//        let out1 = mapOnC(out)
         
         return [
-            Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
-			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
-					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
-            Keyframe(scaleNum: 8, x: fullLogMapped, action: .alignCursor),
-            Keyframe(scaleNum: 8, x: fullLogMapped, scaleNum2: 7, x2: 2.303, action: .alignIndexAuto),
-            Keyframe(scaleNum: 7, x: 2.303, action: .alignCursor, label: "Place the cursor at $2.303$ on the C scale (log -> ln conversion factor)"),
-            Keyframe(scaleNum: 8, x: out1, action: .readValue)
+            Keyframe(scaleNum: 7, x: a, action: .alignCursor),
+			Keyframe(scaleNum: 5, x: fullLog, action: .readValue),
+            Keyframe(scaleNum: 8, x: fullLog, action: .alignCursor),
+            Keyframe(scaleNum: 8, x: fullLog, scaleNum2: 7, x2: 2.303, action: .alignIndexAuto),
+            Keyframe(scaleNum: 7, x: 2.303, action: .alignCursor, description: "2.303 is the log -> ln conversion factor"),
+            Keyframe(scaleNum: 8, x: out, action: .readValue)
         ]
     }
     
@@ -351,13 +356,13 @@ enum Operators{
         
         return [
             Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
-			Keyframe(scaleNum: 5, x: mantissa, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLog))",
-					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissa))), the logarithm is actually $\(formatNumber(fullLog))$"),
+			Keyframe(scaleNum: 5, x: fullLog, action: .readValue)
+//			Keyframe(fromLogarithm: fullLog),
         ]
     }
 
     //log_b (a)
-    static let logb = Operator(symbol:"logb", numOperands: 2, format: "log {a} ( {b} )"){args in return log10(args[1])/log10(args[0])}getKeyframes:{args in
+	static let logb = Operator(symbol:"logb", numOperands: 2, range:[1.001...], format: "log {a} ( {b} )"){args in return log10(args[1])/log10(args[0])}getKeyframes:{args in
         let a = args[1]
         let a1 = mapOnC(a)
         
@@ -377,14 +382,10 @@ enum Operators{
         
         return [
             Keyframe(scaleNum: 7, x: a1, action: .alignCursor),
-			Keyframe(scaleNum: 5, x: mantissaA, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLogA))",
-					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissaA))), the logarithm is actually $\(formatNumber(fullLogA))$"),
+			Keyframe(fromLogarithm: fullLogA),
             Keyframe(scaleNum: 7, x: b1, action: .alignCursor),
-			Keyframe(scaleNum: 5, x: mantissaB, action: .readValue, label: "Find the logarithm to be \(formatNumber(fullLogB))",
-					 description: "Since the L scale only provides the mantissa of the logarithm (\(formatNumber(mantissaB))), the logarithm is actually $\(formatNumber(fullLogB))$"),
-            
-            Keyframe(label: "Next, we will divide the first logarithm ($\(formatNumber(fullLogA))$) by the second ($\(formatNumber(fullLogB))$)"),
-            
+			Keyframe(fromLogarithm: fullLogB),
+            Keyframe(label: "Next, we will divide the first logarithm (\(formatNumber(fullLogA))) by the second (\(formatNumber(fullLogB)))"),
             Keyframe(scaleNum:8, x:fullLogA1, scaleNum2:7, x2:fullLogB1, action:.alignScales),
             Keyframe(scaleNum:7, x:1,       action:.alignCursor),
             Keyframe(scaleNum:8, x:out1,    action:.readValue),
@@ -392,7 +393,7 @@ enum Operators{
     }
     
     //sin(a)
-	static let sine = Operator(symbol:"sin", numOperands: 1, range: 0.571...90, format: "$sin$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let sine = Operator(symbol:"sin", numOperands: 1, range: [0.571...90], format: "$sin$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -410,28 +411,28 @@ enum Operators{
         ]
     }
 	
-	static let cosine = Operator(symbol:"cos", numOperands: 1, range: 0...89.42, format: "$cos$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let cosine = Operator(symbol:"cos", numOperands: 1, range: [0...89.42], format: "$cos$( {a} )"){args in return CGFloat(sin(args[0]*Double.pi/180))}getKeyframes:{args in
 		let a = 90-args[0]
 		let out = sin(a*Double.pi/180)
 		let out1 = mapOnC(out)
 		
 		if a > 5.73917{
 			return [
-				Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Place the cursor at $\(formatNumber(args[0]))$ on the S scale italics",
+				Keyframe(scaleNum: 18, x: a, action: .alignCursor, label: "Place the cursor at \(formatNumber(args[0])) on the S scale italics",
 						 description: "Use the S scale for angles < 84.26°"),
 				Keyframe(scaleNum: 19, x: out1, action: .readValue)
 			]
 		}
 		
 		return [
-			Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Place the cursor at $90 - \(formatNumber(args[0])) = \(formatNumber(a))$ on the ST scale",
-					 description: "Use the ST scale for angles > 84.26°.\nWe can't directly compute $cos$ for these angles, so we compute $sin(90-\\alpha)$"),
+			Keyframe(scaleNum: 17, x: a, action: .alignCursor, label: "Place the cursor at 90 - \(formatNumber(args[0])) = \(formatNumber(a)) on the ST scale",
+					 description: "Use the ST scale for angles > 84.26°.\nWe can't directly compute cos for these angles, so we compute sin(90-α)"),
 			Keyframe(scaleNum: 19, x: out1, action: .readValue)
 		]
 	}
     
     //csc(a)
-    static let cosecant = Operator(symbol:"csc", numOperands: 1, range: 0.571...90, format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
+    static let cosecant = Operator(symbol:"csc", numOperands: 1, range: [0.571...90], format: "csc( {a} )"){args in return 1/sin(args[0]*Double.pi/180)}getKeyframes:{args in
         let a = args[0]
         let out = 1/sin(a*Double.pi/180)
         let out1 = mapOnC(out)
@@ -450,7 +451,7 @@ enum Operators{
     }
     
     //tan(a)
-	static let tangent = Operator(symbol:"tan", numOperands: 1, range: 0.571...84.3, format: "tan( {a} )"){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
+	static let tangent = Operator(symbol:"tan", numOperands: 1, range: [0.571...84.3], format: "tan( {a} )"){args in return CGFloat(tan(args[0]*Double.pi/180))}getKeyframes:{args in
         let a = args[0]
         let out = tan(a*Double.pi/180)
         let out1 = mapOnC(out)
